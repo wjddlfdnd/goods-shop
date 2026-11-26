@@ -53,3 +53,7 @@ next-env.d.ts
 
 # 관리자 이미지 업로드(개발용 로컬 저장)
 /uploads/
+
+# 테스트 결과
+/test-results/
+/playwright-report/
