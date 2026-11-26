@@ -4,6 +4,7 @@ import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { db } from "@/lib/db";
+import { likeText } from "@/lib/catalog";
 
 export class AdminError extends Error {
   constructor(public status: number, public code: string, message: string, public extra?: Record<string, unknown>) {
@@ -18,7 +19,7 @@ export async function listAdminProducts(f: { categoryId?: string; status?: "ON_S
   const where = {
     ...(f.categoryId ? { categoryId: f.categoryId } : {}),
     ...(f.status ? { status: f.status } : {}),
-    ...(f.q ? { name: { contains: f.q.trim(), mode: "insensitive" as const } } : {}),
+    ...(f.q ? { name: { contains: likeText(f.q), mode: "insensitive" as const } } : {}),
   };
   const page = Math.max(1, f.page ?? 1);
   const [total, onSale, stopped, rows] = await Promise.all([
@@ -132,14 +133,27 @@ export async function addImages(productId: string, files: File[]) {
     if (!IMAGE_LIMIT.types.includes(f.type)) throw new AdminError(400, "BAD_TYPE", `이미지 업로드에 실패했습니다(${f.name}). jpg·png·webp 파일만 올릴 수 있습니다.`);
     if (f.size > IMAGE_LIMIT.bytes) throw new AdminError(400, "TOO_LARGE", `이미지 업로드에 실패했습니다(${f.name}). 한 장에 5MB 이하만 올릴 수 있습니다.`);
   }
+  const buffers = await Promise.all(files.map(async (f) => Buffer.from(await f.arrayBuffer())));
+  // 파일 내용으로 형식 확인(QA-09): 브라우저가 알려 주는 형식만 믿지 않는다
+  for (const [i, buf] of buffers.entries()) {
+    if (sniff(buf) !== files[i].type) throw new AdminError(400, "BAD_TYPE", `이미지 업로드에 실패했습니다(${files[i].name}). jpg·png·webp 파일만 올릴 수 있습니다.`);
+  }
   await mkdir(UPLOAD_DIR, { recursive: true });
   const hasMain = (await db.productImage.count({ where: { productId, kind: "MAIN" } })) > 0;
   let order = count;
   for (const [i, f] of files.entries()) {
     const name = `${randomUUID()}.${EXT[f.type]}`;
-    await writeFile(path.join(UPLOAD_DIR, name), Buffer.from(await f.arrayBuffer()));
+    await writeFile(path.join(UPLOAD_DIR, name), buffers[i]);
     await db.productImage.create({ data: { productId, url: `/uploads/${name}`, kind: !hasMain && i === 0 ? "MAIN" : "DETAIL", sortOrder: order++ } });
   }
+}
+
+/** 파일 앞부분 바이트로 이미지 형식 판별 */
+function sniff(b: Buffer): string | null {
+  if (b.length > 3 && b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return "image/jpeg";
+  if (b.length > 8 && b.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) return "image/png";
+  if (b.length > 12 && b.toString("ascii", 0, 4) === "RIFF" && b.toString("ascii", 8, 12) === "WEBP") return "image/webp";
+  return null;
 }
 
 /** 이미지 삭제. 대표를 지우면 첫 번째 상세 이미지가 대표가 된다(가정, PRD v1.7) */

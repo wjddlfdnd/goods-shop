@@ -13,7 +13,7 @@ export default function AccountPage() {
       <MobileSubHeader back="/" title="내 계정" />
       <main className="page container">
         <div className="form-card">
-          <h1 className="page-title heading-lg-mobile only-desktop">내 계정</h1>
+          <h1 className="page-title heading-lg-mobile sr-only-mobile">내 계정</h1>
           <Suspense fallback={<p className="caption">불러오는 중…</p>}><Account /></Suspense>
         </div>
       </main>

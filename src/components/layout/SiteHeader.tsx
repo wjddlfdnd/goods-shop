@@ -47,7 +47,7 @@ export function MobileHomeHeader({ tabs = false }: { tabs?: boolean }) {
   return (
     <div className="only-mobile">
       <header className="gs-header">
-        <h1 className="gs-header__title" style={{ flex: 1 }}><Link className="gs-logo" href="/">FANDOM PICK</Link></h1>
+        <p className="gs-header__title" style={{ flex: 1 }}><Link className="gs-logo" href="/">FANDOM PICK</Link></p>
         <Suspense fallback={<StaticActions />}><Actions /></Suspense>
       </header>
       {tabs ? <Suspense fallback={null}><MobileTabs /></Suspense> : null}

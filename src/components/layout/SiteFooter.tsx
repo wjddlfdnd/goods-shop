@@ -19,9 +19,9 @@ export function SiteFooter() {
             <Link className="logo-desktop gs-logo text-ink" href="/">FANDOM PICK</Link>
             <p className="body-sm-14 m-0">팬덤이 직접 고른 추천 굿즈를 모은<br />연습용 쇼핑몰입니다.</p>
           </div>
-          <nav aria-label="카테고리"><h2 className="body-sm-14">카테고리</h2><Suspense fallback={null}><FooterCategories /></Suspense></nav>
-          <nav aria-label="쇼핑"><h2 className="body-sm-14">쇼핑</h2><ul><li><Link className="body-sm-14" href="/search">상품 검색</Link></li><li><Link className="body-sm-14" href="/cart">장바구니</Link></li></ul></nav>
-          <nav aria-label="회원"><h2 className="body-sm-14">회원</h2><ul><li><Link className="body-sm-14" href="/login">로그인</Link></li><li><Link className="body-sm-14" href="/signup">회원가입</Link></li></ul></nav>
+          <nav aria-label="푸터 카테고리"><h2 className="body-sm-14">카테고리</h2><Suspense fallback={null}><FooterCategories /></Suspense></nav>
+          <nav aria-label="푸터 쇼핑"><h2 className="body-sm-14">쇼핑</h2><ul><li><Link className="body-sm-14" href="/search">상품 검색</Link></li><li><Link className="body-sm-14" href="/cart">장바구니</Link></li></ul></nav>
+          <nav aria-label="푸터 회원"><h2 className="body-sm-14">회원</h2><ul><li><Link className="body-sm-14" href="/login">로그인</Link></li><li><Link className="body-sm-14" href="/signup">회원가입</Link></li></ul></nav>
           <div><h2 className="body-sm-14">이용 안내</h2><ul className="body-sm-14"><li>모든 주문 배송비 0원</li><li>모의 결제, 실제 결제 없음</li></ul></div>
         </div>
         <p className="caption site-footer__caption">FANDOM PICK · 연습용 프로젝트, 실제 결제 없음 · 배송비 0원</p>

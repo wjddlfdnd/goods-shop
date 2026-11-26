@@ -1,6 +1,9 @@
 // 상품 탐색 조회(P-01–P-07). 사용자 화면은 판매 중 상품만, 미분류(시스템 카테고리)는 노출하지 않는다(D-12).
 import { db } from "@/lib/db";
 
+/** LIKE 검색어 이스케이프: Prisma contains는 %·_를 와일드카드로 넘긴다(QA-04). "_"만 쳐도 전체가 나오던 문제 */
+export const likeText = (q: string) => q.trim().replace(/[\\%_]/g, (c) => `\\${c}`);
+
 export type Sort = "latest" | "price_asc" | "price_desc" | "popular";
 export const SORTS: { value: Sort; label: string }[] = [
   { value: "latest", label: "최신순" },
@@ -35,7 +38,7 @@ export async function listProducts(opts: { categoryId?: string; q?: string; sort
       status: "ON_SALE",
       category: { isSystem: false },
       ...(opts.categoryId ? { categoryId: opts.categoryId } : {}),
-      ...(opts.q ? { name: { contains: opts.q.trim(), mode: "insensitive" as const } } : {}),
+      ...(opts.q ? { name: { contains: likeText(opts.q), mode: "insensitive" as const } } : {}),
     },
     orderBy:
       sort === "price_asc" ? [{ price: "asc" }, { createdAt: "desc" }]

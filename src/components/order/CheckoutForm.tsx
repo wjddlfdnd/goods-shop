@@ -77,7 +77,7 @@ export function CheckoutForm({ lines, prefill, idempotencyKey, source, back }: {
           <SectionHeader title="주문자 정보" />
           <Notice>회원 정보로 미리 채웠습니다. 필요하면 고쳐 주세요.</Notice>
           <div className="field-row field-row--2">
-            <TextField id="buyer-name" name="ordererName" label="이름" autoComplete="name" value={v.ordererName} onChange={set("ordererName")} onBlur={blur("ordererName")} error={reqError("ordererName")} required />
+            <TextField id="buyer-name" name="ordererName" label="이름" maxLength={50} autoComplete="name" value={v.ordererName} onChange={set("ordererName")} onBlur={blur("ordererName")} error={reqError("ordererName")} required />
             <TextField id="buyer-phone" name="ordererPhone" label="연락처" type="tel" inputMode="numeric" autoComplete="tel" placeholder="010-0000-0000" value={v.ordererPhone} onChange={set("ordererPhone", true)} onBlur={blur("ordererPhone")} error={reqError("ordererPhone")} maxLength={13} required />
           </div>
         </section>
@@ -86,12 +86,12 @@ export function CheckoutForm({ lines, prefill, idempotencyKey, source, back }: {
           <SectionHeader title="배송지" />
           <p className="caption text-sub m-0">(선택) 표시가 없는 항목은 필수입니다.</p>
           <div className="field-row field-row--2">
-            <TextField id="ship-name" name="recipient" label="받는 사람" autoComplete="shipping name" value={v.recipient} onChange={set("recipient")} onBlur={blur("recipient")} error={reqError("recipient")} required />
+            <TextField id="ship-name" name="recipient" label="받는 사람" maxLength={50} autoComplete="shipping name" value={v.recipient} onChange={set("recipient")} onBlur={blur("recipient")} error={reqError("recipient")} required />
             <TextField id="ship-phone" name="recipientPhone" label="연락처" type="tel" inputMode="numeric" autoComplete="shipping tel" placeholder="010-0000-0000" value={v.recipientPhone} onChange={set("recipientPhone", true)} onBlur={blur("recipientPhone")} error={reqError("recipientPhone")} maxLength={13} required />
           </div>
-          <TextField id="ship-addr" name="address1" label="주소" autoComplete="shipping address-line1" placeholder="예: 서울시 마포구 굿즈로 12" value={v.address1} onChange={set("address1")} onBlur={blur("address1")} error={reqError("address1")} required />
-          <TextField id="ship-addr2" name="address2" label="상세 주소 (선택)" autoComplete="shipping address-line2" value={opt.address2} onChange={(e) => setOpt({ ...opt, address2: e.target.value })} />
-          <TextField id="ship-memo" name="requestNote" label="배송 요청사항 (선택)" placeholder="예: 문 앞에 놓아 주세요" value={opt.requestNote} onChange={(e) => setOpt({ ...opt, requestNote: e.target.value })} />
+          <TextField id="ship-addr" name="address1" label="주소" maxLength={255} autoComplete="shipping address-line1" placeholder="예: 서울시 마포구 굿즈로 12" value={v.address1} onChange={set("address1")} onBlur={blur("address1")} error={reqError("address1")} required />
+          <TextField id="ship-addr2" name="address2" label="상세 주소 (선택)" maxLength={255} autoComplete="shipping address-line2" value={opt.address2} onChange={(e) => setOpt({ ...opt, address2: e.target.value })} />
+          <TextField id="ship-memo" name="requestNote" label="배송 요청사항 (선택)" maxLength={255} placeholder="예: 문 앞에 놓아 주세요" value={opt.requestNote} onChange={(e) => setOpt({ ...opt, requestNote: e.target.value })} />
           {!a ? (
             <div className="stack-2">
               <Checkbox name="saveAsDefault" label="기본 배송지로 저장" checked={opt.saveAsDefault} onChange={(e) => setOpt({ ...opt, saveAsDefault: e.target.checked })} />

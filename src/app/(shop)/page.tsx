@@ -13,6 +13,7 @@ export default function Home({ searchParams }: PageProps<"/">) {
     <>
       <MobileHomeHeader tabs />
       <main className="page container">
+        <h1 className="sr-only">FANDOM PICK 홈 — 팬덤이 직접 고른 추천템</h1>
         <Suspense fallback={null}><AdminOnlyNotice searchParams={searchParams} /></Suspense>
         <div className="mt-6"><HomeBanner /></div>
         <Suspense fallback={<p className="caption mt-8">불러오는 중…</p>}>
