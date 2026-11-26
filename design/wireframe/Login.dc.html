@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>로그인 와이어프레임</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="gs-root" style="width: 390px; height: 1048px; box-sizing: border-box; display: flex; flex-direction: column; padding-bottom: var(--space-12); background: var(--bg); color: var(--text-body); font-family: var(--font-sans);">
+  <x-import component-from-global-scope="GoodsShop.MobileHeader" back="Main.dc.html" title-as="p" icons="{{no}}"></x-import>
+
+  <div style="padding: var(--space-8) var(--grid-mobile-margin) 0; display: flex; flex-direction: column; gap: var(--space-8);">
+    <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+      <a class="logo-mobile" href="Main.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text); text-decoration: none;">GOODS SHOP</a>
+      <h1 class="heading-lg-mobile" style="margin: 0; color: var(--text);">로그인</h1>
+      <span class="body-sm-14" style="color: var(--text-sub);">이메일로 로그인하세요</span>
+    </div>
+
+    <p class="gs-notice">로그인하면 하려던 <b style="color: var(--text);">[장바구니 담기 / 바로 구매]</b>를 이어서 진행합니다.</p>
+
+    <form style="margin: 0; display: flex; flex-direction: column; gap: var(--space-6);">
+      <x-import component-from-global-scope="GoodsShop.TextField" id="login-email" label="이메일" type="email" value="[입력한 이메일]" auto-complete="username"></x-import>
+      <x-import component-from-global-scope="GoodsShop.TextField" id="login-pw" label="비밀번호" type="password" placeholder="비밀번호" auto-complete="current-password" error="이메일 또는 비밀번호가 일치하지 않습니다."></x-import>
+      <div style="padding-top: var(--space-2);">
+        <x-import component-from-global-scope="GoodsShop.Button" variant="primary" size="M" full="{{yes}}" href="Main.dc.html">로그인</x-import>
+      </div>
+    </form>
+
+    <div class="body-sm-14" style="display: flex; justify-content: center; align-items: center; gap: var(--space-2);">
+      <span style="color: var(--text-sub);">아직 회원이 아니신가요?</span>
+      <a class="gs-link gs-link--strong" href="Signup.dc.html"><span>회원가입 →</span></a>
+    </div>
+  </div>
+
+  <div style="padding: var(--space-12) var(--grid-mobile-margin) 0;">
+    <x-import component-from-global-scope="GoodsShop.Annotation" flush="{{yes}}"><b>상태 예시</b> 위 폼은 로그인 실패 상태(오류 문구는 비밀번호 칸 아래 한 번, 기본 테두리는 line-input)<br><b>로그인 실패</b> 이메일 유지·비밀번호만 비움, 원래 동작 안 함<br><b>이어서 수행 (U-02)</b> 성공 후 담기 → 상세 복귀, 바로 구매 → 주문서. 안내 상자는 이 경우만<br><b>복귀 시 품절</b> 원래 동작 대신 상세에 품절 안내<br><b>범위 밖</b> 비밀번호 찾기·소셜 로그인(백로그)</x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1048}}'>
+class Component extends DCLogic {
+renderVals() { return { yes: true, no: false, iconS: 20 }; }
+}
+</script>
+</body>
+</html>

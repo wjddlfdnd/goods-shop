@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>주문서 와이어프레임</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="gs-root" style="width: 390px; height: 2024px; box-sizing: border-box; display: flex; flex-direction: column; background: var(--bg); color: var(--text-body); font-family: var(--font-sans);">
+  <x-import component-from-global-scope="GoodsShop.MobileHeader" back="Cart.dc.html" title-as="p" icons="{{no}}"></x-import>
+
+  <div style="padding: var(--space-6) var(--grid-mobile-margin) var(--space-12);">
+    <h1 class="heading-xl-mobile" style="margin: 0; color: var(--text);">주문서</h1>
+
+    <section style="margin-top: var(--space-8);">
+      <x-import component-from-global-scope="GoodsShop.SectionHeader" title="주문 상품 [N]건"></x-import>
+      <button type="button" aria-expanded="false" aria-controls="order-items" style="width: 100%; min-height: var(--touch-min); padding: var(--card-padding); display: flex; align-items: center; gap: var(--space-3); background: var(--bg); border: 0; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); font-family: inherit; color: var(--text-body); text-align: left; cursor: pointer;">
+        <span class="caption" aria-hidden="true" style="flex: none; width: var(--thumb-width); height: var(--thumb-height); border-radius: var(--radius-sm); background: var(--placeholder); color: var(--text-placeholder); display: flex; align-items: center; justify-content: center; text-align: center;">[상품<br>이미지]</span>
+        <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-1);">
+          <span class="body-sm-14">[상품명]</span>
+          <span class="body-sm-13" style="color: var(--text-sub);">[옵션명] · [수량]개</span>
+          <span class="price-card-14" style="color: var(--text);">[가격]원 <span class="body-sm-13" style="color: var(--text-sub);">외 [N-1]건</span></span>
+        </span>
+        <span class="body-sm-13" style="flex: none; display: flex; align-items: center; gap: var(--space-1); color: var(--text-sub);">펼치기<span style="display: flex; transform: rotate(90deg);"><x-import component-from-global-scope="GoodsShop.Icon" name="chevron-right" size="{{iconS}}"></x-import></span></span>
+      </button>
+      <div id="order-items" hidden="hidden">[펼침: 주문 상품 전체 목록 — 상품별 이미지·옵션·수량·금액]</div>
+    </section>
+
+    <section style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.SectionHeader" title="주문자 정보"></x-import>
+      <p class="caption" style="margin: 0 0 var(--space-4); color: var(--text-sub);">회원 정보로 미리 채움(가정)</p>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--grid-mobile-gutter); row-gap: var(--space-6);">
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="buyer-name" label="이름" value="[회원 이름]" auto-complete="name" required="{{yes}}"></x-import>
+        </div>
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="buyer-phone" label="연락처" type="tel" input-mode="numeric" value="[회원 연락처]" auto-complete="tel" required="{{yes}}"></x-import>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.SectionHeader" title="배송지"></x-import>
+      <p class="caption" style="margin: 0 0 var(--space-4); color: var(--text-sub);">(선택) 표시가 없는 항목은 필수</p>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--grid-mobile-gutter); row-gap: var(--space-6);">
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="ship-name" label="받는 사람" placeholder="이름" auto-complete="shipping name" required="{{yes}}"></x-import>
+        </div>
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="ship-phone" label="연락처" type="tel" input-mode="numeric" placeholder="숫자만 입력" auto-complete="shipping tel" required="{{yes}}"></x-import>
+        </div>
+        <div style="grid-column: span 4;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="ship-addr" label="주소" placeholder="도로명 주소" auto-complete="shipping address-line1" required="{{yes}}"></x-import>
+        </div>
+        <div style="grid-column: span 4;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="ship-addr2" label="상세 주소 (선택)" placeholder="상세 주소 (동·호수)" auto-complete="shipping address-line2"></x-import>
+        </div>
+        <div style="grid-column: span 4;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="ship-memo" label="배송 요청사항 (선택)" placeholder="예: 문 앞에 놓아 주세요"></x-import>
+        </div>
+        <div style="grid-column: span 4;">
+          <x-import component-from-global-scope="GoodsShop.Checkbox" id="save-default" checked="{{yes}}">기본 배송지로 저장</x-import>
+          <p class="caption" style="margin: 0; padding-left: calc(var(--control-box) + var(--space-2)); color: var(--text-sub);">기본 배송지 없을 때만 표시 · 다음 주문에 채움(D-8)</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.SectionHeader" title="결제 수단"></x-import>
+      <div role="radiogroup" aria-label="결제 수단" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--grid-mobile-gutter);">
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.Radio" id="pay-card" name="pay" value="card" checked="{{yes}}">카드</x-import>
+        </div>
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.Radio" id="pay-bank" name="pay" value="bank">계좌이체</x-import>
+        </div>
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.Radio" id="pay-easy" name="pay" value="easy">간편결제</x-import>
+        </div>
+      </div>
+      <p class="gs-notice" style="margin-top: var(--space-6);">모의 결제입니다. 결제 정보 입력 없이 결제 완료로 처리됩니다. (D-9)</p>
+    </section>
+
+    <section aria-label="예상 결제 금액" style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.OrderSummary" rows="{{rows}}" total="{{total}}"></x-import>
+    </section>
+
+    <x-import component-from-global-scope="GoodsShop.Annotation"><b>필수값 누락</b> 필드 아래 오류 문구 + 결제하기 비활성<br><b>재고 부족</b> 결제 시 재검증, 주문 생성 안 함 + 안내<br><b>결제 실패(서버)</b> "결제를 완료하지 못했습니다" + 다시 시도, 입력값·재고·장바구니 유지<br><b>중복 클릭</b> "결제 처리 중" 비활성, 주문 1건만<br><b>뒤로</b> 바로 구매로 왔으면 상품 상세(장바구니 변경 없음)</x-import>
+  </div>
+
+  <div style="margin-top: auto;">
+    <x-import component-from-global-scope="GoodsShop.StickyBar" static="{{yes}}">
+      <x-import component-from-global-scope="GoodsShop.Button" variant="primary" size="L" full="{{yes}}" href="Complete.dc.html">[가격]원 결제하기</x-import>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2024}}'>
+class Component extends DCLogic {
+renderVals() {
+  return {
+    yes: true,
+    no: false,
+    iconS: 20,
+    rows: [
+      { label: '상품 금액', value: '[가격]원' },
+      { label: '배송비', value: '0원' },
+      { label: '할인', value: '0원' }
+    ],
+    total: { label: '예상 결제 금액', value: '[가격]원' }
+  };
+}
+}
+</script>
+</body>
+</html>

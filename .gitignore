@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +40,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/generated/prisma
+
+# Prisma Client(자동 생성)
+/src/generated/
+# 업로드 이미지(개발)
+/public/uploads/
+# 디자인 QA 결과·런타임(디자인 캔버스에서 받음)
+/design/qa/out/
+/design/qa/runtime/

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>회원가입 (U-01)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="gs-root" style="width: 390px; height: 1008px; box-sizing: border-box; display: flex; flex-direction: column; padding-bottom: var(--space-12); background: var(--bg); color: var(--text-body); font-family: var(--font-sans);">
+  <x-import component-from-global-scope="GoodsShop.MobileHeader" back="M-Login.dc.html" title-as="p" icons="{{no}}"></x-import>
+
+  <form style="margin: 0; padding: var(--space-8) var(--grid-mobile-margin) 0; display: flex; flex-direction: column;">
+    <h1 class="heading-lg-mobile" style="margin: 0 0 var(--space-8); color: var(--text);">회원가입</h1>
+
+    <x-import component-from-global-scope="GoodsShop.SectionHeader" title="기본 정보"></x-import>
+    <p class="caption" style="margin: 0 0 var(--space-6); color: var(--text-sub);">모든 항목 필수</p>
+
+    <div style="display: flex; flex-direction: column; gap: var(--space-6);">
+      <sc-for list="{{fields}}" as="f" hint-placeholder-count="5">
+        <x-import component-from-global-scope="GoodsShop.TextField" id="{{f.id}}" label="{{f.label}}" type="{{f.type}}" value="{{f.val}}" placeholder="{{f.ph}}" auto-complete="{{f.ac}}" input-mode="{{f.im}}" hint="{{f.hint}}" required="{{yes}}"></x-import>
+      </sc-for>
+    </div>
+
+    <div style="padding-top: var(--space-8);">
+      <x-import component-from-global-scope="GoodsShop.Button" variant="primary" size="M" full="{{yes}}" href="M-Login.dc.html">가입하기</x-import>
+    </div>
+  </form>
+
+  <div class="body-sm-14" style="padding: var(--space-6) var(--grid-mobile-margin) 0; display: flex; justify-content: center; align-items: center; gap: var(--space-2);">
+    <span style="color: var(--text-sub);">이미 회원이신가요?</span>
+    <a class="gs-link gs-link--strong" href="M-Login.dc.html"><span>로그인 →</span></a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1008}}'>
+class Component extends DCLogic {
+renderVals() {
+  return {
+    yes: true,
+    no: false,
+    fields: [
+      { id: 'su-email', label: '이메일', type: 'email', val: 'haneul@example.com', ph: '이메일 주소', ac: 'email', im: 'email', hint: '' },
+      { id: 'su-pw', label: '비밀번호', type: 'password', val: 'goodsshop1', ph: '비밀번호', ac: 'new-password', im: 'text', hint: '8자 이상' },
+      { id: 'su-pw2', label: '비밀번호 확인', type: 'password', val: 'goodsshop1', ph: '비밀번호 다시 입력', ac: 'new-password', im: 'text', hint: '' },
+      { id: 'su-name', label: '이름', type: 'text', val: '김하늘', ph: '이름', ac: 'name', im: 'text', hint: '주문서 주문자 정보에 미리 채워집니다' },
+      { id: 'su-phone', label: '연락처', type: 'tel', val: '010-1234-5678', ph: '010-0000-0000', ac: 'tel', im: 'numeric', hint: '숫자만 입력하면 하이픈이 자동으로 들어갑니다' }
+    ]
+  };
+}
+}
+</script>
+</body>
+</html>

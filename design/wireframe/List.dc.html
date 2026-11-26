@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>상품 목록 와이어프레임</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="gs-root" style="width: 390px; height: 1504px; box-sizing: border-box; display: flex; flex-direction: column; padding-bottom: var(--space-12); background: var(--bg); color: var(--text-body);">
+  <x-import component-from-global-scope="GoodsShop.MobileHeader" title-as="p" cart-count="{{cartCount}}" links="{{links}}"></x-import>
+  <x-import component-from-global-scope="GoodsShop.CategoryTabs" items="{{cats}}" current="{{currentCat}}" href="List.dc.html"></x-import>
+
+  <main style="padding: 0 var(--grid-mobile-margin); display: flex; flex-direction: column;">
+    <h1 class="heading-xl-mobile" style="margin: var(--space-8) 0 0; color: var(--text);">키링</h1>
+    <div style="margin-top: var(--space-6); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--grid-mobile-gutter); align-items: end;">
+      <p class="body-sm-14" style="grid-column: span 2; margin: 0; min-height: var(--input-height); display: flex; align-items: center; color: var(--text-sub);"><span>상품 <b style="color: var(--text);">[N]</b>개</span></p>
+      <div style="grid-column: span 2; min-width: 0;">
+        <x-import component-from-global-scope="GoodsShop.SelectField" id="sort" label="정렬" options="{{sortOptions}}" value="최신순"></x-import>
+      </div>
+    </div>
+
+    <div class="gs-card-grid" style="margin-top: var(--space-8);">
+      <sc-for list="{{items}}" as="p" hint-placeholder-count="4">
+        <x-import component-from-global-scope="GoodsShop.ProductCard" label="{{p.label}}" href="Detail.dc.html"></x-import>
+      </sc-for>
+    </div>
+  </main>
+
+  <section aria-label="상태 예시: 카테고리 상품 0개" style="margin: var(--space-12) var(--grid-mobile-margin) 0; padding: var(--card-padding) var(--card-padding) 0; border: var(--line-width) solid var(--line); border-radius: var(--radius-lg);">
+    <span class="caption" style="color: var(--text-sub);">상태 예시 · 판매 중 상품 0개(4.2, 7.10)</span>
+    <x-import component-from-global-scope="GoodsShop.EmptyState" title="이 카테고리에 판매 중인 상품이 없습니다" action-text="전체 상품 보기" href="List.dc.html" action-variant="secondary"></x-import>
+  </section>
+
+  <div style="padding: var(--space-12) var(--grid-mobile-margin) 0;">
+    <x-import component-from-global-scope="GoodsShop.Annotation" flush="{{yes}}"><b>빈 상태</b> 판매 중 상품 0개 → 결과 수·정렬·그리드 대신 위 블록 표시<br><b>제외</b> 판매 중지 상품은 목록·상품 수에서 제외(P-03)<br><b>정렬</b> 기본 최신순 · 인기순은 취소 제외 주문 건수, 동률 최신순(D-3)<br><b>검색</b> 헤더 검색 아이콘 → 검색 화면(P-05, Search)</x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1504}}'>
+class Component extends DCLogic {
+renderVals() {
+  return {
+    yes: true,
+    cartCount: 3,
+    links: { home: 'Main.dc.html', search: 'Search.dc.html', account: 'Login.dc.html', cart: 'Cart.dc.html' },
+    cats: ['전체', '키링', '스티커', '포토카드', '엽서', '의류', '문구류'],
+    currentCat: 1,
+    sortOptions: ['최신순', '낮은 가격순', '높은 가격순', '인기순'],
+    items: [
+      { label: 'new' }, { label: 'new' },
+      { label: null }, { label: null }
+    ]
+  };
+}
+}
+</script>
+</body>
+</html>

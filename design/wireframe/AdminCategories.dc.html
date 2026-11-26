@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>관리자 카테고리 관리 (A-05)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+/* 표 행 머리(th scope=row): 열 머리 스타일(회색 면·13/700)을 본문 셀처럼 되돌림 */
+.gs-table th[scope="row"]{font-size:inherit;font-weight:500;color:var(--text);background:transparent;border-bottom-color:var(--line);white-space:normal}
+</style>
+</helmet>
+<div class="gs-root" style="min-height: 1440px; background: var(--gray-25); color: var(--text); font-family: var(--font-sans);">
+  <!-- 관리자 헤더 (디자인 시스템에 관리자 헤더 없음: 토큰으로 그림). 안쪽 내용은 본문과 같은 컨테이너(1280에서 좌우 40, 폭 1200) -->
+  <header style="background: var(--bg); border-bottom: var(--line-width) solid var(--line);">
+    <div style="width: calc(100% - 2 * var(--grid-desktop-margin)); max-width: var(--grid-desktop-container); height: var(--header-desktop-height); margin: 0 auto; display: flex; align-items: center; gap: var(--space-4);">
+      <span class="logo-desktop" style="flex: 1 1 auto; display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text);">GOODS SHOP <x-import component-from-global-scope="GoodsShop.Label" kind="best">ADMIN</x-import></span>
+      <span class="body-sm-13" style="color: var(--text-sub);">[관리자 이메일] · 관리자</span>
+      <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">로그아웃</x-import>
+    </div>
+  </header>
+
+  <!-- 12컬럼 그리드(컨테이너 1200, 거터 24, 컬럼 78): 메뉴 span 2(180) + 본문 span 10(996) -->
+  <div style="width: calc(100% - 2 * var(--grid-desktop-margin)); max-width: var(--grid-desktop-container); margin: 0 auto; padding: var(--space-12) 0 var(--space-16); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); align-items: start;">
+    <!-- 메뉴: 흰 면 + 그림자 + 16 둥근(gs-panel, 안쪽 8). 현재 항목 = surface 둥근 면 + 700 -->
+    <nav aria-label="관리자 메뉴" class="gs-panel" style="grid-column: span 2; min-width: 0; padding: var(--space-2); display: flex; flex-direction: column; gap: var(--space-1);">
+      <a href="AdminProducts.dc.html" class="body-sm-14" style="display: flex; align-items: center; min-height: var(--touch-min); padding: 0 var(--space-4); border-radius: var(--radius-md); color: var(--text-sub); text-decoration: none;">상품 관리</a>
+      <a href="AdminCategories.dc.html" aria-current="page" class="body-sm-14" style="display: flex; align-items: center; min-height: var(--touch-min); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface); font-weight: 700; color: var(--text); text-decoration: none;">카테고리 관리</a>
+      <div role="separator" style="height: var(--line-width); margin: var(--space-2) var(--space-4); background: var(--line);"></div>
+      <span class="body-sm-14" aria-disabled="true" style="display: flex; align-items: center; justify-content: space-between; min-height: var(--touch-min); padding: 0 var(--space-4); color: var(--text-placeholder);">주문 관리<span class="caption">(2차)</span></span>
+      <span class="body-sm-14" aria-disabled="true" style="display: flex; align-items: center; justify-content: space-between; min-height: var(--touch-min); padding: 0 var(--space-4); color: var(--text-placeholder);">회원 관리<span class="caption">(2차)</span></span>
+    </nav>
+
+    <main style="grid-column: span 10; min-width: 0; display: flex; flex-direction: column; gap: var(--space-12);">
+      <!-- ===== 카테고리 목록 A-05: 본문 10컬럼 그리드 ===== -->
+      <section aria-labelledby="cat-title" style="display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); row-gap: var(--space-6);">
+        <div style="grid-column: span 10; display: flex; flex-direction: column; gap: var(--space-1);">
+          <h1 id="cat-title" class="heading-sm-desktop" style="margin: 0; color: var(--text);">카테고리 관리</h1>
+          <p class="body-sm-14" style="margin: 0; color: var(--text-sub);">카테고리 [n]개 + 시스템 항목 미분류 · 추가·이름 수정·삭제(A-05)</p>
+        </div>
+
+        <!-- 추가 폼: 입력 span 4 + 버튼 span 2 (남는 4칸은 비움). 왼쪽 끝 = 표 패널 왼쪽 끝 -->
+        <div role="group" aria-label="카테고리 추가" style="grid-column: span 10; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); align-items: end;">
+          <div style="grid-column: span 4; min-width: 0;">
+            <x-import component-from-global-scope="GoodsShop.TextField" id="c-new" label="새 카테고리 이름" placeholder="예: [카테고리명]"></x-import>
+          </div>
+          <div style="grid-column: span 2; min-width: 0;">
+            <!-- 코랄은 화면 주요 행동 1개: 카테고리 추가 -->
+            <x-import component-from-global-scope="GoodsShop.Button" variant="primary" size="M" full="{{yes}}" icon="plus">카테고리 추가</x-import>
+          </div>
+        </div>
+
+        <!-- 표 패널 span 10 -->
+        <div class="gs-panel" style="grid-column: span 10; min-width: 0; padding: var(--space-8);">
+          <div class="gs-table-wrap">
+            <table class="gs-table">
+              <caption class="gs-sr">카테고리 목록</caption>
+              <thead>
+                <tr>
+                  <th scope="col">이름</th>
+                  <th scope="col" class="gs-num">판매 중 상품 수</th>
+                  <th scope="col" class="gs-num">판매 중지 상품 수</th>
+                  <th scope="col">동작</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">키링</th>
+                  <td class="gs-num">[n]</td>
+                  <td class="gs-num">[n]</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 키링 카테고리</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 키링 카테고리</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <th scope="row">스티커</th>
+                  <td class="gs-num">[n]</td>
+                  <td class="gs-num">[n]</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 스티커 카테고리</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 스티커 카테고리</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <th scope="row">포토카드</th>
+                  <td class="gs-num">[n]</td>
+                  <td class="gs-num">[n]</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 포토카드 카테고리</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 포토카드 카테고리</span></x-import>
+                  </div></td>
+                </tr>
+                <!-- 이름 수정 상태 예시: TextField는 보이는 라벨이 필수라 표 셀 안에서는 gs-input 클래스 + aria-label로 그림. 진한 2px 테두리 = 포커스 상태 -->
+                <tr>
+                  <th scope="row">
+                    <span class="gs-sr">엽서(편집 중)</span>
+                    <input type="text" class="gs-input" aria-label="엽서 카테고리 새 이름" value="엽서" style="border: var(--focus-width) solid var(--focus); padding: 0 calc(var(--input-padding) - var(--line-width));">
+                    <span class="caption" style="display: block; margin-top: var(--space-1); color: var(--text-sub);">편집 상태 예시 · 포커스(진한 2px)</span>
+                  </th>
+                  <td class="gs-num">[n]</td>
+                  <td class="gs-num">[n]</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="dark" size="S">저장<span class="gs-sr"> 엽서 카테고리 이름</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">취소<span class="gs-sr"> 엽서 카테고리 수정</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <th scope="row">의류</th>
+                  <td class="gs-num">[n]</td>
+                  <td class="gs-num">[n]</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 의류 카테고리</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 의류 카테고리</span></x-import>
+                  </div></td>
+                </tr>
+                <!-- 삭제 대상(아래 대화상자 예시와 연결) -->
+                <tr style="background: var(--surface);">
+                  <th scope="row">문구류</th>
+                  <td class="gs-num">0</td>
+                  <td class="gs-num">[N]</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 문구류 카테고리</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 문구류 카테고리 (확인 대화상자 열림)</span></x-import>
+                  </div></td>
+                </tr>
+                <!-- 시스템 항목 (D-12) -->
+                <tr>
+                  <th scope="row"><span style="display: inline-flex; align-items: center; gap: var(--space-2);">미분류 <x-import component-from-global-scope="GoodsShop.Label" kind="stopped">시스템</x-import></span></th>
+                  <td class="gs-num">0 <span class="caption" style="color: var(--text-sub);">(항상 0)</span></td>
+                  <td class="gs-num">[n]</td>
+                  <td class="caption" style="color: var(--text-sub);">수정·삭제 불가 · 사용자 화면·상품 선택지에 없음</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 주석 span 6 + 삭제 확인 대화상자 예시 span 4: 위 끝 일치, 양 끝 = 표 패널 양 끝 ===== -->
+      <div style="display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); align-items: start;">
+        <div style="grid-column: span 6; min-width: 0;">
+          <x-import component-from-global-scope="GoodsShop.Annotation" flush="{{yes}}">
+            <span style="display: block;"><b>삭제 불가(A-05)</b> 판매 중 상품이 있으면 대화상자 대신 그 행 아래 danger 문구: "판매 중 상품 [n]개가 연결되어 삭제할 수 없습니다. 카테고리를 변경하거나 판매 중지하세요." 0개가 되면 다시 삭제 가능.</span>
+            <span style="display: block; margin-top: var(--space-1);"><b>미분류 이동(D-12)</b> 판매 중 0개면 오른쪽 확인 대화상자. 확인 시 판매 중지 상품 이동과 삭제를 한 트랜잭션으로 처리. 연결 상품 0개면 이동 문구 생략(가정).</span>
+            <span style="display: block; margin-top: var(--space-1);"><b>이름 오류</b> 빈 값 "이름을 입력하세요" · 중복(미분류 포함) "이미 있는 카테고리 이름입니다", danger 테두리, 입력값 유지.</span>
+            <span style="display: block; margin-top: var(--space-1);"><b>권한·서버</b> 회원·비회원은 사용자 홈 이동(A-01, D-1) · 서버 오류 "다시 시도".</span>
+          </x-import>
+        </div>
+
+        <!-- 삭제 확인 대화상자: 정적 상태 예시. 회색 면(gs-surface) = 배경 스크림 자리, 대화상자는 그 안 폭에 맞춤 -->
+        <figure style="grid-column: span 4; min-width: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2);">
+          <div class="gs-surface">
+            <x-import component-from-global-scope="GoodsShop.Dialog" id="dlg-cat-delete" alert="{{yes}}" title="'문구류' 카테고리를 삭제할까요?">
+              <p class="body-15" style="margin: 0 0 var(--space-2); color: var(--text-body);">연결된 판매 중지 상품 <b>[N]개</b>가 <b>미분류</b>로 이동합니다.</p>
+              <p class="body-sm-13" style="margin: 0 0 var(--space-6); color: var(--text-sub);">다시 판매하려면 다른 카테고리로 변경해야 합니다.</p>
+              <div class="gs-dialog__actions">
+                <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="M">취소</x-import>
+                <x-import component-from-global-scope="GoodsShop.Button" variant="danger" size="M">삭제</x-import>
+              </div>
+            </x-import>
+          </div>
+          <figcaption class="caption" style="color: var(--text-sub);">상태 예시 · 삭제 확인 대화상자(D-12). 실제: 화면 중앙 모달 + 배경 스크림, role="alertdialog" aria-modal="true", 포커스는 취소에서 시작, Esc로 닫힘.</figcaption>
+        </figure>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1440}}'>
+class Component extends DCLogic {
+renderVals() {
+  // 표 행은 <table> 파싱 안정성을 위해 정적 마크업으로 그림(sc-for 미사용)
+  return { yes: true };
+}
+}
+</script>
+</body>
+</html>

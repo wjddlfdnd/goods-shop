@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>상품 상세</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.dt-head .gs-header__title{text-align:center}
+</style>
+</helmet>
+<div class="gs-root" style="width: 390px; height: 1424px; box-sizing: border-box; display: flex; flex-direction: column; background: var(--bg); color: var(--text-body);">
+  <div class="dt-head">
+    <x-import component-from-global-scope="GoodsShop.MobileHeader" back="M-List.dc.html" title="상품 보기" title-as="p" cart-count="{{cartCount}}" links="{{links}}"></x-import>
+  </div>
+
+  <x-import component-from-global-scope="GoodsShop.Carousel" count="{{three}}" current="{{zero}}" label="고양이 산책 아크릴 키링 이미지">
+    <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--gray-400);"><svg viewBox="0 0 64 64" style="width: 40%; height: auto;" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="32" cy="12" r="6"/><path d="M32 18v5"/><path d="M20 30l3-7h4l5 4 5-4h4l3 7"/><rect x="18" y="28" width="28" height="26" rx="9"/><path d="M27 41h0M37 41h0"/><path d="M29 46c2 1.5 4 1.5 6 0"/></svg></div>
+  </x-import>
+
+  <section aria-label="상품 정보" style="padding: var(--space-6) var(--grid-mobile-margin) var(--space-12); display: flex; flex-direction: column;">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2);">
+      <x-import component-from-global-scope="GoodsShop.Label" kind="new"></x-import>
+      <x-import component-from-global-scope="GoodsShop.InfoPill">무료배송</x-import>
+      <x-import component-from-global-scope="GoodsShop.InfoPill">옵션 3개</x-import>
+      <x-import component-from-global-scope="GoodsShop.InfoPill">키링</x-import>
+    </div>
+    <h1 class="heading-xl-mobile" style="margin: var(--space-4) 0 0; color: var(--text);">고양이 산책 아크릴 키링</h1>
+    <p class="price-detail" style="margin: var(--space-2) 0 0; color: var(--text);">8,900원</p>
+    <p class="body-15" style="margin: var(--space-4) 0 0; color: var(--text-body);">산책하는 고양이를 그린 투명 아크릴 키링입니다. 양면 인쇄에 은색 고리가 달려 있어 가방이나 열쇠에 바로 걸 수 있어요. 크기는 약 5 × 6cm입니다.</p>
+  </section>
+
+  <hr class="gs-divider">
+
+  <section aria-label="옵션과 수량" style="padding: var(--space-8) var(--grid-mobile-margin);">
+    <x-import component-from-global-scope="GoodsShop.SectionHeader" title="옵션 선택"></x-import>
+    <div style="display: flex; flex-direction: column; gap: var(--space-6);">
+      <x-import component-from-global-scope="GoodsShop.SelectField" id="opt" label="옵션" placeholder="옵션을 선택하세요" options="{{optOptions}}" value="크림 고양이 · 재고 12개" hint="품절 옵션은 선택할 수 없습니다"></x-import>
+      <div class="gs-surface" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--grid-mobile-gutter); align-items: center;">
+        <div style="grid-column: span 2; display: flex; flex-direction: column;">
+          <span class="body-sm-13" style="color: var(--text-sub);">크림 고양이</span>
+          <span class="price-card-15" style="color: var(--text);">8,900원</span>
+          <span class="caption" style="color: var(--text-placeholder);">재고 12개 남음</span>
+        </div>
+        <div style="grid-column: span 2; justify-self: end;">
+          <x-import component-from-global-scope="GoodsShop.QuantityStepper" value="{{qty}}" max="{{stock}}" label="크림 고양이 수량"></x-import>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4);">
+        <span class="body-sm-14" style="color: var(--text-sub);">총 상품 금액</span>
+        <b class="heading-xs" style="color: var(--text);">8,900원</b>
+      </div>
+    </div>
+  </section>
+
+  <hr class="gs-divider">
+
+  <section aria-label="배송 안내" style="padding: var(--space-8) var(--grid-mobile-margin) var(--space-12);">
+    <x-import component-from-global-scope="GoodsShop.SectionHeader" title="배송 안내"></x-import>
+    <x-import component-from-global-scope="GoodsShop.Notice"><b style="color: var(--text);">배송비 0원</b><br>모든 주문은 배송비 없이 보내 드립니다.</x-import>
+  </section>
+
+  <div style="margin-top: auto;">
+    <x-import component-from-global-scope="GoodsShop.StickyBar" static="{{yes}}">
+      <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="L" full="{{yes}}" href="M-Cart.dc.html">장바구니 담기</x-import>
+      <x-import component-from-global-scope="GoodsShop.Button" variant="primary" size="L" full="{{yes}}" href="M-Order.dc.html">바로 구매</x-import>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1424}}'>
+class Component extends DCLogic {
+renderVals() {
+  return {
+    yes: true,
+    cartCount: 3,
+    links: { cart: 'M-Cart.dc.html' },
+    three: 3,
+    zero: 0,
+    qty: 1,
+    stock: 12,
+    optOptions: [
+      { label: '크림 고양이 · 재고 12개' },
+      { label: '치즈 고양이 · 재고 5개' },
+      { label: '검은 고양이 · 품절', disabled: true }
+    ]
+  };
+}
+}
+</script>
+</body>
+</html>

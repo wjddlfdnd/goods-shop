@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>로그인 (U-02)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="gs-root" style="width: 390px; height: 720px; box-sizing: border-box; display: flex; flex-direction: column; padding-bottom: var(--space-12); background: var(--bg); color: var(--text-body); font-family: var(--font-sans);">
+  <x-import component-from-global-scope="GoodsShop.MobileHeader" back="Main.dc.html" title-as="p" icons="{{no}}"></x-import>
+
+  <div style="padding: var(--space-8) var(--grid-mobile-margin) 0; display: flex; flex-direction: column; gap: var(--space-8);">
+    <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+      <a class="logo-mobile" href="Main.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text); text-decoration: none;">GOODS SHOP</a>
+      <h1 class="heading-lg-mobile" style="margin: 0; color: var(--text);">로그인</h1>
+      <span class="body-sm-14" style="color: var(--text-sub);">이메일로 로그인하세요</span>
+    </div>
+
+    <x-import component-from-global-scope="GoodsShop.Notice">로그인하면 하려던 <b style="color: var(--text);">장바구니 담기</b>를 이어서 진행합니다.</x-import>
+
+    <form style="margin: 0; display: flex; flex-direction: column; gap: var(--space-6);">
+      <x-import component-from-global-scope="GoodsShop.TextField" id="login-email" label="이메일" type="email" value="goods@example.com" auto-complete="username"></x-import>
+      <x-import component-from-global-scope="GoodsShop.TextField" id="login-pw" label="비밀번호" type="password" value="goodsshop1" auto-complete="current-password"></x-import>
+      <div style="padding-top: var(--space-2);">
+        <x-import component-from-global-scope="GoodsShop.Button" variant="primary" size="M" full="{{yes}}" href="Main.dc.html">로그인</x-import>
+      </div>
+    </form>
+
+    <div class="body-sm-14" style="display: flex; justify-content: center; align-items: center; gap: var(--space-2);">
+      <span style="color: var(--text-sub);">아직 회원이 아니신가요?</span>
+      <a class="gs-link gs-link--strong" href="M-Signup.dc.html"><span>회원가입 →</span></a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":720}}'>
+class Component extends DCLogic {
+renderVals() { return { yes: true, no: false }; }
+}
+</script>
+</body>
+</html>

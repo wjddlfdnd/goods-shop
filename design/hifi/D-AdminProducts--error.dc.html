@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>관리자 상품 관리 · 입력 오류 (데스크톱 하이파이)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+/* 표 행 머리(th scope=row): 열 머리 스타일을 본문 셀처럼 되돌림 */
+.gs-table th[scope="row"]{font-size:inherit;font-weight:500;color:var(--text);background:transparent;border-bottom-color:var(--line);white-space:normal}
+</style>
+</helmet>
+<div class="gs-root" style="width: 1280px; height: 2576px; box-sizing: border-box; background: var(--gray-25); color: var(--text); font-family: var(--font-sans);">
+  <!-- 관리자 헤더(디자인 시스템에 관리자 헤더 없음: 토큰으로 그림). 안쪽 = 본문 컨테이너(좌우 40, 폭 1200) -->
+  <header style="background: var(--bg); border-bottom: var(--line-width) solid var(--line);">
+    <div style="width: calc(100% - 2 * var(--grid-desktop-margin)); max-width: var(--grid-desktop-container); height: var(--header-desktop-height); margin: 0 auto; display: flex; align-items: center; gap: var(--space-4);">
+      <span class="logo-desktop" style="flex: 1 1 auto; display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text);">GOODS SHOP <x-import component-from-global-scope="GoodsShop.Label" kind="best">ADMIN</x-import></span>
+      <span class="body-sm-13" style="color: var(--text-sub);">admin@goodsshop.test · 관리자</span>
+      <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">로그아웃</x-import>
+    </div>
+  </header>
+
+  <!-- 12컬럼(컨테이너 1200, 거터 24): 메뉴 span 2 + 본문 span 10 -->
+  <div style="width: calc(100% - 2 * var(--grid-desktop-margin)); max-width: var(--grid-desktop-container); margin: 0 auto; padding: var(--space-12) 0 var(--space-16); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); align-items: start;">
+    <nav aria-label="관리자 메뉴" class="gs-panel" style="grid-column: span 2; min-width: 0; padding: var(--space-2); display: flex; flex-direction: column; gap: var(--space-1);">
+      <a href="D-AdminProducts.dc.html" aria-current="page" class="body-sm-14" style="display: flex; align-items: center; min-height: var(--touch-min); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface); font-weight: 700; color: var(--text); text-decoration: none;">상품 관리</a>
+      <a href="D-AdminCategories.dc.html" class="body-sm-14" style="display: flex; align-items: center; min-height: var(--touch-min); padding: 0 var(--space-4); border-radius: var(--radius-md); color: var(--text-sub); text-decoration: none;">카테고리 관리</a>
+      <div role="separator" style="height: var(--line-width); margin: var(--space-2) var(--space-4); background: var(--line);"></div>
+      <span class="body-sm-14" aria-disabled="true" style="display: flex; align-items: center; justify-content: space-between; min-height: var(--touch-min); padding: 0 var(--space-4); color: var(--text-placeholder);">주문 관리<span class="caption">(2차)</span></span>
+      <span class="body-sm-14" aria-disabled="true" style="display: flex; align-items: center; justify-content: space-between; min-height: var(--touch-min); padding: 0 var(--space-4); color: var(--text-placeholder);">회원 관리<span class="caption">(2차)</span></span>
+    </nav>
+
+    <main style="grid-column: span 10; min-width: 0; display: flex; flex-direction: column; gap: var(--space-12);">
+      <!-- 상품 목록: 본문 10컬럼 -->
+      <section aria-labelledby="list-title" style="display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); row-gap: var(--space-6);">
+        <div style="grid-column: span 10; display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-4);">
+          <div style="display: flex; flex-direction: column; gap: var(--space-1);">
+            <h1 id="list-title" class="heading-sm-desktop" style="margin: 0; color: var(--text);">상품 관리</h1>
+            <p class="body-sm-14" style="margin: 0; color: var(--text-sub);">상품 <b style="color: var(--text);">10</b>개 · 판매 중 7 · 판매 중지 3</p>
+          </div>
+          <x-import component-from-global-scope="GoodsShop.Button" variant="primary" size="M" icon="plus">상품 등록</x-import>
+        </div>
+
+        <!-- 필터 3 + 3 + 4: 검색은 SearchField(M, 높이 48 = 선택 상자와 같은 줄). 오른쪽 4칸 = 이미지 패널 세로선 -->
+        <div role="search" aria-label="상품 필터" style="grid-column: span 10; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); align-items: end;">
+          <div style="grid-column: span 3; min-width: 0;">
+            <x-import component-from-global-scope="GoodsShop.SelectField" id="f-cat" label="카테고리" options="{{filterCats}}" value="전체"></x-import>
+          </div>
+          <div style="grid-column: span 3; min-width: 0;">
+            <x-import component-from-global-scope="GoodsShop.SelectField" id="f-status" label="판매 상태" options="{{filterStatus}}" value="전체"></x-import>
+          </div>
+          <div style="grid-column: span 4; min-width: 0;">
+            <x-import component-from-global-scope="GoodsShop.SearchField" id="f-q" label="상품명 검색어" placeholder="상품명으로 검색"></x-import>
+          </div>
+        </div>
+
+        <div class="gs-panel" style="grid-column: span 10; min-width: 0; padding: var(--space-8);">
+          <div class="gs-table-wrap">
+            <table class="gs-table">
+              <caption class="gs-sr">상품 목록 10개</caption>
+              <thead>
+                <tr>
+                  <th scope="col"><span class="gs-sr">썸네일</span></th>
+                  <th scope="col">상품명</th>
+                  <th scope="col">카테고리</th>
+                  <th scope="col" class="gs-num">판매가</th>
+                  <th scope="col" class="gs-num">옵션 수</th>
+                  <th scope="col" class="gs-num">총 재고</th>
+                  <th scope="col">판매 상태</th>
+                  <th scope="col">동작</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="background: var(--surface);">
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 64%; height: auto;"><circle cx="32" cy="11" r="6"/><path d="M32 17v6"/><rect x="17" y="23" width="30" height="32" rx="9"/><circle cx="32" cy="39" r="7"/></svg></div></td>
+                  <th scope="row">고양이 산책 아크릴 키링<span class="caption" style="display: block; color: var(--text-sub);">수정 중</span></th>
+                  <td>키링</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">8,900원</td>
+                  <td class="gs-num">3</td>
+                  <td class="gs-num">17</td>
+                  <td>판매 중</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 고양이 산책 아크릴 키링</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 고양이 산책 아크릴 키링</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 64%; height: auto;"><path d="M32 9l6.6 13.4 14.8 2.2-10.7 10.4 2.5 14.7L32 42.8l-13.2 6.9 2.5-14.7-10.7-10.4 14.8-2.2z"/><path d="M50 46l2 4 4 2-4 2-2 4-2-4-4-2 4-2z"/></svg></div></td>
+                  <th scope="row">별빛 홀로그램 스티커 세트</th>
+                  <td>스티커</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">4,500원</td>
+                  <td class="gs-num">1 (기본)</td>
+                  <td class="gs-num">120</td>
+                  <td>판매 중</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 별빛 홀로그램 스티커 세트</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 별빛 홀로그램 스티커 세트</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 64%; height: auto;"><rect x="17" y="10" width="30" height="44" rx="5"/><rect x="22" y="16" width="20" height="26" rx="2"/><path d="M27 48h10"/><path d="M32 4v6"/></svg></div></td>
+                  <th scope="row">곰돌이 포토카드 홀더<span class="caption" style="display: block; color: var(--text-sub);">주문 이력 있음</span></th>
+                  <td>포토카드</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">7,500원</td>
+                  <td class="gs-num">2</td>
+                  <td class="gs-num">34</td>
+                  <td>판매 중</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 곰돌이 포토카드 홀더</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" disabled="{{yes}}">삭제 불가<span class="gs-sr"> 곰돌이 포토카드 홀더, 주문 이력 있음</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 64%; height: auto;"><path d="M23 12l-12 6 4 10 6-3v27h22V25l6 3 4-10-12-6c-1.5 4-4.5 6-9 6s-7.5-2-9-6z"/><path d="M28 30h8"/></svg></div></td>
+                  <th scope="row">로고 자수 반팔 티셔츠<span class="caption" style="display: block; color: var(--text-sub);">모든 옵션 품절</span></th>
+                  <td>의류</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">29,000원</td>
+                  <td class="gs-num">4</td>
+                  <td class="gs-num"><span style="display: inline-flex; align-items: center; gap: var(--space-2);"><x-import component-from-global-scope="GoodsShop.Label" kind="soldout"></x-import>0</span></td>
+                  <td>판매 중</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 로고 자수 반팔 티셔츠</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 로고 자수 반팔 티셔츠</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 64%; height: auto;"><rect x="9" y="16" width="46" height="32" rx="3"/><path d="M35 22v20"/><rect x="41" y="21" width="9" height="11" rx="1"/><path d="M14 30h15M14 36h15M14 42h10"/></svg></div></td>
+                  <th scope="row">봄날 일러스트 엽서 5종<span class="caption" style="display: block; color: var(--text-sub);">주문 이력 있음</span></th>
+                  <td>엽서</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">6,000원</td>
+                  <td class="gs-num">1 (기본)</td>
+                  <td class="gs-num">15</td>
+                  <td><x-import component-from-global-scope="GoodsShop.Label" kind="stopped"></x-import></td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 봄날 일러스트 엽서 5종</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" disabled="{{yes}}">삭제 불가<span class="gs-sr"> 봄날 일러스트 엽서 5종, 주문 이력 있음</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 64%; height: auto;"><rect x="15" y="9" width="36" height="46" rx="3"/><path d="M22 9v46"/><path d="M28 22h16M28 29h16M28 36h10"/></svg></div></td>
+                  <th scope="row">데일리 플래너 노트<span class="caption" style="display: block; color: var(--text-sub);">카테고리를 바꿔야 판매할 수 있음</span></th>
+                  <td>미분류</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">12,000원</td>
+                  <td class="gs-num">2</td>
+                  <td class="gs-num">40</td>
+                  <td><x-import component-from-global-scope="GoodsShop.Label" kind="stopped"></x-import></td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 데일리 플래너 노트</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 데일리 플래너 노트</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 64%; height: auto;"><circle cx="32" cy="11" r="6"/><path d="M32 17v6"/><rect x="17" y="23" width="30" height="32" rx="9"/><circle cx="32" cy="39" r="7"/></svg></div></td>
+                  <th scope="row">토끼 구름 아크릴 키링</th>
+                  <td>키링</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">9,500원</td>
+                  <td class="gs-num">2</td>
+                  <td class="gs-num">26</td>
+                  <td>판매 중</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 토끼 구름 아크릴 키링</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 토끼 구름 아크릴 키링</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 64%; height: auto;"><path d="M32 9l6.6 13.4 14.8 2.2-10.7 10.4 2.5 14.7L32 42.8l-13.2 6.9 2.5-14.7-10.7-10.4 14.8-2.2z"/><path d="M50 46l2 4 4 2-4 2-2 4-2-4-4-2 4-2z"/></svg></div></td>
+                  <th scope="row">레터링 스티커 팩<span class="caption" style="display: block; color: var(--text-sub);">주문 이력 있음</span></th>
+                  <td>스티커</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">3,500원</td>
+                  <td class="gs-num">1 (기본)</td>
+                  <td class="gs-num">200</td>
+                  <td>판매 중</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 레터링 스티커 팩</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" disabled="{{yes}}">삭제 불가<span class="gs-sr"> 레터링 스티커 팩, 주문 이력 있음</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 64%; height: auto;"><path d="M23 12l-12 6 4 10 6-3v27h22V25l6 3 4-10-12-6c-1.5 4-4.5 6-9 6s-7.5-2-9-6z"/><path d="M28 30h8"/></svg></div></td>
+                  <th scope="row">오버핏 로고 맨투맨</th>
+                  <td>의류</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">39,000원</td>
+                  <td class="gs-num">3</td>
+                  <td class="gs-num">18</td>
+                  <td>판매 중</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 오버핏 로고 맨투맨</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 오버핏 로고 맨투맨</span></x-import>
+                  </div></td>
+                </tr>
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 64%; height: auto;"><rect x="15" y="9" width="36" height="46" rx="3"/><path d="M22 9v46"/><path d="M28 22h16M28 29h16M28 36h10"/></svg></div></td>
+                  <th scope="row">체크 패턴 메모패드</th>
+                  <td>문구류</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">3,000원</td>
+                  <td class="gs-num">1 (기본)</td>
+                  <td class="gs-num">50</td>
+                  <td><x-import component-from-global-scope="GoodsShop.Label" kind="stopped"></x-import></td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> 체크 패턴 메모패드</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> 체크 패턴 메모패드</span></x-import>
+                  </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 상품 등록·수정: 기본 정보 span 6 + 이미지 span 4, 옵션·재고 span 10, 저장 줄 span 10 -->
+      <section aria-labelledby="form-title" style="display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); row-gap: var(--grid-desktop-gutter); align-items: stretch;">
+        <div style="grid-column: span 10; display: flex; align-items: center; gap: var(--space-3);">
+          <h2 id="form-title" class="heading-sm-mobile" style="margin: 0; color: var(--text);">상품 수정</h2>
+          <span class="gs-pill">고양이 산책 아크릴 키링</span>
+        </div>
+
+        <div class="gs-panel" role="group" aria-labelledby="basic-title" style="grid-column: span 6; min-width: 0; padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-6);">
+          <h3 id="basic-title" class="heading-xs" style="margin: 0; color: var(--text);">기본 정보</h3>
+          <x-import component-from-global-scope="GoodsShop.TextField" id="p-name" label="상품명" value="고양이 산책 아크릴 키링"></x-import>
+          <x-import component-from-global-scope="GoodsShop.SelectField" id="p-cat" label="카테고리" options="{{catOptions}}" placeholder="카테고리를 선택하세요" value="키링" hint="미분류 상품은 카테고리를 고른 뒤에 판매 중으로 바꿀 수 있습니다."></x-import>
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter);">
+            <x-import component-from-global-scope="GoodsShop.TextField" id="p-price" label="판매가(원)" value="8,900" input-mode="numeric"></x-import>
+            <x-import component-from-global-scope="GoodsShop.SelectField" id="p-status" label="판매 상태" options="{{statusOptions}}" value="판매 중"></x-import>
+          </div>
+          <!-- 디자인 시스템에 여러 줄 입력이 없어 gs-field·gs-input 클래스로 그림 -->
+          <div class="gs-field">
+            <label for="p-desc" class="gs-field__label">상품 설명</label>
+            <textarea id="p-desc" rows="4" class="gs-input" style="height: auto; padding: var(--space-3) var(--input-padding); line-height: 1.6; resize: vertical;">산책하는 고양이를 그린 양면 아크릴 키링입니다. 고양이 무늬 3종 중 하나를 고를 수 있고, 금속 고리가 함께 들어 있습니다.</textarea>
+          </div>
+        </div>
+
+        <div class="gs-panel" role="group" aria-labelledby="img-title" style="grid-column: span 4; min-width: 0; padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-6);">
+          <h3 id="img-title" class="heading-xs" style="margin: 0; color: var(--text);">이미지</h3>
+          <!-- 업로드 상자: 업로드 컴포넌트가 없어 gs-surface + Button으로 그림 -->
+          <div class="gs-surface" style="display: flex; flex-direction: column; align-items: center; gap: var(--space-2); text-align: center;">
+            <span class="body-sm-14" style="color: var(--text-body);">이미지를 끌어 놓거나 파일을 고르세요</span>
+            <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" icon="plus">이미지 업로드</x-import>
+          </div>
+          <p class="gs-field__error" role="alert" style="margin: 0;">이미지 업로드에 실패했습니다(cat-walk-04.png). 입력한 상품 정보는 그대로 있으니 파일을 다시 올려 주세요.</p>
+          <ul aria-label="업로드한 이미지 3장" style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--space-4);">
+            <li style="min-width: 0; display: flex; flex-direction: column; gap: var(--space-2);">
+              <div role="img" aria-label="대표 이미지" style="position: relative; aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 50%; height: auto;"><circle cx="32" cy="11" r="6"/><path d="M32 17v6"/><rect x="17" y="23" width="30" height="32" rx="9"/><circle cx="32" cy="39" r="7"/></svg><span class="caption" style="position: absolute; top: var(--space-1); left: var(--space-1); padding: 0 var(--space-2); border-radius: var(--radius-xs); background: var(--bg); color: var(--text);">대표</span></div>
+              <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" full="{{yes}}">삭제<span class="gs-sr"> 대표 이미지</span></x-import>
+            </li>
+            <li style="min-width: 0; display: flex; flex-direction: column; gap: var(--space-2);">
+              <div role="img" aria-label="상세 이미지 1" style="position: relative; aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 50%; height: auto;"><circle cx="32" cy="11" r="6"/><path d="M32 17v6"/><rect x="17" y="23" width="30" height="32" rx="9"/><circle cx="32" cy="39" r="7"/></svg></div>
+              <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" full="{{yes}}">삭제<span class="gs-sr"> 상세 이미지 1</span></x-import>
+            </li>
+            <li style="min-width: 0; display: flex; flex-direction: column; gap: var(--space-2);">
+              <div role="img" aria-label="상세 이미지 2" style="position: relative; aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-400); display: flex; align-items: center; justify-content: center;"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: 50%; height: auto;"><circle cx="32" cy="11" r="6"/><path d="M32 17v6"/><rect x="17" y="23" width="30" height="32" rx="9"/><circle cx="32" cy="39" r="7"/></svg></div>
+              <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" full="{{yes}}">삭제<span class="gs-sr"> 상세 이미지 2</span></x-import>
+            </li>
+          </ul>
+          <span class="gs-field__hint">첫 장이 대표 이미지(목록 썸네일)가 되고, 나머지는 상세 이미지로 보입니다.</span>
+        </div>
+
+        <div class="gs-panel" role="group" aria-labelledby="opt-title" style="grid-column: span 10; min-width: 0; padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-6);">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);">
+            <h3 id="opt-title" class="heading-xs" style="margin: 0; color: var(--text);">옵션·재고 <span class="body-sm-14" style="font-weight: 400; color: var(--text-sub);">옵션 3개</span></h3>
+            <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" icon="plus">옵션 추가</x-import>
+          </div>
+          <div class="gs-table-wrap">
+            <table class="gs-table">
+              <caption class="gs-sr">옵션·재고</caption>
+              <thead>
+                <tr>
+                  <th scope="col">옵션명</th>
+                  <th scope="col">추가금(원)</th>
+                  <th scope="col">재고</th>
+                  <th scope="col"><span class="gs-sr">삭제</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 표 셀 안 입력: TextField는 보이는 라벨이 필수라 gs-input + aria-label -->
+                <tr>
+                  <td><input type="text" class="gs-input" aria-label="옵션 1 옵션명" value="크림 고양이"></td>
+                  <td><input type="text" inputmode="numeric" class="gs-input" aria-label="옵션 1 추가금(원)" value="0"></td>
+                  <td><input type="text" inputmode="numeric" class="gs-input" aria-label="옵션 1 재고" value="12"></td>
+                  <td><x-import component-from-global-scope="GoodsShop.IconButton" icon="close" label="옵션 1 삭제"></x-import></td>
+                </tr>
+                <tr>
+                  <td><input type="text" class="gs-input" aria-label="옵션 2 옵션명" value="치즈 고양이"></td>
+                  <td><input type="text" inputmode="numeric" class="gs-input" aria-label="옵션 2 추가금(원)" value="0"></td>
+                  <td><input type="text" inputmode="numeric" class="gs-input" aria-label="옵션 2 재고" value="-3" aria-invalid="true" aria-describedby="stock-err"></td>
+                  <td><x-import component-from-global-scope="GoodsShop.IconButton" icon="close" label="옵션 2 삭제"></x-import></td>
+                </tr>
+                <tr>
+                  <td><input type="text" class="gs-input" aria-label="옵션 3 옵션명" value="검은 고양이"></td>
+                  <td><input type="text" inputmode="numeric" class="gs-input" aria-label="옵션 3 추가금(원)" value="0"></td>
+                  <td><input type="text" inputmode="numeric" class="gs-input" aria-label="옵션 3 재고" value="0"></td>
+                  <td><x-import component-from-global-scope="GoodsShop.IconButton" icon="close" label="옵션 3 삭제"></x-import></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p id="stock-err" class="gs-field__error" role="alert" style="margin: 0;">옵션 2(치즈 고양이) 재고는 0 이상이어야 합니다. 고친 뒤 저장할 수 있습니다.</p>
+          <span class="gs-field__hint">옵션을 모두 지우고 저장하면 기본 옵션 1개(추가금 0원)가 만들어집니다 · 재고는 0 이상만 저장할 수 있습니다.</span>
+        </div>
+
+        <div style="grid-column: span 10; display: flex; justify-content: flex-end; gap: var(--space-2);">
+          <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="M">취소</x-import>
+          <x-import component-from-global-scope="GoodsShop.Button" variant="dark" size="M">저장</x-import>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2576}}'>
+class Component extends DCLogic {
+renderVals() {
+  // 표 행은 <table> 파싱 안정성을 위해 정적 마크업으로 그림(sc-for 미사용)
+  return {
+    yes: true,
+    filterCats: ['전체', '키링', '스티커', '포토카드', '엽서', '의류', '문구류', '미분류'],
+    filterStatus: ['전체', '판매 중', '판매 중지'],
+    statusOptions: ['판매 중', '판매 중지'],
+    catOptions: ['키링', '스티커', '포토카드', '엽서', '의류', '문구류']
+  };
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>주문서 · 재고 부족 (O-05)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="gs-root" style="width: 390px; height: 2128px; box-sizing: border-box; display: flex; flex-direction: column; background: var(--bg); color: var(--text-body); font-family: var(--font-sans);">
+  <x-import component-from-global-scope="GoodsShop.MobileHeader" back="M-Cart.dc.html" title-as="p" icons="{{no}}"></x-import>
+
+  <div style="padding: var(--space-6) var(--grid-mobile-margin) var(--space-12);">
+    <h1 class="heading-xl-mobile" style="margin: 0; color: var(--text);">주문서</h1>
+
+    <div style="margin-top: var(--space-6);">
+      <x-import component-from-global-scope="GoodsShop.Notice" live="{{yes}}"><b style="color: var(--text);">재고가 부족해 주문하지 못했습니다.</b> 주문·결제는 진행되지 않았습니다. 장바구니에서 수량을 바꾸거나 상품을 삭제한 뒤 다시 주문해 주세요.</x-import>
+    </div>
+
+    <section style="margin-top: var(--space-8);">
+      <x-import component-from-global-scope="GoodsShop.SectionHeader" title="주문 상품 3건"></x-import>
+      <ul id="order-items" style="margin: 0; padding: var(--card-padding); list-style: none; background: var(--bg); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+        <li style="display: flex; align-items: flex-start; gap: var(--space-3);">
+          <div role="img" aria-label="고양이 산책 아크릴 키링 이미지" style="flex: none; width: var(--thumb-width); height: var(--thumb-height); border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-500); display: flex; align-items: center; justify-content: center;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="8" r="5"/><path d="M24 13v5"/><path d="M14 24l2-6 4 3h8l4-3 2 6"/><rect x="12" y="20" width="24" height="22" rx="10"/><circle cx="19.5" cy="30" r="1"/><circle cx="28.5" cy="30" r="1"/><path d="M22 34.5q2 1.5 4 0"/></svg></div>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-1);">
+            <span class="body-sm-14" style="font-weight: 700; color: var(--text);">고양이 산책 아크릴 키링</span>
+            <span class="body-sm-13" style="color: var(--text-sub);">크림 고양이 · 2개</span>
+            <span class="price-card-14" style="color: var(--text);">17,800원</span>
+            <span class="body-sm-13" style="font-weight: 700; color: var(--danger);">재고 부족 · 남은 수량 1개</span>
+          </div>
+        </li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-3); margin-top: var(--space-4); padding-top: var(--space-4); border-top: var(--line-width) solid var(--line);">
+          <div role="img" aria-label="별빛 홀로그램 스티커 세트 이미지" style="flex: none; width: var(--thumb-width); height: var(--thumb-height); border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-500); display: flex; align-items: center; justify-content: center;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 7l5 10.5 11.5 1.6-8.3 8 2 11.4L24 33l-10.2 5.5 2-11.4-8.3-8L19 17.5z"/><path d="M40 6v6M37 9h6"/><path d="M8 36v4M6 38h4"/></svg></div>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-1);">
+            <span class="body-sm-14" style="font-weight: 700; color: var(--text);">별빛 홀로그램 스티커 세트</span>
+            <span class="body-sm-13" style="color: var(--text-sub);">홀로그램 실버 · 1개</span>
+            <span class="price-card-14" style="color: var(--text);">4,500원</span>
+          </div>
+        </li>
+        <li style="display: flex; align-items: flex-start; gap: var(--space-3); margin-top: var(--space-4); padding-top: var(--space-4); border-top: var(--line-width) solid var(--line);">
+          <div role="img" aria-label="봄날 일러스트 엽서 5종 이미지" style="flex: none; width: var(--thumb-width); height: var(--thumb-height); border-radius: var(--radius-sm); background: var(--placeholder); color: var(--gray-500); display: flex; align-items: center; justify-content: center;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="38" height="26" rx="3"/><rect x="32" y="15" width="7" height="8" rx="1"/><path d="M9 27h14M9 31h10"/><path d="M9 20l4-4 4 4 3-3 3 3"/></svg></div>
+          <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-1);">
+            <span class="body-sm-14" style="font-weight: 700; color: var(--text);">봄날 일러스트 엽서 5종</span>
+            <span class="body-sm-13" style="color: var(--text-sub);">기본 구성 · 1개</span>
+            <span class="price-card-14" style="color: var(--text);">6,000원</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.SectionHeader" title="주문자 정보"></x-import>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--grid-mobile-gutter); row-gap: var(--space-6);">
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="buyer-name" label="이름" value="김하늘" auto-complete="name" required="{{yes}}"></x-import>
+        </div>
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="buyer-phone" label="연락처" type="tel" input-mode="numeric" value="010-1234-5678" auto-complete="tel" required="{{yes}}"></x-import>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.SectionHeader" title="배송지"></x-import>
+      <p class="caption" style="margin: 0 0 var(--space-4); color: var(--text-sub);">(선택) 표시가 없는 항목은 필수</p>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--grid-mobile-gutter); row-gap: var(--space-6);">
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="ship-name" label="받는 사람" value="김하늘" auto-complete="shipping name" required="{{yes}}"></x-import>
+        </div>
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="ship-phone" label="연락처" type="tel" input-mode="numeric" value="010-1234-5678" auto-complete="shipping tel" required="{{yes}}"></x-import>
+        </div>
+        <div style="grid-column: span 4;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="ship-addr" label="주소" value="서울시 마포구 굿즈로 12" auto-complete="shipping address-line1" required="{{yes}}"></x-import>
+        </div>
+        <div style="grid-column: span 4;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="ship-addr2" label="상세 주소 (선택)" value="3층 301호" auto-complete="shipping address-line2"></x-import>
+        </div>
+        <div style="grid-column: span 4;">
+          <x-import component-from-global-scope="GoodsShop.TextField" id="ship-memo" label="배송 요청사항 (선택)" value="문 앞에 놓아 주세요"></x-import>
+        </div>
+        <div style="grid-column: span 4;">
+          <x-import component-from-global-scope="GoodsShop.Checkbox" id="save-default" checked="{{yes}}">기본 배송지로 저장</x-import>
+          <p class="caption" style="margin: 0; padding-left: calc(var(--control-box) + var(--space-2)); color: var(--text-sub);">다음 주문 때 배송지가 자동으로 채워집니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.SectionHeader" title="결제 수단"></x-import>
+      <div role="radiogroup" aria-label="결제 수단" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: var(--grid-mobile-gutter);">
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.Radio" id="pay-card" name="pay" value="card" checked="{{yes}}">카드</x-import>
+        </div>
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.Radio" id="pay-bank" name="pay" value="bank">계좌이체</x-import>
+        </div>
+        <div style="grid-column: span 2;">
+          <x-import component-from-global-scope="GoodsShop.Radio" id="pay-easy" name="pay" value="easy">간편결제</x-import>
+        </div>
+      </div>
+      <div style="margin-top: var(--space-6);">
+        <x-import component-from-global-scope="GoodsShop.Notice">모의 결제입니다. 결제 정보 입력 없이 결제 완료로 처리됩니다.</x-import>
+      </div>
+    </section>
+
+    <section aria-label="주문 요약" style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.OrderSummary" rows="{{rows}}" total="{{total}}"></x-import>
+    </section>
+  </div>
+
+  <div style="margin-top: auto;">
+    <x-import component-from-global-scope="GoodsShop.StickyBar" static="{{yes}}">
+      <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+        <p class="caption" style="margin: 0; text-align: center; color: var(--text-sub);">재고가 부족한 상품이 있어 결제할 수 없습니다.</p>
+        <x-import component-from-global-scope="GoodsShop.Button" variant="primary" size="L" full="{{yes}}" href="M-Cart.dc.html">장바구니로 돌아가기</x-import>
+      </div>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2128}}'>
+class Component extends DCLogic {
+renderVals() {
+  return {
+    yes: true,
+    no: false,
+    iconS: 20,
+    rows: [
+      { label: '상품 금액', value: '28,300원' },
+      { label: '배송비', value: '0원' },
+      { label: '할인', value: '0원' }
+    ],
+    total: { label: '예상 결제 금액', value: '28,300원' }
+  };
+}
+}
+</script>
+</body>
+</html>

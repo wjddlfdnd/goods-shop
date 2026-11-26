@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>주문 완료 와이어프레임</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="gs-root" style="width: 390px; height: 1344px; box-sizing: border-box; display: flex; flex-direction: column; background: var(--bg); color: var(--text-body); font-family: var(--font-sans);">
+  <x-import component-from-global-scope="GoodsShop.MobileHeader" cart-count="{{cartCount}}" links="{{links}}"></x-import>
+
+  <div style="padding: var(--space-12) var(--grid-mobile-margin) var(--space-12);">
+    <section style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+      <span style="display: flex; color: var(--text);"><x-import component-from-global-scope="GoodsShop.Icon" name="check" size="{{iconL}}"></x-import></span>
+      <h1 class="heading-lg-mobile" style="margin: var(--space-4) 0 0; color: var(--text);">주문이 완료되었습니다</h1>
+      <div style="margin-top: var(--space-3);">
+        <x-import component-from-global-scope="GoodsShop.Label" kind="stopped">결제 완료</x-import>
+      </div>
+    </section>
+
+    <div class="gs-surface body-sm-14" style="margin-top: var(--space-8); display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);">
+      <span style="color: var(--text-sub);">주문 번호</span>
+      <b style="color: var(--text);">[YYYYMMDD-000000]</b>
+    </div>
+
+    <section style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.SectionHeader" title="주문 상품"></x-import>
+      <div style="display: flex; gap: var(--space-3);">
+        <div class="caption" style="flex: none; width: var(--thumb-width); height: var(--thumb-height); border-radius: var(--radius-sm); background: var(--placeholder); color: var(--text-placeholder); display: flex; align-items: center; justify-content: center; text-align: center;">[상품<br>이미지]</div>
+        <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-1);">
+          <span class="body-sm-14">[상품명] <span style="color: var(--text-sub);">외 [N-1]건</span></span>
+          <span class="body-sm-13" style="color: var(--text-sub);">[옵션명] · [수량]개</span>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.SectionHeader" title="결제 정보"></x-import>
+      <x-import component-from-global-scope="GoodsShop.OrderSummary" rows="{{pay}}" total="{{total}}"></x-import>
+    </section>
+
+    <section style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.SectionHeader" title="배송지"></x-import>
+      <div class="body-sm-14" style="display: flex; flex-direction: column; gap: var(--space-1);">
+        <span>[받는 사람] · [연락처]</span>
+        <span style="color: var(--text-sub);">[주소] [상세 주소]</span>
+        <span style="color: var(--text-sub);">요청사항: [배송 요청사항]</span>
+      </div>
+    </section>
+
+    <div style="margin-top: var(--space-12);">
+      <x-import component-from-global-scope="GoodsShop.Button" variant="dark" size="M" full="{{yes}}" href="Main.dc.html">쇼핑 계속하기</x-import>
+    </div>
+
+    <x-import component-from-global-scope="GoodsShop.Annotation"><b>새로고침</b> 저장된 주문 조회만, 주문 추가 생성 없음<br><b>뒤로가기</b> 주문서로 돌아가지 않음(가정), 재결제 없음<br><b>없는 주문</b> "찾을 수 없음" 안내 + 홈 이동 버튼<br><b>2차</b> 주문 내역 버튼은 U-05와 함께 추가</x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1344}}'>
+class Component extends DCLogic {
+renderVals() {
+  return {
+    yes: true,
+    cartCount: 3,
+    iconL: 48,
+    links: { home: 'Main.dc.html', search: 'Search.dc.html', account: 'Login.dc.html', cart: 'Cart.dc.html' },
+    pay: [
+      { label: '결제 수단', value: '[결제 수단] (모의 결제)' },
+      { label: '상품 금액', value: '[가격]원' },
+      { label: '배송비', value: '0원' },
+      { label: '할인', value: '0원' }
+    ],
+    total: { label: '결제 금액', value: '[가격]원' }
+  };
+}
+}
+</script>
+</body>
+</html>

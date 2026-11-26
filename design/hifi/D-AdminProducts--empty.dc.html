@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>관리자 상품 없음 (데스크톱 하이파이)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+/* 표 행 머리(th scope=row): 열 머리 스타일을 본문 셀처럼 되돌림 */
+.gs-table th[scope="row"]{font-size:inherit;font-weight:500;color:var(--text);background:transparent;border-bottom-color:var(--line);white-space:normal}
+</style>
+</helmet>
+<div class="gs-root" style="width: 1280px; height: 640px; box-sizing: border-box; background: var(--gray-25); color: var(--text); font-family: var(--font-sans);">
+  <!-- 관리자 헤더(디자인 시스템에 관리자 헤더 없음: 토큰으로 그림). 안쪽 = 본문 컨테이너(좌우 40, 폭 1200) -->
+  <header style="background: var(--bg); border-bottom: var(--line-width) solid var(--line);">
+    <div style="width: calc(100% - 2 * var(--grid-desktop-margin)); max-width: var(--grid-desktop-container); height: var(--header-desktop-height); margin: 0 auto; display: flex; align-items: center; gap: var(--space-4);">
+      <span class="logo-desktop" style="flex: 1 1 auto; display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text);">GOODS SHOP <x-import component-from-global-scope="GoodsShop.Label" kind="best">ADMIN</x-import></span>
+      <span class="body-sm-13" style="color: var(--text-sub);">admin@goodsshop.test · 관리자</span>
+      <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">로그아웃</x-import>
+    </div>
+  </header>
+
+  <!-- 12컬럼(컨테이너 1200, 거터 24): 메뉴 span 2 + 본문 span 10 -->
+  <div style="width: calc(100% - 2 * var(--grid-desktop-margin)); max-width: var(--grid-desktop-container); margin: 0 auto; padding: var(--space-12) 0 var(--space-16); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); align-items: start;">
+    <nav aria-label="관리자 메뉴" class="gs-panel" style="grid-column: span 2; min-width: 0; padding: var(--space-2); display: flex; flex-direction: column; gap: var(--space-1);">
+      <a href="D-AdminProducts.dc.html" aria-current="page" class="body-sm-14" style="display: flex; align-items: center; min-height: var(--touch-min); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface); font-weight: 700; color: var(--text); text-decoration: none;">상품 관리</a>
+      <a href="D-AdminCategories.dc.html" class="body-sm-14" style="display: flex; align-items: center; min-height: var(--touch-min); padding: 0 var(--space-4); border-radius: var(--radius-md); color: var(--text-sub); text-decoration: none;">카테고리 관리</a>
+      <div role="separator" style="height: var(--line-width); margin: var(--space-2) var(--space-4); background: var(--line);"></div>
+      <span class="body-sm-14" aria-disabled="true" style="display: flex; align-items: center; justify-content: space-between; min-height: var(--touch-min); padding: 0 var(--space-4); color: var(--text-placeholder);">주문 관리<span class="caption">(2차)</span></span>
+      <span class="body-sm-14" aria-disabled="true" style="display: flex; align-items: center; justify-content: space-between; min-height: var(--touch-min); padding: 0 var(--space-4); color: var(--text-placeholder);">회원 관리<span class="caption">(2차)</span></span>
+    </nav>
+
+    <main style="grid-column: span 10; min-width: 0; display: flex; flex-direction: column; gap: var(--space-12);">
+      <!-- 상품 목록: 본문 10컬럼 -->
+      <section aria-labelledby="list-title" style="display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); row-gap: var(--space-6);">
+        <div style="grid-column: span 10; display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-4);">
+          <div style="display: flex; flex-direction: column; gap: var(--space-1);">
+            <h1 id="list-title" class="heading-sm-desktop" style="margin: 0; color: var(--text);">상품 관리</h1>
+            <p class="body-sm-14" style="margin: 0; color: var(--text-sub);">상품 <b style="color: var(--text);">0</b>개</p>
+          </div>
+        </div>
+
+        <div class="gs-panel" style="grid-column: span 10; min-width: 0; padding: var(--space-8);">
+          <div aria-hidden="true" style="margin-bottom: calc(-1 * var(--space-8)); display: flex; padding-top: var(--space-12); justify-content: center; color: var(--gray-400);"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width: var(--space-16); height: var(--space-16);"><path d="M10 22l22-10 22 10v22L32 54 10 44z"/><path d="M10 22l22 10 22-10"/><path d="M32 32v22"/></svg></div>
+          <x-import component-from-global-scope="GoodsShop.EmptyState" title="등록된 상품이 없습니다" text="상품을 등록하고 판매 중으로 지정하면 쇼핑몰에 노출됩니다." action-text="첫 상품 등록하기" action-variant="primary" href="D-AdminProducts.dc.html"></x-import>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":640}}'>
+class Component extends DCLogic {
+renderVals() {
+  return { yes: true };
+}
+}
+</script>
+</body>
+</html>

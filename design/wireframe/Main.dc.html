@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>홈 와이어프레임</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="gs-root" style="width: 390px; height: 2752px; box-sizing: border-box; display: flex; flex-direction: column; padding-bottom: var(--space-12); background: var(--bg); color: var(--text-body);">
+  <x-import component-from-global-scope="GoodsShop.MobileHeader" cart-count="{{cartCount}}" links="{{links}}"></x-import>
+  <x-import component-from-global-scope="GoodsShop.CategoryTabs" items="{{cats}}" current="{{currentCat}}" href="List.dc.html"></x-import>
+
+  <section aria-label="메인 배너" style="padding: var(--space-6) var(--grid-mobile-margin) 0;">
+    <div class="body-sm-13" style="aspect-ratio: 16 / 9; border-radius: var(--radius-lg); background: var(--placeholder); color: var(--text-placeholder); display: flex; align-items: center; justify-content: center;">[배너 이미지] 고정 1–3장 · D-15</div>
+    <div style="padding-top: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2);">
+      <div><x-import component-from-global-scope="GoodsShop.Label" kind="best">THIS WEEK</x-import></div>
+      <span class="heading-lg-mobile" style="color: var(--text);">[배너 제목]</span>
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <a href="List.dc.html" class="gs-link gs-link--strong"><span>신상품 보기 →</span></a>
+        <div style="display: flex; align-items: center;">
+          <x-import component-from-global-scope="GoodsShop.IconButton" icon="back" label="이전 배너"></x-import>
+          <span class="caption" style="color: var(--text-sub);">1 / 3</span>
+          <x-import component-from-global-scope="GoodsShop.IconButton" icon="chevron-right" label="다음 배너"></x-import>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: var(--space-12) var(--grid-mobile-margin) 0;">
+    <x-import component-from-global-scope="GoodsShop.SectionHeader" title="신상품" link-text="전체 보기" href="List.dc.html"></x-import>
+    <div class="gs-card-grid">
+      <sc-for list="{{four}}" as="p" hint-placeholder-count="4">
+        <x-import component-from-global-scope="GoodsShop.ProductCard" label="new" href="Detail.dc.html"></x-import>
+      </sc-for>
+    </div>
+    <p class="caption" style="margin: var(--space-4) 0 0; color: var(--text-sub);">최신순 최대 8개(가정) · 모바일은 4개 노출 후 전체 보기</p>
+  </section>
+
+  <section style="padding: var(--space-12) var(--grid-mobile-margin) 0;">
+    <x-import component-from-global-scope="GoodsShop.SectionHeader" title="인기 상품" link-text="인기순 보기" href="List.dc.html"></x-import>
+    <div class="gs-card-grid">
+      <sc-for list="{{ranks}}" as="r" hint-placeholder-count="4">
+        <x-import component-from-global-scope="GoodsShop.ProductCard" rank="{{r}}" href="Detail.dc.html"></x-import>
+      </sc-for>
+    </div>
+    <p class="caption" style="margin: var(--space-4) 0 0; color: var(--text-sub);">인기순 = 취소 제외 주문 건수(D-3), 동률은 최신순</p>
+  </section>
+
+  <section style="padding: var(--space-12) var(--grid-mobile-margin) 0;">
+    <x-import component-from-global-scope="GoodsShop.SectionHeader" title="카테고리"></x-import>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--grid-mobile-gutter);">
+      <sc-for list="{{tiles}}" as="t" hint-placeholder-count="6">
+        <a href="List.dc.html" class="gs-surface body-sm-14" style="grid-column: span 2; height: var(--space-16); padding: 0 var(--card-padding); display: flex; align-items: center; font-weight: 700; color: var(--text); text-decoration: none;">{{t}}</a>
+      </sc-for>
+    </div>
+  </section>
+
+  <div style="padding: var(--space-12) var(--grid-mobile-margin) 0; margin-bottom: var(--space-12);">
+    <x-import component-from-global-scope="GoodsShop.Annotation" flush="{{yes}}"><b>빈 상태</b> 신상품 0건 → 영역 숨김 · 인기 집계 0건 → 최신순 대체(7.10)<br><b>카테고리</b> 미분류 제외(D-12) · <b>배너</b> 고정 1–3장, 자동 회전 없음(D-15)<br><b>헤더 상태</b> 로그인한 회원 기준으로 그림. 비회원: 계정 아이콘 → 로그인, 장바구니 뱃지 없음 / 회원: 계정 아이콘 → 계정 메뉴(로그아웃, 2차 마이페이지)</x-import>
+  </div>
+
+  <footer class="caption" style="margin-top: auto; padding: var(--space-6) var(--grid-mobile-margin) 0; border-top: var(--line-width) solid var(--line); color: var(--text-sub);">GOODS SHOP · 연습용 프로젝트, 실제 결제 없음 · 배송비 0원</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":2752}}'>
+class Component extends DCLogic {
+renderVals() {
+  return {
+    yes: true,
+    cartCount: 3,
+    links: { home: 'Main.dc.html', search: 'Search.dc.html', account: 'Login.dc.html', cart: 'Cart.dc.html' },
+    cats: ['전체', '키링', '스티커', '포토카드', '엽서', '의류', '문구류'],
+    currentCat: 0,
+    four: [1, 2, 3, 4],
+    ranks: [1, 2, 3, 4],
+    tiles: ['키링', '스티커', '포토카드', '엽서', '의류', '문구류']
+  };
+}
+}
+</script>
+</body>
+</html>

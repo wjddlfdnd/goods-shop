@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>관리자 상품 관리 (A-02–A-04)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+/* 표 행 머리(th scope=row): 열 머리 스타일(회색 면·13/700)을 본문 셀처럼 되돌림 */
+.gs-table th[scope="row"]{font-size:inherit;font-weight:500;color:var(--text);background:transparent;border-bottom-color:var(--line);white-space:normal}
+</style>
+</helmet>
+<div class="gs-root" style="min-height: 2400px; background: var(--gray-25); color: var(--text); font-family: var(--font-sans);">
+  <!-- 관리자 헤더 (디자인 시스템에 관리자 헤더 없음: 토큰으로 그림). 안쪽 내용은 본문과 같은 컨테이너(1280에서 좌우 40, 폭 1200) -->
+  <header style="background: var(--bg); border-bottom: var(--line-width) solid var(--line);">
+    <div style="width: calc(100% - 2 * var(--grid-desktop-margin)); max-width: var(--grid-desktop-container); height: var(--header-desktop-height); margin: 0 auto; display: flex; align-items: center; gap: var(--space-4);">
+      <span class="logo-desktop" style="flex: 1 1 auto; display: inline-flex; align-items: center; gap: var(--space-2); color: var(--text);">GOODS SHOP <x-import component-from-global-scope="GoodsShop.Label" kind="best">ADMIN</x-import></span>
+      <span class="body-sm-13" style="color: var(--text-sub);">[관리자 이메일] · 관리자</span>
+      <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">로그아웃</x-import>
+    </div>
+  </header>
+
+  <!-- 12컬럼 그리드(컨테이너 1200, 거터 24, 컬럼 78): 메뉴 span 2(180) + 본문 span 10(996) -->
+  <div style="width: calc(100% - 2 * var(--grid-desktop-margin)); max-width: var(--grid-desktop-container); margin: 0 auto; padding: var(--space-12) 0 var(--space-16); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); align-items: start;">
+    <!-- 메뉴: 흰 면 + 그림자 + 16 둥근(gs-panel, 안쪽 8). 현재 항목 = surface 둥근 면 + 700 -->
+    <nav aria-label="관리자 메뉴" class="gs-panel" style="grid-column: span 2; min-width: 0; padding: var(--space-2); display: flex; flex-direction: column; gap: var(--space-1);">
+      <a href="AdminProducts.dc.html" aria-current="page" class="body-sm-14" style="display: flex; align-items: center; min-height: var(--touch-min); padding: 0 var(--space-4); border-radius: var(--radius-md); background: var(--surface); font-weight: 700; color: var(--text); text-decoration: none;">상품 관리</a>
+      <a href="AdminCategories.dc.html" class="body-sm-14" style="display: flex; align-items: center; min-height: var(--touch-min); padding: 0 var(--space-4); border-radius: var(--radius-md); color: var(--text-sub); text-decoration: none;">카테고리 관리</a>
+      <div role="separator" style="height: var(--line-width); margin: var(--space-2) var(--space-4); background: var(--line);"></div>
+      <span class="body-sm-14" aria-disabled="true" style="display: flex; align-items: center; justify-content: space-between; min-height: var(--touch-min); padding: 0 var(--space-4); color: var(--text-placeholder);">주문 관리<span class="caption">(2차)</span></span>
+      <span class="body-sm-14" aria-disabled="true" style="display: flex; align-items: center; justify-content: space-between; min-height: var(--touch-min); padding: 0 var(--space-4); color: var(--text-placeholder);">회원 관리<span class="caption">(2차)</span></span>
+    </nav>
+
+    <main style="grid-column: span 10; min-width: 0; display: flex; flex-direction: column; gap: var(--space-12);">
+      <!-- ===== 상품 목록 A-02: 본문 10컬럼 그리드 ===== -->
+      <section aria-labelledby="list-title" style="display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); row-gap: var(--space-6);">
+        <!-- 제목 줄 span 10: 제목 왼쪽 끝 = 본문 왼쪽 끝, 상품 등록 오른쪽 끝 = 본문 오른쪽 끝 -->
+        <div style="grid-column: span 10; display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-4);">
+          <div style="display: flex; flex-direction: column; gap: var(--space-1);">
+            <h1 id="list-title" class="heading-sm-desktop" style="margin: 0; color: var(--text);">상품 관리</h1>
+            <p class="body-sm-14" style="margin: 0; color: var(--text-sub);">상품 [n]개 · 목록·등록·수정(A-02), 이미지(A-03), 옵션·재고(A-04)</p>
+          </div>
+          <!-- 코랄은 화면 주요 행동 1개: 상품 등록 -->
+          <x-import component-from-global-scope="GoodsShop.Button" variant="primary" size="M" icon="plus">상품 등록</x-import>
+        </div>
+
+        <!-- 필터 3 + 3 + 4: 왼쪽 6칸 = 아래 기본 정보 패널, 오른쪽 4칸 = 이미지 패널과 같은 세로선 -->
+        <div role="search" aria-label="상품 필터" style="grid-column: span 10; display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); align-items: end;">
+          <div style="grid-column: span 3; min-width: 0;">
+            <x-import component-from-global-scope="GoodsShop.SelectField" id="f-cat" label="카테고리" options="{{filterCats}}" value="전체"></x-import>
+          </div>
+          <div style="grid-column: span 3; min-width: 0;">
+            <x-import component-from-global-scope="GoodsShop.SelectField" id="f-status" label="판매 상태" options="{{filterStatus}}" value="전체"></x-import>
+          </div>
+          <div style="grid-column: span 4; min-width: 0;">
+            <x-import component-from-global-scope="GoodsShop.TextField" id="f-q" type="search" label="상품명 검색" placeholder="상품명 입력"></x-import>
+          </div>
+        </div>
+
+        <!-- 표 패널 span 10: 바깥 끝 = 필터 줄 양 끝 -->
+        <div class="gs-panel" style="grid-column: span 10; min-width: 0; padding: var(--space-8);">
+          <div class="gs-table-wrap">
+            <table class="gs-table">
+              <caption class="gs-sr">상품 목록 (예시 6개)</caption>
+              <thead>
+                <tr>
+                  <th scope="col">썸네일</th>
+                  <th scope="col">상품명</th>
+                  <th scope="col">카테고리</th>
+                  <th scope="col" class="gs-num">판매가</th>
+                  <th scope="col" class="gs-num">옵션 수</th>
+                  <th scope="col" class="gs-num">총 재고</th>
+                  <th scope="col">판매 상태</th>
+                  <th scope="col">동작</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 썸네일: 4:5 작은 상자(radius-sm). 디자인 시스템에 썸네일 클래스가 없어 토큰으로 그림 -->
+                <!-- 1: 수정 중인 행 -->
+                <tr style="background: var(--surface);">
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder);"></div></td>
+                  <th scope="row">[상품명 1]<span class="caption" style="display: block; color: var(--text-sub);">수정 중</span></th>
+                  <td>키링</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">[가격]원</td>
+                  <td class="gs-num">[n]</td>
+                  <td class="gs-num">[n]</td>
+                  <td>판매 중</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> [상품명 1]</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> [상품명 1]</span></x-import>
+                  </div></td>
+                </tr>
+                <!-- 2: 옵션 없음 → 기본 옵션 -->
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder);"></div></td>
+                  <th scope="row">[상품명 2]<span class="caption" style="display: block; color: var(--text-sub);">옵션 없음 → 기본 옵션(D-6)</span></th>
+                  <td>스티커</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">[가격]원</td>
+                  <td class="gs-num">1 (기본)</td>
+                  <td class="gs-num">[n]</td>
+                  <td>판매 중</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> [상품명 2]</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> [상품명 2]</span></x-import>
+                  </div></td>
+                </tr>
+                <!-- 3: 주문 이력 있음, 판매 중 -->
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder);"></div></td>
+                  <th scope="row">[상품명 3]<span class="caption" style="display: block; color: var(--text-sub);">주문 이력 있음</span></th>
+                  <td>포토카드</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">[가격]원</td>
+                  <td class="gs-num">[n]</td>
+                  <td class="gs-num">[n]</td>
+                  <td>판매 중</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> [상품명 3]</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" disabled="{{yes}}">삭제 불가<span class="gs-sr"> [상품명 3], 주문 이력 있음</span></x-import>
+                  </div></td>
+                </tr>
+                <!-- 4: 전 옵션 품절 -->
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder);"></div></td>
+                  <th scope="row">[상품명 4]<span class="caption" style="display: block; color: var(--text-sub);">전 옵션 품절</span></th>
+                  <td>의류</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">[가격]원</td>
+                  <td class="gs-num">[n]</td>
+                  <td class="gs-num">0</td>
+                  <td>판매 중</td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> [상품명 4]</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> [상품명 4]</span></x-import>
+                  </div></td>
+                </tr>
+                <!-- 5: 판매 중지, 주문 이력 있음 -->
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder);"></div></td>
+                  <th scope="row">[상품명 5]<span class="caption" style="display: block; color: var(--text-sub);">주문 이력 있음</span></th>
+                  <td>엽서</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">[가격]원</td>
+                  <td class="gs-num">[n]</td>
+                  <td class="gs-num">[n]</td>
+                  <td><x-import component-from-global-scope="GoodsShop.Label" kind="stopped"></x-import></td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> [상품명 5]</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" disabled="{{yes}}">삭제 불가<span class="gs-sr"> [상품명 5], 주문 이력 있음</span></x-import>
+                  </div></td>
+                </tr>
+                <!-- 6: 미분류 (D-12) -->
+                <tr>
+                  <td><div aria-hidden="true" style="width: calc(var(--thumb-width) / 2); aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder);"></div></td>
+                  <th scope="row">[상품명 6]<span class="caption" style="display: block; color: var(--text-sub);">카테고리 변경 전 판매 중 불가</span></th>
+                  <td>미분류</td>
+                  <td class="gs-num" style="font-weight: 700; color: var(--text);">[가격]원</td>
+                  <td class="gs-num">[n]</td>
+                  <td class="gs-num">[n]</td>
+                  <td><x-import component-from-global-scope="GoodsShop.Label" kind="stopped"></x-import></td>
+                  <td><div style="display: flex; gap: var(--space-2);">
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">수정<span class="gs-sr"> [상품명 6]</span></x-import>
+                    <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S">삭제<span class="gs-sr"> [상품명 6]</span></x-import>
+                  </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 상품 등록·수정 A-02, A-03, A-04: 본문 10컬럼 그리드 =====
+           기본 정보 패널 span 6 + 이미지 패널 span 4 (같은 줄, stretch로 위·아래 끝 일치, 안쪽 32 동일)
+           옵션·재고 패널 span 10, 저장·취소 줄 span 10(오른쪽 끝 = 본문 오른쪽 끝). 패널 사이 세로 간격 = 거터 24 -->
+      <section aria-labelledby="form-title" style="display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); row-gap: var(--grid-desktop-gutter); align-items: stretch;">
+        <div style="grid-column: span 10; display: flex; align-items: center; gap: var(--space-3);">
+          <h2 id="form-title" class="heading-sm-mobile" style="margin: 0; color: var(--text);">상품 등록·수정</h2>
+          <span class="gs-pill">수정 중 · [상품명 1]</span>
+        </div>
+
+        <!-- 왼쪽: 기본 정보 span 6 -->
+        <div class="gs-panel" role="group" aria-labelledby="basic-title" style="grid-column: span 6; min-width: 0; padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-6);">
+          <h3 id="basic-title" class="heading-xs" style="margin: 0; color: var(--text);">기본 정보</h3>
+          <x-import component-from-global-scope="GoodsShop.TextField" id="p-name" label="상품명" value="[상품명 1]"></x-import>
+          <div style="display: flex; flex-direction: column; gap: var(--space-1);">
+            <x-import component-from-global-scope="GoodsShop.SelectField" id="p-cat" label="카테고리" options="{{catOptions}}" placeholder="카테고리를 선택하세요" value="키링" hint="선택지 6개, 미분류 제외(D-12). 미분류 상품을 수정하면 &quot;카테고리를 선택하세요&quot;(빈 선택)로 시작."></x-import>
+            <span class="caption" style="color: var(--text-sub);">포커스 상태: 진한 2px 테두리(컴포넌트 기본)</span>
+          </div>
+          <!-- 가격·판매 상태: 패널 안쪽 폭을 2등분(거터 24) -->
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter);">
+            <x-import component-from-global-scope="GoodsShop.TextField" id="p-price" label="판매가(원)" value="[가격]" input-mode="numeric"></x-import>
+            <x-import component-from-global-scope="GoodsShop.SelectField" id="p-status" label="판매 상태" options="{{statusOptions}}" value="판매 중"></x-import>
+          </div>
+          <!-- 디자인 시스템에 여러 줄 입력이 없어 gs-field·gs-input 클래스로 그림 -->
+          <div class="gs-field">
+            <label for="p-desc" class="gs-field__label">상품 설명</label>
+            <textarea id="p-desc" rows="4" class="gs-input" style="height: auto; padding: var(--space-3) var(--input-padding); line-height: 1.6; resize: vertical;">[상품 설명]</textarea>
+          </div>
+        </div>
+
+        <!-- 오른쪽: 이미지(A-03) span 4. 제목 높이·안쪽 여백을 왼쪽 패널과 같게 -->
+        <div class="gs-panel" role="group" aria-labelledby="img-title" style="grid-column: span 4; min-width: 0; padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-6);">
+          <h3 id="img-title" class="heading-xs" style="margin: 0; color: var(--text);">이미지 (A-03)</h3>
+          <!-- 업로드 상자: 디자인 시스템에 업로드 컴포넌트가 없어 gs-surface + Button으로 그림 -->
+          <div class="gs-surface" style="display: flex; flex-direction: column; align-items: center; gap: var(--space-2); text-align: center;">
+            <span class="body-sm-14" style="color: var(--text-body);">이미지를 끌어 놓거나 파일을 고르세요</span>
+            <span class="caption" style="color: var(--text-sub);">첫 장 = 대표(목록 썸네일)</span>
+            <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" icon="plus">이미지 업로드</x-import>
+          </div>
+          <!-- 미리보기 3열(패널 안쪽 폭 3등분, 간격 16) -->
+          <ul aria-label="업로드한 이미지" style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--space-4);">
+            <li style="min-width: 0; display: flex; flex-direction: column; gap: var(--space-2);">
+              <div role="img" aria-label="대표 이미지" class="caption" style="aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--text-placeholder); display: flex; align-items: center; justify-content: center;">대표</div>
+              <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" full="{{yes}}">삭제<span class="gs-sr"> 대표 이미지</span></x-import>
+            </li>
+            <li style="min-width: 0; display: flex; flex-direction: column; gap: var(--space-2);">
+              <div role="img" aria-label="상세 이미지 1" class="caption" style="aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--text-placeholder); display: flex; align-items: center; justify-content: center;">상세 1</div>
+              <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" full="{{yes}}">삭제<span class="gs-sr"> 상세 이미지 1</span></x-import>
+            </li>
+            <li style="min-width: 0; display: flex; flex-direction: column; gap: var(--space-2);">
+              <div role="img" aria-label="상세 이미지 2" class="caption" style="aspect-ratio: 4 / 5; border-radius: var(--radius-sm); background: var(--placeholder); color: var(--text-placeholder); display: flex; align-items: center; justify-content: center;">상세 2</div>
+              <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" full="{{yes}}">삭제<span class="gs-sr"> 상세 이미지 2</span></x-import>
+            </li>
+          </ul>
+          <span class="gs-field__hint">대표 1장 = 목록 썸네일 · 상세 여러 장 · 개수·용량 제한은 7단계에서 정함</span>
+        </div>
+
+        <!-- 옵션·재고 A-04: span 10 -->
+        <div class="gs-panel" role="group" aria-labelledby="opt-title" style="grid-column: span 10; min-width: 0; padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-6);">
+          <div style="display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);">
+            <h3 id="opt-title" class="heading-xs" style="margin: 0; color: var(--text);">옵션·재고 (A-04)</h3>
+            <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="S" icon="plus">옵션 추가</x-import>
+          </div>
+          <div class="gs-table-wrap">
+            <table class="gs-table">
+              <caption class="gs-sr">옵션·재고</caption>
+              <thead>
+                <tr>
+                  <th scope="col">옵션명</th>
+                  <th scope="col">추가금(원)</th>
+                  <th scope="col">재고</th>
+                  <th scope="col"><span class="gs-sr">삭제</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 표 셀 안 입력: TextField는 보이는 라벨이 필수라 gs-input 클래스 + aria-label로 그림 -->
+                <tr>
+                  <td><input type="text" class="gs-input" aria-label="옵션 1 옵션명" value="[옵션명 A]"></td>
+                  <td><input type="text" inputmode="numeric" class="gs-input" aria-label="옵션 1 추가금(원)" value="[추가금]"></td>
+                  <td><input type="text" inputmode="numeric" class="gs-input" aria-label="옵션 1 재고" value="[재고]"></td>
+                  <td><x-import component-from-global-scope="GoodsShop.IconButton" icon="close" label="옵션 1 삭제"></x-import></td>
+                </tr>
+                <tr>
+                  <td><input type="text" class="gs-input" aria-label="옵션 2 옵션명" value="[옵션명 B]"></td>
+                  <td><input type="text" inputmode="numeric" class="gs-input" aria-label="옵션 2 추가금(원)" value="[추가금]"></td>
+                  <td><input type="text" inputmode="numeric" class="gs-input" aria-label="옵션 2 재고" value="[재고]"></td>
+                  <td><x-import component-from-global-scope="GoodsShop.IconButton" icon="close" label="옵션 2 삭제"></x-import></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <span class="gs-field__hint">옵션을 비우고 저장하면 기본 옵션 1개(추가금 0원) 자동 생성(D-6) · 재고 0 미만 저장 불가</span>
+        </div>
+
+        <!-- 저장·취소 span 10: 오른쪽 끝 = 본문·패널 오른쪽 끝. 코랄은 상품 등록 하나라 저장은 dark -->
+        <div style="grid-column: span 10; display: flex; justify-content: flex-end; gap: var(--space-2);">
+          <x-import component-from-global-scope="GoodsShop.Button" variant="secondary" size="M">취소</x-import>
+          <x-import component-from-global-scope="GoodsShop.Button" variant="dark" size="M">저장</x-import>
+        </div>
+      </section>
+
+      <!-- ===== 주석: 본문 10컬럼에서 6 + 4 (위 기본 정보·이미지 패널과 같은 세로선) ===== -->
+      <div style="display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); align-items: start;">
+        <div style="grid-column: span 6; min-width: 0;">
+          <x-import component-from-global-scope="GoodsShop.Annotation" flush="{{yes}}">
+            <span style="display: block;"><b>삭제(A-02)</b> 주문 이력 있는 상품은 비활성 "삭제 불가" + "주문 이력 있음", 판매 중지만 가능. 이력 없는 상품만 확인 후 삭제: "'[상품명]'을 삭제할까요? 되돌릴 수 없습니다."</span>
+            <span style="display: block; margin-top: var(--space-1);"><b>미분류(D-12)</b> 필터로 골라 봄. 판매 중으로 저장하면 "다른 카테고리로 먼저 변경하세요" 오류.</span>
+            <span style="display: block; margin-top: var(--space-1);"><b>권한(A-01, D-1)</b> 회원·비회원은 사용자 홈으로 이동, 관리자 API 거부.</span>
+          </x-import>
+        </div>
+        <div style="grid-column: span 4; min-width: 0;">
+          <x-import component-from-global-scope="GoodsShop.Annotation" flush="{{yes}}">
+            <span style="display: block;"><b>빈 상태</b> 상품 0건: "등록된 상품이 없습니다" + 상품 등록 · 필터 결과 0건: "조건에 맞는 상품이 없습니다" + 필터 초기화.</span>
+            <span style="display: block; margin-top: var(--space-1);"><b>오류 상태</b> 이미지 업로드 실패: 이미지 칸 아래 오류 문구 · 재고 0 미만: 그 칸 danger 테두리 + "재고는 0 이상" · 서버 오류: "다시 시도", 입력값 유지.</span>
+            <span style="display: block; margin-top: var(--space-1);">표는 6개 예시, 이후 페이지 넘김(가정).</span>
+          </x-import>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":2400}}'>
+class Component extends DCLogic {
+renderVals() {
+  // 표·옵션 행은 <table> 파싱 안정성을 위해 정적 마크업으로 그림(sc-for 미사용)
+  return {
+    yes: true,
+    filterCats: ['전체', '키링', '스티커', '포토카드', '엽서', '의류', '문구류', '미분류'],
+    filterStatus: ['전체', '판매 중', '판매 중지'],
+    statusOptions: ['판매 중', '판매 중지'],
+    // 등록·수정 선택지: 미분류 제외(D-12)
+    catOptions: ['키링', '스티커', '포토카드', '엽서', '의류', '문구류']
+  };
+}
+}
+</script>
+</body>
+</html>

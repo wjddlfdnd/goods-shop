@@ -1,0 +1,182 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap");
+
+/* 굿즈샵 디자인 시스템 — 컴포넌트 스타일. 값은 tokens.css의 변수(--<토큰 이름>)만 쓴다. */
+body { margin: 0; font-family: var(--font-sans); background: var(--bg); color: var(--text-body); }
+.gs-root, .gs-root * { box-sizing: border-box; }
+.gs-root { font-family: var(--font-sans); color: var(--text-body); }
+.gs-pad { padding: var(--space-4); }
+.gs-row { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.gs-stack { display: flex; flex-direction: column; gap: var(--space-4); }
+.gs-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* 포커스: 2px 진회색 링, 간격 2 */
+.gs-btn:focus-visible, .gs-icon-btn:focus-visible, .gs-tab:focus-visible, .gs-link:focus-visible,
+.gs-chip:focus-visible, .gs-step__btn:focus-visible, .gs-card:focus-visible, .gs-logo:focus-visible,
+.gs-check input:focus-visible { outline: var(--focus-width) solid var(--focus); outline-offset: 2px; }
+
+/* Icon */
+.gs-icon { display: block; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: var(--icon-stroke); stroke-linecap: round; stroke-linejoin: round; }
+
+/* Button */
+.gs-btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); font-family: inherit; font-weight: 700; border: var(--line-width) solid transparent; border-radius: var(--radius-md); cursor: pointer; text-decoration: none; white-space: nowrap; background: transparent; color: var(--text); }
+.gs-btn--l { height: var(--button-l-height); padding: 0 var(--button-l-padding); font-size: 16px; }
+.gs-btn--m { height: var(--button-m-height); padding: 0 var(--button-m-padding); font-size: 15px; }
+.gs-btn--s { height: var(--button-s-height); padding: 0 var(--button-s-padding); font-size: 14px; }
+.gs-btn .gs-icon { width: var(--button-icon); height: var(--button-icon); }
+.gs-btn--full { display: flex; width: 100%; }
+.gs-btn--primary { background: var(--accent); border-color: var(--accent); color: var(--gray-0); }
+.gs-btn--primary:hover, .gs-btn--primary:active { background: var(--accent-pressed); border-color: var(--accent-pressed); }
+.gs-btn--secondary { background: var(--bg); border-color: var(--line); color: var(--text); box-shadow: var(--shadow-sm); }
+.gs-btn--secondary:hover { background: var(--surface); }
+.gs-btn--dark { background: var(--ink); border-color: var(--ink); color: var(--gray-0); }
+.gs-btn--danger { background: var(--bg); border-color: var(--danger); color: var(--danger); }
+.gs-btn--danger:hover { background: var(--danger); color: var(--gray-0); }
+.gs-btn--ghost { background: transparent; color: var(--text-sub); text-decoration: underline; text-underline-offset: 4px; }
+.gs-btn--ghost:hover { background: var(--surface); }
+.gs-btn[disabled], .gs-btn[aria-disabled="true"] { background: var(--disabled-bg); border-color: var(--disabled-bg); color: var(--disabled-text); cursor: not-allowed; text-decoration: none; }
+
+/* Text link */
+.gs-link { display: inline-flex; align-items: center; min-height: var(--touch-min); font-size: 13px; color: var(--text-sub); text-decoration: none; }
+.gs-link > span { border-bottom: var(--line-width) solid currentColor; }
+.gs-link--strong { font-size: 14px; font-weight: 700; color: var(--text); }
+
+/* Icon button + count badge */
+.gs-icon-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; width: var(--touch-min); height: var(--touch-min); padding: 0; border: 0; border-radius: var(--radius-full); background: transparent; color: var(--text); cursor: pointer; text-decoration: none; }
+.gs-icon-btn .gs-icon { width: var(--icon-size); height: var(--icon-size); }
+.gs-icon-btn .gs-badge { position: absolute; top: 6px; right: 4px; }
+.gs-badge { display: inline-flex; align-items: center; justify-content: center; min-width: var(--badge-size); height: var(--badge-size); padding: 0 var(--space-1); border-radius: var(--radius-full); background: var(--accent); color: var(--gray-0); font-size: 10px; font-weight: 700; line-height: 1; }
+
+/* Label */
+.gs-label { display: inline-flex; align-items: center; font-size: 11px; font-weight: 700; line-height: 1.2; letter-spacing: 0.06em; color: var(--text); }
+.gs-label--new { color: var(--accent); }
+.gs-label--best { color: var(--text); }
+.gs-label--soldout { color: var(--text-sub); letter-spacing: 0; }
+.gs-label--stopped { padding: 2px var(--space-2); border-radius: var(--radius-full); background: var(--surface); color: var(--text-sub); letter-spacing: 0; }
+
+/* Field: TextField, SelectField */
+.gs-field { display: flex; flex-direction: column; gap: var(--space-1); }
+.gs-field__label { font-size: 13px; font-weight: 700; line-height: 1.5; color: var(--text); }
+.gs-input, .gs-select { width: 100%; height: var(--input-height); padding: 0 var(--input-padding); border: var(--line-width) solid var(--line-input); border-radius: var(--radius-md); background: var(--bg); color: var(--text); font-family: inherit; font-size: 15px; }
+.gs-input::placeholder { color: var(--text-placeholder); }
+.gs-input:focus, .gs-select:focus { outline: none; border: var(--focus-width) solid var(--focus); padding: 0 calc(var(--input-padding) - 1px); }
+.gs-input[aria-invalid="true"], .gs-select[aria-invalid="true"] { border-color: var(--danger); }
+.gs-input:disabled, .gs-select:disabled { background: var(--disabled-bg); color: var(--disabled-text); border-color: var(--disabled-bg); }
+.gs-select-wrap { position: relative; }
+.gs-select { appearance: none; -webkit-appearance: none; padding-right: calc(var(--input-padding) + var(--button-icon) + var(--space-2)); }
+.gs-select-wrap .gs-icon { position: absolute; right: var(--input-padding); top: 50%; width: var(--button-icon); height: var(--button-icon); transform: translateY(-50%) rotate(90deg); pointer-events: none; }
+.gs-field__hint { font-size: 12px; line-height: 1.6; color: var(--text-sub); }
+.gs-field__error { font-size: 12px; line-height: 1.6; color: var(--danger); }
+
+/* Checkbox, Radio */
+.gs-check { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--touch-min);  min-width: var(--touch-min); font-size: 15px; cursor: pointer; }
+.gs-check input { appearance: none; -webkit-appearance: none; flex-shrink: 0; width: var(--control-box); height: var(--control-box); margin: 0; border: var(--line-width) solid var(--line-input); border-radius: var(--radius-sm); background: var(--bg); display: inline-grid; place-content: center; cursor: pointer; }
+.gs-check input[type="checkbox"]:checked { background: var(--ink); border-color: var(--ink); }
+.gs-check input[type="checkbox"]:checked::after { content: ""; width: 10px; height: 5px; border-left: var(--focus-width) solid var(--gray-0); border-bottom: var(--focus-width) solid var(--gray-0); transform: translateY(-2px) rotate(-45deg); }
+.gs-check input[type="radio"] { border-radius: var(--radius-full); }
+.gs-check input[type="radio"]:checked { border: 6px solid var(--ink); }
+.gs-check input:disabled { background: var(--disabled-bg); border-color: var(--disabled-bg); cursor: not-allowed; }
+.gs-check--disabled { color: var(--disabled-text); cursor: not-allowed; }
+
+/* Quantity stepper */
+.gs-step { display: inline-flex; align-items: center; height: var(--stepper-height); background: var(--surface); border-radius: var(--radius-md); }
+.gs-step__btn { display: inline-flex; align-items: center; justify-content: center; width: var(--touch-min); height: var(--touch-min); padding: 0; border: 0; background: transparent; color: var(--text); cursor: pointer; }
+.gs-step__btn .gs-icon { width: 18px; height: 18px; }
+.gs-step__btn:disabled { color: var(--text-sub); cursor: not-allowed; }
+.gs-step__num { width: var(--stepper-number); text-align: center; font-size: 15px; font-weight: 700; }
+
+/* Category tabs */
+.gs-tabs { display: flex; gap: var(--space-6); padding: 0 var(--space-4); overflow-x: auto; scrollbar-width: none; border-bottom: var(--line-width) solid var(--line); white-space: nowrap; }
+.gs-tabs--flush { padding: 0; border-bottom: 0; }
+.gs-tab { flex-shrink: 0; display: inline-flex; align-items: center; height: var(--tab-height); border-bottom: var(--tab-underline) solid transparent; font-size: 14px; color: var(--text); text-decoration: none; }
+.gs-tab { color: var(--text-sub); }
+.gs-tab[aria-current="page"] { border-bottom-color: var(--text); color: var(--text); font-weight: 700; }
+
+/* Chip */
+.gs-chip { display: inline-flex; align-items: center; height: var(--touch-min); padding: 0; border: 0; background: transparent; font-family: inherit; cursor: pointer; color: var(--text); }
+.gs-chip__box { display: inline-flex; align-items: center; height: var(--chip-height); padding: 0 var(--chip-padding); border: var(--line-width) solid var(--line-input); border-radius: var(--radius-full); background: var(--bg); font-size: 14px; }
+.gs-chip[aria-pressed="true"] .gs-chip__box { background: var(--ink); border-color: var(--ink); color: var(--gray-0); font-weight: 700; }
+
+/* Product card */
+.gs-card { display: flex; flex-direction: column; color: var(--text); text-decoration: none; min-width: 0; }
+.gs-card__img { aspect-ratio: 4 / 5; border-radius: var(--radius-lg); background: var(--placeholder); color: var(--text-placeholder); font-size: 12px; display: flex; align-items: center; justify-content: center; text-align: center; padding: var(--space-2); }
+.gs-card__meta { display: flex; flex-direction: column; gap: var(--space-1); margin-top: var(--space-3); }
+.gs-card__rank { font-size: 16px; font-weight: 800; line-height: 1.2; }
+.gs-card__name { color: var(--text-body); font-size: 14px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.gs-card__price { color: var(--text); font-size: 15px; font-weight: 800; line-height: 1.3; }
+.gs-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8) var(--grid-mobile-gutter); }
+.gs-card-grid--desktop { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-12) var(--grid-desktop-gutter); }
+.gs-card-grid--desktop .gs-card__price { font-size: 15px; }
+
+/* Section header */
+.gs-section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-4); margin-bottom: var(--space-6); }
+.gs-section-head h2 { margin: 0; color: var(--text); font-size: 22px; font-weight: 800; line-height: 1.3; letter-spacing: -0.02em; }
+.gs-section-head--desktop h2 { font-size: 30px; }
+
+/* Headers */
+.gs-header { display: flex; align-items: center; gap: var(--space-1); height: var(--header-mobile-height); padding: 0 var(--space-2) 0 var(--space-4); background: var(--bg); border-bottom: var(--line-width) solid var(--line); }
+.gs-header--back { padding-left: var(--space-1); }
+.gs-header__title { flex: 1; margin: 0; color: var(--text); font-size: 18px; font-weight: 800; line-height: 1.3; letter-spacing: -0.02em; }
+.gs-logo { display: inline-flex; align-items: center; min-height: var(--touch-min); font-size: 18px; font-weight: 800; line-height: 1; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+.gs-dheader { background: var(--bg); border-bottom: var(--line-width) solid var(--line); }
+.gs-dheader__in { display: flex; align-items: center; gap: var(--space-8); max-width: var(--grid-desktop-container); height: var(--header-desktop-height); margin: 0 auto; }
+.gs-dheader .gs-logo { font-size: 24px; }
+.gs-dheader .gs-tabs { flex: 1; padding: 0; border-bottom: 0; }
+.gs-dheader__actions { display: flex; align-items: center; gap: var(--space-1); }
+
+/* Sticky purchase bar */
+.gs-sticky { position: sticky; bottom: 0; display: flex; gap: var(--space-2); padding: var(--space-3) var(--space-4); padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px)); background: var(--bg); box-shadow: var(--shadow-bar); }
+.gs-sticky > * { flex: 1 1 0; min-width: 0; }
+
+/* Order summary */
+.gs-summary { margin: 0; padding: var(--card-padding); background: var(--surface); border-radius: var(--radius-lg); }
+.gs-summary__row { display: flex; justify-content: space-between; gap: var(--space-4); padding: var(--space-1) 0; font-size: 14px; }
+.gs-summary__row dt { color: var(--text-sub); }
+.gs-summary__row dd { margin: 0; font-weight: 700; }
+.gs-summary__total { margin-top: var(--space-3); padding-top: var(--space-3); border-top: var(--line-width) solid var(--line-strong); align-items: baseline; }
+.gs-summary__total dt { color: var(--text); font-weight: 700; font-size: 15px; }
+.gs-summary__total dd { color: var(--text); font-size: 22px; font-weight: 800; }
+
+/* Empty state */
+.gs-empty { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); padding: var(--space-12) var(--space-4); text-align: center; }
+.gs-empty__title { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.6; }
+.gs-empty__text { margin: 0 0 var(--space-4); font-size: 14px; line-height: 1.5; color: var(--text-sub); }
+
+/* Annotation (wireframe note) */
+.gs-note { margin-top: var(--space-6); padding: var(--space-3); border: var(--line-width) dashed var(--gray-400); border-radius: var(--radius-sm); font-size: 12px; line-height: 1.6; color: var(--text-sub); }
+.gs-note b, .gs-note strong { color: var(--text); }
+.gs-note__title { display: block; color: var(--text); font-weight: 700; }
+
+/* Dialog (static) */
+.gs-dialog { max-width: calc(var(--grid-mobile-width) - 2 * var(--grid-mobile-margin)); padding: var(--space-6); background: var(--bg); border: 0; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+.gs-dialog__title { margin: 0 0 var(--space-2); color: var(--text); font-size: 18px; font-weight: 800; line-height: 1.3; letter-spacing: -0.02em; }
+.gs-dialog__text { margin: 0 0 var(--space-6); font-size: 15px; line-height: 1.6; color: var(--text-sub); }
+.gs-dialog__actions { display: flex; gap: var(--space-2); }
+.gs-dialog__actions > * { flex: 1 1 0; }
+
+/* Table (class only) */
+.gs-table-wrap { overflow-x: auto; }
+.gs-table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.5; }
+.gs-table th { padding: var(--space-3) var(--space-4); text-align: left; font-size: 13px; font-weight: 700; color: var(--text-sub); background: var(--surface); border-bottom: var(--line-width) solid var(--line-strong); white-space: nowrap; }
+.gs-table td { padding: var(--space-4); border-bottom: var(--line-width) solid var(--line); vertical-align: middle; }
+.gs-table .gs-num { text-align: right; font-variant-numeric: tabular-nums; }
+.gs-table tr:hover td { background: var(--surface); }
+
+/* v2 추가: 카드·패널, 정보 칩, 캐러셀 인디케이터, 안내 상자 */
+.gs-panel { padding: var(--card-padding); background: var(--bg); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+.gs-surface { padding: var(--card-padding); background: var(--surface); border-radius: var(--radius-lg); }
+.gs-pill { display: inline-flex; align-items: center; height: var(--chip-pill-height); padding: 0 var(--space-3); border-radius: var(--radius-full); background: var(--surface); color: var(--text-sub); font-size: 12px; font-weight: 500; white-space: nowrap; }
+.gs-dots { display: flex; justify-content: center; align-items: center; gap: var(--space-1); }
+.gs-dots > i { display: block; width: var(--indicator-dot); height: var(--indicator-dot); border-radius: var(--radius-full); background: var(--gray-300); }
+.gs-dots > i[aria-current="true"] { width: var(--indicator-active); background: var(--gray-0); }
+.gs-dots--on-light > i[aria-current="true"] { background: var(--text); }
+.gs-notice { margin: 0; padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); background: var(--surface); color: var(--text-sub); font-size: 12px; line-height: 1.6; }
+.gs-divider { height: var(--space-2); background: var(--surface); border: 0; margin: 0; }
+
+/* v2.1: TextField trailing 슬롯, Carousel */
+.gs-input-wrap { position: relative; }
+.gs-input--trailing { padding-right: calc(var(--touch-min) + var(--space-1)); }
+.gs-input--trailing::-webkit-search-cancel-button { display: none; }
+.gs-input-wrap__trailing { position: absolute; top: 50%; right: calc((var(--input-height) - var(--touch-min)) / 2); transform: translateY(-50%); display: flex; }
+.gs-carousel { position: relative; }
+.gs-carousel__slide { aspect-ratio: 1 / 1; background: var(--placeholder); color: var(--text-placeholder); font-size: 12px; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+.gs-carousel__dots { position: absolute; left: 0; right: 0; bottom: var(--space-4); }

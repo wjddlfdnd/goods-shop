@@ -1,0 +1,310 @@
+{
+  "v": 3,
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-25T01:00:00Z"
+  },
+  "title": "굿즈샵 와이어프레임 (v2 부드러운 스타일)",
+  "launch": {
+    "view": "canvas"
+  },
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 2752,
+      "title": "01 홈 · P-01",
+      "is_interactive": true,
+      "guides": [
+        {
+          "kind": "columns",
+          "count": 4,
+          "gutter": 16,
+          "margin": 16,
+          "color": "rgba(214,47,69,0.08)"
+        },
+        {
+          "kind": "rows",
+          "size": 8,
+          "gutter": 0,
+          "color": "rgba(17,17,17,0.03)",
+          "hidden": true
+        }
+      ]
+    },
+    "List.dc.html": {
+      "x": 470,
+      "y": 0,
+      "w": 390,
+      "h": 1504,
+      "title": "02 상품 목록 · P-02–P-04",
+      "is_interactive": true,
+      "guides": [
+        {
+          "kind": "columns",
+          "count": 4,
+          "gutter": 16,
+          "margin": 16,
+          "color": "rgba(214,47,69,0.08)"
+        },
+        {
+          "kind": "rows",
+          "size": 8,
+          "gutter": 0,
+          "color": "rgba(17,17,17,0.03)",
+          "hidden": true
+        }
+      ]
+    },
+    "Search.dc.html": {
+      "x": 470,
+      "y": 1624,
+      "w": 390,
+      "h": 1416,
+      "title": "02-1 상품 검색 · P-05",
+      "is_interactive": true,
+      "guides": [
+        {
+          "kind": "columns",
+          "count": 4,
+          "gutter": 16,
+          "margin": 16,
+          "color": "rgba(214,47,69,0.08)"
+        },
+        {
+          "kind": "rows",
+          "size": 8,
+          "gutter": 0,
+          "color": "rgba(17,17,17,0.03)",
+          "hidden": true
+        }
+      ]
+    },
+    "Detail.dc.html": {
+      "x": 940,
+      "y": 0,
+      "w": 390,
+      "h": 1760,
+      "title": "03 상품 상세 · P-06·P-07",
+      "is_interactive": true,
+      "guides": [
+        {
+          "kind": "columns",
+          "count": 4,
+          "gutter": 16,
+          "margin": 16,
+          "color": "rgba(214,47,69,0.08)"
+        },
+        {
+          "kind": "rows",
+          "size": 8,
+          "gutter": 0,
+          "color": "rgba(17,17,17,0.03)",
+          "hidden": true
+        }
+      ]
+    },
+    "Cart.dc.html": {
+      "x": 1410,
+      "y": 0,
+      "w": 390,
+      "h": 1360,
+      "title": "04 장바구니 · O-01–O-03",
+      "is_interactive": true,
+      "guides": [
+        {
+          "kind": "columns",
+          "count": 4,
+          "gutter": 16,
+          "margin": 16,
+          "color": "rgba(214,47,69,0.08)"
+        },
+        {
+          "kind": "rows",
+          "size": 8,
+          "gutter": 0,
+          "color": "rgba(17,17,17,0.03)",
+          "hidden": true
+        }
+      ]
+    },
+    "Order.dc.html": {
+      "x": 1880,
+      "y": 0,
+      "w": 390,
+      "h": 2024,
+      "title": "05 주문서·결제 · O-04·O-05",
+      "is_interactive": true,
+      "guides": [
+        {
+          "kind": "columns",
+          "count": 4,
+          "gutter": 16,
+          "margin": 16,
+          "color": "rgba(214,47,69,0.08)"
+        },
+        {
+          "kind": "rows",
+          "size": 8,
+          "gutter": 0,
+          "color": "rgba(17,17,17,0.03)",
+          "hidden": true
+        }
+      ]
+    },
+    "Complete.dc.html": {
+      "x": 2350,
+      "y": 0,
+      "w": 390,
+      "h": 1344,
+      "title": "06 주문 완료 · O-06",
+      "is_interactive": true,
+      "guides": [
+        {
+          "kind": "columns",
+          "count": 4,
+          "gutter": 16,
+          "margin": 16,
+          "color": "rgba(214,47,69,0.08)"
+        },
+        {
+          "kind": "rows",
+          "size": 8,
+          "gutter": 0,
+          "color": "rgba(17,17,17,0.03)",
+          "hidden": true
+        }
+      ]
+    },
+    "Login.dc.html": {
+      "x": 2820,
+      "y": 0,
+      "w": 390,
+      "h": 1048,
+      "title": "07 로그인 · U-02",
+      "is_interactive": true,
+      "guides": [
+        {
+          "kind": "columns",
+          "count": 4,
+          "gutter": 16,
+          "margin": 16,
+          "color": "rgba(214,47,69,0.08)"
+        },
+        {
+          "kind": "rows",
+          "size": 8,
+          "gutter": 0,
+          "color": "rgba(17,17,17,0.03)",
+          "hidden": true
+        }
+      ]
+    },
+    "Signup.dc.html": {
+      "x": 3290,
+      "y": 0,
+      "w": 390,
+      "h": 1328,
+      "title": "08 회원가입 · U-01",
+      "is_interactive": true,
+      "guides": [
+        {
+          "kind": "columns",
+          "count": 4,
+          "gutter": 16,
+          "margin": 16,
+          "color": "rgba(214,47,69,0.08)"
+        },
+        {
+          "kind": "rows",
+          "size": 8,
+          "gutter": 0,
+          "color": "rgba(17,17,17,0.03)",
+          "hidden": true
+        }
+      ]
+    },
+    "AdminProducts.dc.html": {
+      "x": 0,
+      "y": 3520,
+      "w": 1280,
+      "h": 2400,
+      "title": "09 관리자 상품 관리 · A-02–A-04",
+      "expand": "fill",
+      "guides": [
+        {
+          "kind": "columns",
+          "count": 12,
+          "gutter": 24,
+          "margin": 40,
+          "color": "rgba(214,47,69,0.08)"
+        }
+      ]
+    },
+    "AdminCategories.dc.html": {
+      "x": 1360,
+      "y": 3520,
+      "w": 1280,
+      "h": 1440,
+      "title": "10 관리자 카테고리 관리 · A-05",
+      "expand": "fill",
+      "guides": [
+        {
+          "kind": "columns",
+          "count": 12,
+          "gutter": 24,
+          "margin": 40,
+          "color": "rgba(214,47,69,0.08)"
+        }
+      ]
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "List.dc.html",
+    "Search.dc.html",
+    "Detail.dc.html",
+    "Cart.dc.html",
+    "Order.dc.html",
+    "Complete.dc.html",
+    "Login.dc.html",
+    "Signup.dc.html",
+    "AdminProducts.dc.html",
+    "AdminCategories.dc.html"
+  ],
+  "notes": {
+    "titleUser": {
+      "x": 0,
+      "y": -300,
+      "text": "사용자 구매 흐름 (모바일 390)",
+      "kind": "title1",
+      "maxW": 3680
+    },
+    "titleAdmin": {
+      "x": 0,
+      "y": 3220,
+      "text": "관리자 (데스크톱 1280)",
+      "kind": "title1",
+      "maxW": 2640
+    },
+    "legend": {
+      "x": 3760,
+      "y": 0,
+      "w": 440,
+      "text": "와이어프레임 규칙 (굿즈샵 디자인 시스템 v2)\n· 7원칙: 넉넉한 여백 · 둥근 모서리 · 큰 제목 · 포인트 색 하나(코랄) · 옅은 그림자 · 얇은 연회색 선 · 회색 단계\n· 그리드: 모바일 4컬럼(여백·거터 16), 관리자 12컬럼(거터 24, 여백 40) — 메뉴 2 + 본문 10, 본문 안도 10컬럼 정수 분할. 빨간 세로띠가 컬럼 가이드\n· 버튼·입력·카드 등은 모두 디자인 시스템 컴포넌트, 간격은 4px 토큰만\n· 회색 상자 = 이미지 자리, [가격] = 아직 없는 값\n· 1차에는 찜·리뷰·별점·할인율·공유 없음(D-13, PRD 범위)\n· 헤더는 '로그인한 회원' 상태(장바구니 3개)\n· Play로 홈 → 목록 → 상세 → 장바구니 → 주문서 → 주문 완료를 눌러 볼 수 있습니다\n· 점선 상자 = 빈 상태·오류 상태 주석",
+      "size": "m",
+      "fill": "yellow"
+    }
+  },
+  "designSystems": [
+    {
+      "title": "굿즈샵 디자인 시스템",
+      "namespace": "goodsshop",
+      "artifact": "https://claude.ai/artifact/PBbfegRqkELUgyKCi3SPTf",
+      "version": "1795578851-528f",
+      "copiedAt": "2026-11-25T04:00:00Z"
+    }
+  ]
+}

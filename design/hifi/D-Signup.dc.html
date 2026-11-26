@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>회원가입 (데스크톱)</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="ds/goodsshop/tokens.css">
+<link rel="stylesheet" href="ds/goodsshop/bundle.css">
+<script src="ds/goodsshop/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div class="gs-root" style="width: 1280px; height: 1680px; box-sizing: border-box; display: flex; flex-direction: column; padding-bottom: var(--space-12); background: var(--bg); color: var(--text-body); font-family: var(--font-sans);">
+  <x-import component-from-global-scope="GoodsShop.DesktopHeader" categories="{{cats}}" current="{{noCat}}" category-href="D-List.dc.html" cart-count="{{cartCount}}" links="{{links}}" login-label="로그인"></x-import>
+
+  <main style="width: 100%; max-width: var(--grid-desktop-container); margin: 0 auto; padding: var(--space-16) 0;">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter);">
+      <div style="grid-column: 5 / span 4; padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-8); background: var(--bg); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
+        <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+          <h1 class="heading-lg-desktop" style="margin: 0; color: var(--text);">회원가입</h1>
+          <span class="body-sm-14" style="color: var(--text-sub);">이메일로 가입하고 바로 쇼핑을 시작하세요</span>
+        </div>
+
+        <form style="margin: 0; display: flex; flex-direction: column;">
+          <x-import component-from-global-scope="GoodsShop.SectionHeader" title="기본 정보"></x-import>
+          <p class="caption" style="margin: 0 0 var(--space-6); color: var(--text-sub);">모든 항목 필수</p>
+          <div style="display: flex; flex-direction: column; gap: var(--space-6);">
+            <x-import component-from-global-scope="GoodsShop.TextField" id="su-email" label="이메일" type="email" value="haneul@example.com" placeholder="이메일 주소" auto-complete="email" input-mode="email" required="{{yes}}"></x-import>
+            <x-import component-from-global-scope="GoodsShop.TextField" id="su-pw" label="비밀번호" type="password" value="goodsshop1" placeholder="비밀번호" auto-complete="new-password" input-mode="text" hint="8자 이상" required="{{yes}}"></x-import>
+            <x-import component-from-global-scope="GoodsShop.TextField" id="su-pw2" label="비밀번호 확인" type="password" value="goodsshop1" placeholder="비밀번호 다시 입력" auto-complete="new-password" input-mode="text" required="{{yes}}"></x-import>
+            <x-import component-from-global-scope="GoodsShop.TextField" id="su-name" label="이름" type="text" value="김하늘" placeholder="이름" auto-complete="name" input-mode="text" hint="주문서 주문자 정보에 미리 채워집니다" required="{{yes}}"></x-import>
+            <x-import component-from-global-scope="GoodsShop.TextField" id="su-phone" label="연락처" type="tel" value="010-1234-5678" placeholder="010-0000-0000" auto-complete="tel" input-mode="numeric" hint="숫자만 입력하면 하이픈이 자동으로 들어갑니다" required="{{yes}}"></x-import>
+          </div>
+          <div style="margin-top: var(--space-6);">
+            <x-import component-from-global-scope="GoodsShop.Notice">배송지는 첫 주문서에서 입력하고 기본 배송지로 저장할 수 있습니다.</x-import>
+          </div>
+          <div style="padding-top: var(--space-8);">
+            <x-import component-from-global-scope="GoodsShop.Button" variant="primary" size="M" full="{{yes}}" href="D-Login.dc.html">가입하기</x-import>
+          </div>
+        </form>
+
+        <div class="body-sm-14" style="display: flex; justify-content: center; align-items: center; gap: var(--space-2);">
+          <span style="color: var(--text-sub);">이미 회원이신가요?</span>
+          <a class="gs-link gs-link--strong" href="D-Login.dc.html"><span>로그인 →</span></a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="margin: auto auto 0; width: 100%; max-width: var(--grid-desktop-container); padding-top: var(--space-12); border-top: var(--line-width) solid var(--line); color: var(--text-sub);">
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter);">
+      <div style="grid-column: span 4; display: flex; flex-direction: column; gap: var(--space-2);">
+        <a class="logo-desktop" href="D-Main.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text); text-decoration: none;">GOODS SHOP</a>
+        <p class="body-sm-14" style="margin: 0;">키링·스티커·포토카드·엽서·의류·문구류를 모은<br>연습용 굿즈 쇼핑몰입니다.</p>
+      </div>
+      <nav aria-label="카테고리" style="grid-column: span 2;">
+        <h2 class="body-sm-14" style="margin: 0 0 var(--space-2); color: var(--text); font-weight: 700;">카테고리</h2>
+        <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+          <li><a href="D-List.dc.html" class="body-sm-14" style="display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text-sub); text-decoration: none;">키링</a></li>
+          <li><a href="D-List.dc.html" class="body-sm-14" style="display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text-sub); text-decoration: none;">스티커</a></li>
+          <li><a href="D-List.dc.html" class="body-sm-14" style="display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text-sub); text-decoration: none;">포토카드</a></li>
+          <li><a href="D-List.dc.html" class="body-sm-14" style="display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text-sub); text-decoration: none;">엽서</a></li>
+          <li><a href="D-List.dc.html" class="body-sm-14" style="display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text-sub); text-decoration: none;">의류</a></li>
+          <li><a href="D-List.dc.html" class="body-sm-14" style="display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text-sub); text-decoration: none;">문구류</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="쇼핑" style="grid-column: span 2;">
+        <h2 class="body-sm-14" style="margin: 0 0 var(--space-2); color: var(--text); font-weight: 700;">쇼핑</h2>
+        <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+          <li><a href="D-Search.dc.html" class="body-sm-14" style="display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text-sub); text-decoration: none;">상품 검색</a></li>
+          <li><a href="D-Cart.dc.html" class="body-sm-14" style="display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text-sub); text-decoration: none;">장바구니</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="회원" style="grid-column: span 2;">
+        <h2 class="body-sm-14" style="margin: 0 0 var(--space-2); color: var(--text); font-weight: 700;">회원</h2>
+        <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+          <li><a href="D-Login.dc.html" class="body-sm-14" style="display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text-sub); text-decoration: none;">로그인</a></li>
+          <li><a href="D-Signup.dc.html" class="body-sm-14" style="display: inline-flex; align-items: center; min-height: var(--touch-min); color: var(--text-sub); text-decoration: none;">회원가입</a></li>
+        </ul>
+      </nav>
+      <div style="grid-column: span 2;">
+        <h2 class="body-sm-14" style="margin: 0 0 var(--space-2); color: var(--text); font-weight: 700;">이용 안내</h2>
+        <ul class="body-sm-14" style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column;">
+          <li style="display: flex; align-items: center; min-height: var(--touch-min);">모든 주문 배송비 0원</li>
+          <li style="display: flex; align-items: center; min-height: var(--touch-min);">모의 결제, 실제 결제 없음</li>
+        </ul>
+      </div>
+    </div>
+    <p class="caption" style="margin: var(--space-12) 0 0; padding-top: var(--space-6); border-top: var(--line-width) solid var(--line);">GOODS SHOP · 연습용 프로젝트, 실제 결제 없음 · 배송비 0원</p>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1680}}'>
+class Component extends DCLogic {
+renderVals() {
+  return {
+    yes: true,
+    no: false,
+    noCat: -1,
+    cats: ['전체', '키링', '스티커', '포토카드', '엽서', '의류', '문구류'],
+    cartCount: 0,
+    links: { home: 'D-Main.dc.html', search: 'D-Search.dc.html', account: 'D-Login.dc.html', cart: 'D-Cart.dc.html' },
+
+  };
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,204 @@
+// 굿즈샵 데이터 모델 — PRD v1.5 6장(데이터 모델 원문 7개 + 추가, D-14) 기준
+// 금액은 원 단위 정수, 연락처는 숫자만 저장(v1.4), 재고는 옵션 단위(D-11)
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  MEMBER
+  ADMIN
+}
+
+enum SaleStatus {
+  ON_SALE // 판매 중
+  STOPPED // 판매 중지
+}
+
+enum ImageKind {
+  MAIN // 대표(목록 썸네일)
+  DETAIL // 상세
+}
+
+enum OrderStatus {
+  PAID // 결제 완료
+  PREPARING // 배송 준비
+  SHIPPING // 배송 중
+  DELIVERED // 배송 완료
+  CANCELED // 주문 취소(2차, 회원 취소로만)
+}
+
+enum PaymentMethod {
+  CARD
+  TRANSFER
+  EASY_PAY
+}
+
+/// 회원(원문) + 이름·연락처·비밀번호 해시(추가)
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  passwordHash String
+  name         String
+  phone        String // 숫자 10–11자리
+  role         Role      @default(MEMBER)
+  createdAt    DateTime  @default(now())
+  sessions     Session[]
+  addresses    Address[]
+  cartItems    CartItem[]
+  orders       Order[]
+  wishlist     Wishlist[]
+}
+
+/// 로그인 세션(서버 저장, httpOnly 쿠키에는 토큰만)
+model Session {
+  id        String   @id // 토큰의 SHA-256 해시
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+/// 배송지(추가, U-04·O-04·D-8). 기본 배송지는 회원당 1개 — 마이그레이션의 부분 고유 인덱스로 강제
+model Address {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipient String
+  phone     String
+  address1  String
+  address2  String?
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+/// 카테고리(추가, A-05). 미분류는 isSystem = true 1개(D-12)
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  sortOrder Int       @default(0)
+  isSystem  Boolean   @default(false)
+  products  Product[]
+}
+
+/// 상품(원문) + 등록일·설명(추가)
+model Product {
+  id          String          @id @default(cuid())
+  name        String
+  price       Int // 판매가(원)
+  description String          @default("")
+  status      SaleStatus      @default(ON_SALE)
+  categoryId  String
+  category    Category        @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime        @default(now()) // 최신순·신상품 기준
+  options     ProductOption[]
+  images      ProductImage[]
+  orderItems  OrderItem[]
+  wishlist    Wishlist[]
+
+  @@index([status, createdAt])
+  @@index([categoryId])
+}
+
+/// 상품 이미지(추가, A-03)
+model ProductImage {
+  id        String    @id @default(cuid())
+  productId String
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  kind      ImageKind
+  sortOrder Int       @default(0)
+  url       String
+
+  @@index([productId, kind, sortOrder])
+}
+
+/// 상품 옵션(원문). 재고는 여기에만(0 미만 금지는 CHECK 제약). 옵션 없는 상품은 기본 옵션 1개(D-6)
+model ProductOption {
+  id         String      @id @default(cuid())
+  productId  String
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name       String
+  extraPrice Int         @default(0)
+  stock      Int         @default(0)
+  isDefault  Boolean     @default(false)
+  sortOrder  Int         @default(0)
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+
+  @@index([productId])
+}
+
+/// 장바구니(원문). 같은 옵션은 한 줄, 다시 담으면 수량 합산(D-5). 재고 선점 없음(D-11)
+model CartItem {
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  optionId  String
+  option    ProductOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+  quantity  Int
+  createdAt DateTime      @default(now())
+
+  @@unique([userId, optionId])
+}
+
+/// 주문(원문) + 주문자·배송지 복사·요청사항·결제 수단·주문일시·멱등 키(추가)
+model Order {
+  id             String        @id @default(cuid())
+  orderNumber    String        @unique // YYYYMMDD-6자리 난수(D-7)
+  userId         String
+  user           User          @relation(fields: [userId], references: [id])
+  status         OrderStatus   @default(PAID)
+  ordererName    String
+  ordererPhone   String
+  recipient      String
+  recipientPhone String
+  address1       String
+  address2       String?
+  requestNote    String?
+  paymentMethod  PaymentMethod
+  totalAmount    Int
+  idempotencyKey String        @unique // 주문서 진입 시 발급, 중복 주문 방지
+  createdAt      DateTime      @default(now())
+  items          OrderItem[]
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+}
+
+/// 주문 상품(원문). 주문 시점의 상품명·옵션명·단가·수량을 복사해 보존
+model OrderItem {
+  id          String        @id @default(cuid())
+  orderId     String
+  order       Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   String
+  product     Product       @relation(fields: [productId], references: [id])
+  optionId    String
+  option      ProductOption @relation(fields: [optionId], references: [id])
+  productName String
+  optionName  String
+  unitPrice   Int // 판매가 + 옵션 추가금
+  quantity    Int
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+/// 찜(원문, 2차 U-06). 회원·상품 조합 고유
+model Wishlist {
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, productId])
+}

@@ -1,0 +1,862 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "D-Admin--denied.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 2952,
+      "is_interactive": true,
+      "title": "S24 관리자 접근 거부 · A-01",
+      "w": 1280,
+      "x": 4080,
+      "y": 16236
+    },
+    "D-AdminCategories--blocked.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 1232,
+      "is_interactive": true,
+      "title": "S27 카테고리 삭제 불가 · A-05",
+      "w": 1280,
+      "x": 2720,
+      "y": 19308
+    },
+    "D-AdminCategories.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 1440,
+      "is_interactive": true,
+      "title": "A02 관리자 카테고리 관리 · A-05",
+      "w": 1280,
+      "x": 1360,
+      "y": 8628
+    },
+    "D-AdminProducts--empty.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 640,
+      "is_interactive": true,
+      "title": "S25 관리자 상품 0개 · A-02",
+      "w": 1280,
+      "x": 0,
+      "y": 19308
+    },
+    "D-AdminProducts--error.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 2576,
+      "is_interactive": true,
+      "title": "S26 관리자 입력 오류 · A-03",
+      "w": 1280,
+      "x": 1360,
+      "y": 19308
+    },
+    "D-AdminProducts.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 2536,
+      "is_interactive": true,
+      "title": "A01 관리자 상품 관리 · A-02–A-04",
+      "w": 1280,
+      "x": 0,
+      "y": 8628
+    },
+    "D-Cart--empty.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 1160,
+      "is_interactive": true,
+      "title": "S22 빈 장바구니 · O-01",
+      "w": 1280,
+      "x": 1360,
+      "y": 16236
+    },
+    "D-Cart.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 1344,
+      "is_interactive": true,
+      "title": "D06 장바구니 · O-01–O-03",
+      "w": 1280,
+      "x": 0,
+      "y": 5892
+    },
+    "D-Complete.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 2008,
+      "is_interactive": true,
+      "title": "D08 주문 완료 · O-06",
+      "w": 1280,
+      "x": 2720,
+      "y": 5892
+    },
+    "D-Detail--stopped.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 2344,
+      "is_interactive": true,
+      "title": "S23 판매 중지 상품 · P-06",
+      "w": 1280,
+      "x": 2720,
+      "y": 16236
+    },
+    "D-Detail.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 2440,
+      "is_interactive": true,
+      "title": "D05 상품 상세 · P-06·P-07",
+      "w": 1280,
+      "x": 4080,
+      "y": 2900
+    },
+    "D-List.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 2264,
+      "is_interactive": true,
+      "title": "D02 상품 목록 · P-02–P-04",
+      "w": 1280,
+      "x": 1360,
+      "y": 2900
+    },
+    "D-Login.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 1216,
+      "is_interactive": true,
+      "title": "D10 로그인 · U-02",
+      "w": 1280,
+      "x": 4080,
+      "y": 5892
+    },
+    "D-Main.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 2872,
+      "is_interactive": true,
+      "title": "D01 홈 · P-01",
+      "w": 1280,
+      "x": 0,
+      "y": 2900
+    },
+    "D-Order.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 2136,
+      "is_interactive": true,
+      "title": "D07 주문서·결제 · O-04·O-05",
+      "w": 1280,
+      "x": 1360,
+      "y": 5892
+    },
+    "D-Search--empty.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 1168,
+      "is_interactive": true,
+      "title": "S21 검색 결과 0건 · P-05",
+      "w": 1280,
+      "x": 0,
+      "y": 16236
+    },
+    "D-Search.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 1440,
+      "is_interactive": true,
+      "title": "D04 상품 검색 · P-05",
+      "w": 1280,
+      "x": 2720,
+      "y": 2900
+    },
+    "D-Signup.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 12,
+          "gutter": 24,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 40
+        }
+      ],
+      "h": 1680,
+      "is_interactive": true,
+      "title": "D09 회원가입 · U-01",
+      "w": 1280,
+      "x": 5440,
+      "y": 5892
+    },
+    "M-Cart--empty.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 560,
+      "is_interactive": true,
+      "title": "S08 빈 장바구니 · O-01",
+      "w": 390,
+      "x": 3290,
+      "y": 11764
+    },
+    "M-Cart--unavailable.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1536,
+      "is_interactive": true,
+      "title": "S09 구매 불가 항목 · O-02",
+      "w": 390,
+      "x": 3760,
+      "y": 11764
+    },
+    "M-Cart.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1200,
+      "is_interactive": true,
+      "title": "M05 장바구니 · O-01–O-03",
+      "w": 390,
+      "x": 1880,
+      "y": 0
+    },
+    "M-Complete.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1416,
+      "is_interactive": true,
+      "title": "M07 주문 완료 · O-06",
+      "w": 390,
+      "x": 2820,
+      "y": 0
+    },
+    "M-Detail--notfound.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 560,
+      "is_interactive": true,
+      "title": "S04 상품 찾을 수 없음 · P-06",
+      "w": 390,
+      "x": 1410,
+      "y": 11764
+    },
+    "M-Detail--qty.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1464,
+      "is_interactive": true,
+      "title": "S07 재고 초과 수량 · 7.3",
+      "w": 390,
+      "x": 2820,
+      "y": 11764
+    },
+    "M-Detail--soldout.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1328,
+      "is_interactive": true,
+      "title": "S06 전체 옵션 품절 · P-07",
+      "w": 390,
+      "x": 2350,
+      "y": 11764
+    },
+    "M-Detail--stopped.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1384,
+      "is_interactive": true,
+      "title": "S05 판매 중지 상품 · P-06",
+      "w": 390,
+      "x": 1880,
+      "y": 11764
+    },
+    "M-Detail.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1424,
+      "is_interactive": true,
+      "title": "M04 상품 상세 · P-06·P-07",
+      "w": 390,
+      "x": 1410,
+      "y": 0
+    },
+    "M-List--empty.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 576,
+      "is_interactive": true,
+      "title": "S03 카테고리 상품 0건 · P-02",
+      "w": 390,
+      "x": 940,
+      "y": 11764
+    },
+    "M-List.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1272,
+      "is_interactive": true,
+      "title": "M02 상품 목록 · P-02–P-04",
+      "w": 390,
+      "x": 470,
+      "y": 0
+    },
+    "M-Login--error.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 736,
+      "is_interactive": true,
+      "title": "S13 로그인 실패 · U-02",
+      "w": 390,
+      "x": 1410,
+      "y": 13508
+    },
+    "M-Login.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 720,
+      "is_interactive": true,
+      "title": "M08 로그인 · U-02",
+      "w": 390,
+      "x": 3290,
+      "y": 0
+    },
+    "M-Order--error.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1832,
+      "is_interactive": true,
+      "title": "S12 결제 오류 · O-05",
+      "w": 390,
+      "x": 940,
+      "y": 13508
+    },
+    "M-Order--required.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1936,
+      "is_interactive": true,
+      "title": "S10 필수값 누락 · O-04",
+      "w": 390,
+      "x": 0,
+      "y": 13508
+    },
+    "M-Order--stock.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 2128,
+      "is_interactive": true,
+      "title": "S11 결제 직전 재고 부족 · O-05",
+      "w": 390,
+      "x": 470,
+      "y": 13508
+    },
+    "M-Order.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1784,
+      "is_interactive": true,
+      "title": "M06 주문서·결제 · O-04·O-05",
+      "w": 390,
+      "x": 2350,
+      "y": 0
+    },
+    "M-Search--blank.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 288,
+      "is_interactive": true,
+      "title": "S02 빈 검색어 · P-05",
+      "w": 390,
+      "x": 470,
+      "y": 11764
+    },
+    "M-Search--empty.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 504,
+      "is_interactive": true,
+      "title": "S01 검색 결과 0건 · P-05",
+      "w": 390,
+      "x": 0,
+      "y": 11764
+    },
+    "M-Search.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 896,
+      "is_interactive": true,
+      "title": "M03 상품 검색 · P-05",
+      "w": 390,
+      "x": 940,
+      "y": 0
+    },
+    "M-Signup--error.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1072,
+      "is_interactive": true,
+      "title": "S14 회원가입 오류 · U-01",
+      "w": 390,
+      "x": 1880,
+      "y": 13508
+    },
+    "M-Signup.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 1008,
+      "is_interactive": true,
+      "title": "M09 회원가입 · U-01",
+      "w": 390,
+      "x": 3760,
+      "y": 0
+    },
+    "Main.dc.html": {
+      "guides": [
+        {
+          "color": "rgba(214,47,69,0.08)",
+          "count": 4,
+          "gutter": 16,
+          "hidden": true,
+          "kind": "columns",
+          "margin": 16
+        }
+      ],
+      "h": 2480,
+      "is_interactive": true,
+      "title": "M01 홈 · P-01",
+      "w": 390,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-11-25T05:00:00Z",
+    "v": 1
+  },
+  "designSystems": [
+    {
+      "artifact": "https://claude.ai/artifact/PBbfegRqkELUgyKCi3SPTf",
+      "copiedAt": "2026-11-25T08:00:00Z",
+      "namespace": "goodsshop",
+      "title": "굿즈샵 디자인 시스템",
+      "version": "1795622213-7895"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  },
+  "noteOrder": [
+    "titleM",
+    "titleD",
+    "legend",
+    "titleA",
+    "titleS",
+    "titleS2"
+  ],
+  "notes": {
+    "legend": {
+      "size": 24,
+      "text": "UI 시안 (6단계) — 굿즈샵 디자인 시스템 v2.2.1\n· 실제에 가까운 예시 상품·가격, 이미지는 사진 대신 선 그림 자리\n· 위 3줄은 기본 상태(로그인한 회원, 장바구니 3개), 아래 줄은 빈 상태·오류 상태 21개\n· 1차 범위 밖(찜·리뷰·별점·할인율·공유)은 없음\n· Play: 홈 → 상세 → 장바구니 → 주문서 → 주문 완료\n· 컬럼 가이드는 숨겨 둠(아트보드 메뉴에서 켜기)\n· 와이어프레임: claude.ai/artifact/TNGHhcVkosaBTxnLCKQ7NA",
+      "w": 440,
+      "x": 4230,
+      "y": 0
+    },
+    "titleA": {
+      "kind": "title1",
+      "maxW": 2640,
+      "text": "관리자 하이파이 (1280)",
+      "w": 240,
+      "x": 0,
+      "y": 8328
+    },
+    "titleD": {
+      "kind": "title1",
+      "maxW": 5360,
+      "text": "데스크톱 하이파이 (1280)",
+      "w": 240,
+      "x": 0,
+      "y": 2600
+    },
+    "titleM": {
+      "kind": "title1",
+      "maxW": 4150,
+      "text": "모바일 하이파이 (390)",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "titleS": {
+      "kind": "title1",
+      "maxW": 6500,
+      "text": "빈 상태·오류 상태 (모바일 390)",
+      "w": 240,
+      "x": 0,
+      "y": 11464
+    },
+    "titleS2": {
+      "kind": "title1",
+      "maxW": 5360,
+      "text": "빈 상태·오류 상태 (데스크톱·관리자 1280)",
+      "w": 240,
+      "x": 0,
+      "y": 15936
+    }
+  },
+  "order": [
+    "Main.dc.html",
+    "M-List.dc.html",
+    "M-Search.dc.html",
+    "M-Detail.dc.html",
+    "M-Cart.dc.html",
+    "M-Order.dc.html",
+    "M-Complete.dc.html",
+    "M-Login.dc.html",
+    "M-Signup.dc.html",
+    "D-Main.dc.html",
+    "D-List.dc.html",
+    "D-Search.dc.html",
+    "D-Detail.dc.html",
+    "D-Cart.dc.html",
+    "D-Order.dc.html",
+    "D-Complete.dc.html",
+    "D-Login.dc.html",
+    "D-Signup.dc.html",
+    "D-AdminProducts.dc.html",
+    "D-AdminCategories.dc.html",
+    "M-Search--empty.dc.html",
+    "M-Search--blank.dc.html",
+    "M-List--empty.dc.html",
+    "M-Detail--notfound.dc.html",
+    "M-Detail--stopped.dc.html",
+    "M-Detail--soldout.dc.html",
+    "M-Detail--qty.dc.html",
+    "M-Cart--empty.dc.html",
+    "M-Cart--unavailable.dc.html",
+    "M-Order--required.dc.html",
+    "M-Order--stock.dc.html",
+    "M-Order--error.dc.html",
+    "M-Login--error.dc.html",
+    "M-Signup--error.dc.html",
+    "D-Search--empty.dc.html",
+    "D-Cart--empty.dc.html",
+    "D-Detail--stopped.dc.html",
+    "D-Admin--denied.dc.html",
+    "D-AdminProducts--empty.dc.html",
+    "D-AdminProducts--error.dc.html",
+    "D-AdminCategories--blocked.dc.html"
+  ],
+  "pages": [],
+  "title": "굿즈샵 UI 시안 (6단계)"
+}

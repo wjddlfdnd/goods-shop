@@ -1,0 +1,328 @@
+{
+  "_comment": "굿즈샵 디자인 QA 테스트 케이스. design-qa 에이전트가 새 화면·새 규칙이 생길 때 이 파일에 케이스를 추가한다. severity: P0 출시 불가 / P1 이번에 수정 / P2 넘기기 전 수정 / P3 여유 있을 때.",
+  "version": 2,
+  "widths": {
+    "M-": 390,
+    "Main.dc.html": 390,
+    "D-": 1280
+  },
+  "screenChecks": [
+    {
+      "id": "R01",
+      "name": "아트보드 잘림 없음",
+      "severity": "P1",
+      "rule": "내용 아래 끝 ≤ 아트보드 루트 높이 (캔버스에서 잘림)"
+    },
+    {
+      "id": "R02",
+      "name": "가로 넘침 없음",
+      "severity": "P1",
+      "rule": "화면 폭을 넘는 요소 없음(가로 스크롤 영역 .gs-tabs·.gs-table-wrap 안은 제외)"
+    },
+    {
+      "id": "R03",
+      "name": "콘솔 오류 없음",
+      "severity": "P0",
+      "rule": "렌더링 중 JS 오류 0건"
+    },
+    {
+      "id": "A01",
+      "name": "h1은 정확히 1개",
+      "severity": "P2",
+      "rule": "페이지 대표 제목 1개"
+    },
+    {
+      "id": "A02",
+      "name": "아이콘 버튼·이미지 접근 이름",
+      "severity": "P1",
+      "rule": "글자 없는 button/a와 role=img에 aria-label(또는 숨김 글자)"
+    },
+    {
+      "id": "A03",
+      "name": "입력에 라벨",
+      "severity": "P1",
+      "rule": "input/select/textarea마다 label, aria-label, aria-labelledby 중 하나"
+    },
+    {
+      "id": "A04",
+      "name": "터치 영역",
+      "severity": "P2",
+      "rule": "button·버튼형 링크 44×44 이상, 글 안 텍스트 링크는 높이 24 이상(WCAG 2.5.8)"
+    },
+    {
+      "id": "A05",
+      "name": "글자 대비",
+      "severity": "P0",
+      "rule": "본문 4.5:1, 큰 글자(24px↑ 또는 18.66px↑ 굵게) 3:1. 비활성 요소 제외"
+    },
+    {
+      "id": "L01",
+      "name": "링크 대상 존재",
+      "severity": "P1",
+      "rule": "href의 .dc.html 파일이 캔버스에 있음"
+    },
+    {
+      "id": "S01",
+      "name": "색 hex 직접 입력 없음",
+      "severity": "P2",
+      "rule": "style 속성에 #hex 없음(SVG 좌표 제외) — 토큰만"
+    },
+    {
+      "id": "S02",
+      "name": "간격 px 직접 입력 없음",
+      "severity": "P2",
+      "rule": "margin/padding/gap에 px 숫자 없음(아트보드 루트 width/height 제외)"
+    },
+    {
+      "id": "S03",
+      "name": "코랄 면은 화면당 1개",
+      "severity": "P2",
+      "rule": "accent 배경 버튼(.gs-btn--primary)이 화면당 1개 이하(DESIGN 7원칙 4)"
+    },
+    {
+      "id": "S04",
+      "name": "1차 범위 밖 요소 없음",
+      "severity": "P1",
+      "rule": "찜·하트·리뷰·별점·할인율·공유 문구가 화면에 없음(D-13, PRD 범위)",
+      "forbidden": [
+        "찜",
+        "리뷰",
+        "별점",
+        "할인율",
+        "공유하기",
+        "%할인"
+      ]
+    },
+    {
+      "id": "S05",
+      "name": "미분류 노출 없음",
+      "severity": "P1",
+      "rule": "선택지(option)·탭·내비·카테고리 그리드에 '미분류' 없음(DESIGN 7 Don't, D-12, PRD 7.2). 관리자 화면의 조회 필터(role=search)·카테고리 표 시스템 행·안내 문구는 허용(PRD 7.2는 등록·수정 선택지만 금지)"
+    },
+    {
+      "id": "S06",
+      "name": "진한 그림자·그라데이션 없음",
+      "severity": "P2",
+      "rule": "box-shadow 색 불투명도 10% 이하(포커스·오류 링·inset 제외), background-image gradient 없음(DESIGN 7 Don't, 원칙 5)"
+    },
+    {
+      "id": "S07",
+      "name": "코랄 외 유채색 없음",
+      "severity": "P2",
+      "rule": "글자·면·테두리 색이 회색 단계 또는 코랄 600/700뿐(DESIGN 7 Don't, 원칙 4·7). SVG 내부 제외"
+    }
+  ],
+  "coverage": {
+    "_comment": "PRD 7.10 빈 상태·오류 상태와 예외 흐름에서 화면이 있어야 하는 상태. file이 없으면 P1.",
+    "required": [
+      {
+        "file": "Main.dc.html",
+        "why": "홈 기본"
+      },
+      {
+        "file": "M-Search--empty.dc.html",
+        "why": "PRD 7.10 상품 목록·검색 결과 0건"
+      },
+      {
+        "file": "M-Search--blank.dc.html",
+        "why": "PRD P-05 빈 검색어 → '검색어를 입력해 주세요'"
+      },
+      {
+        "file": "M-List--empty.dc.html",
+        "why": "PRD 5장 선택한 카테고리에 판매 중 상품 0건"
+      },
+      {
+        "file": "M-Detail--stopped.dc.html",
+        "why": "PRD 5장 판매 중지 상품 상세 — 구매 버튼 비활성"
+      },
+      {
+        "file": "M-Detail--soldout.dc.html",
+        "why": "PRD 품절 옵션"
+      },
+      {
+        "file": "M-Cart--empty.dc.html",
+        "why": "PRD 7.10 장바구니 0개 — 주문하기 비활성"
+      },
+      {
+        "file": "M-Cart--unavailable.dc.html",
+        "why": "PRD 5장 구매 불가 항목 사유 표시, 주문하기 비활성"
+      },
+      {
+        "file": "M-Order--required.dc.html",
+        "why": "필수값 누락"
+      },
+      {
+        "file": "M-Order--stock.dc.html",
+        "why": "결제 직전 재고 재검증 실패"
+      },
+      {
+        "file": "M-Login--error.dc.html",
+        "why": "U-02 로그인 실패"
+      },
+      {
+        "file": "M-Signup--error.dc.html",
+        "why": "U-01 중복 이메일·비밀번호 확인 불일치"
+      },
+      {
+        "file": "D-Search--empty.dc.html",
+        "why": "데스크톱 검색 결과 0건"
+      },
+      {
+        "file": "D-Cart--empty.dc.html",
+        "why": "데스크톱 빈 장바구니"
+      },
+      {
+        "file": "D-Detail--stopped.dc.html",
+        "why": "데스크톱 판매 중지 상세"
+      },
+      {
+        "file": "D-AdminProducts--empty.dc.html",
+        "why": "관리자 상품 0개"
+      },
+      {
+        "file": "D-Admin--denied.dc.html",
+        "why": "A-01 1차 접근 제한"
+      },
+      {
+        "file": "D-AdminCategories--blocked.dc.html",
+        "why": "D-12 판매 중 상품 연결 카테고리 삭제 불가"
+      },
+      {
+        "file": "M-Detail--notfound.dc.html",
+        "why": "PRD 7.10 공통 존재하지 않는 상품 접근 → 찾을 수 없음 안내 + 홈 이동 버튼"
+      },
+      {
+        "file": "M-Order--error.dc.html",
+        "why": "PRD 7.10 공통 서버·네트워크 오류(오류 안내 + 다시 시도, 폼 값 유지), 4.2 시나리오 2 결제 처리 중 서버 오류(O-05)"
+      },
+      {
+        "file": "M-Detail--qty.dc.html",
+        "why": "PRD 7.10 수량 입력 0·빈 값·음수·재고 초과 → 안내(7.3), 4.2 시나리오 2 재고 초과 담기"
+      },
+      {
+        "file": "D-AdminProducts--error.dc.html",
+        "why": "PRD 4.2 시나리오 5 재고 0 미만 입력 저장 막고 오류, 이미지 업로드 실패 오류 + 입력값 유지(A-02·A-03)"
+      }
+    ]
+  },
+  "stateChecks": [
+    {
+      "id": "ST01",
+      "severity": "P1",
+      "files": [
+        "*--empty.dc.html"
+      ],
+      "name": "빈 상태에 다음 행동",
+      "rule": "빈 상태 화면에 .gs-empty 또는 안내 문구 + 링크/버튼 1개 이상"
+    },
+    {
+      "id": "ST02",
+      "severity": "P1",
+      "files": [
+        "M-Cart--empty.dc.html",
+        "D-Cart--empty.dc.html",
+        "M-Cart--unavailable.dc.html",
+        "M-Detail--stopped.dc.html",
+        "M-Detail--soldout.dc.html",
+        "D-Detail--stopped.dc.html"
+      ],
+      "name": "구매·주문 버튼 비활성",
+      "rule": "주문하기·바로 구매·장바구니 담기 버튼이 disabled(또는 aria-disabled) — 없으면 통과"
+    },
+    {
+      "id": "ST03",
+      "severity": "P1",
+      "files": [
+        "M-Login--error.dc.html",
+        "M-Signup--error.dc.html",
+        "D-AdminProducts--error.dc.html",
+        "*--required.dc.html"
+      ],
+      "name": "오류는 색 + 문구",
+      "rule": "aria-invalid=true 입력이 있고 .gs-field__error 문구가 보임 (서버 오류 화면 M-Order--error는 필드 오류가 아니라 제외)"
+    },
+    {
+      "id": "ST04",
+      "severity": "P1",
+      "files": [
+        "M-Search--blank.dc.html"
+      ],
+      "name": "빈 검색어 문구",
+      "rule": "'검색어를 입력해 주세요' 문구 표시(PRD P-05)",
+      "text": "검색어를 입력해 주세요"
+    },
+    {
+      "id": "ST05",
+      "severity": "P1",
+      "name": "상태 안내 문구",
+      "rule": "상태별 필수 안내 문구가 화면에 보임(PRD 4.2 예외 처리·7.10)",
+      "texts": {
+        "D-Admin--denied.dc.html": "관리자만",
+        "D-AdminCategories--blocked.dc.html": "삭제할 수 없",
+        "M-Order--stock.dc.html": "재고",
+        "M-Cart--unavailable.dc.html": "품절",
+        "M-Detail--stopped.dc.html": "판매 중지",
+        "D-Detail--stopped.dc.html": "판매 중지",
+        "M-Detail--soldout.dc.html": "품절",
+        "M-Login--error.dc.html": "일치하지 않",
+        "M-Detail--notfound.dc.html": "찾을 수 없",
+        "M-Order--error.dc.html": "다시 시도",
+        "M-Detail--qty.dc.html": "재고",
+        "D-AdminProducts--error.dc.html": "업로드"
+      },
+      "files": [
+        "D-Admin--denied.dc.html",
+        "D-AdminCategories--blocked.dc.html",
+        "M-Order--stock.dc.html",
+        "M-Cart--unavailable.dc.html",
+        "M-Detail--stopped.dc.html",
+        "D-Detail--stopped.dc.html",
+        "M-Detail--soldout.dc.html",
+        "M-Login--error.dc.html",
+        "M-Detail--notfound.dc.html",
+        "M-Order--error.dc.html",
+        "M-Detail--qty.dc.html",
+        "D-AdminProducts--error.dc.html"
+      ]
+    },
+    {
+      "id": "ST06",
+      "severity": "P1",
+      "name": "홈으로 돌아가는 길",
+      "files": [
+        "D-Admin--denied.dc.html",
+        "M-Detail--notfound.dc.html"
+      ],
+      "rule": "홈(Main.dc.html·D-Main.dc.html)으로 가는 링크·버튼이 있음(PRD 7.10 찾을 수 없음, 4.2 시나리오 5 접근 거부 → 홈 이동)"
+    },
+    {
+      "id": "ST07",
+      "severity": "P1",
+      "name": "오류 뒤 입력값 유지",
+      "files": [
+        "M-Order--error.dc.html",
+        "M-Login--error.dc.html",
+        "D-AdminProducts--error.dc.html"
+      ],
+      "rule": "값이 채워진 텍스트 입력이 1개 이상(PRD 7.10 폼 값 유지, 4.2 로그인 실패 입력값 유지)"
+    }
+  ],
+  "dataChecks": [
+    {
+      "id": "D01",
+      "severity": "P1",
+      "name": "주문 금액 일치",
+      "files": [
+        "M-Cart.dc.html",
+        "M-Order.dc.html",
+        "M-Complete.dc.html",
+        "D-Cart.dc.html",
+        "D-Order.dc.html",
+        "D-Complete.dc.html",
+        "M-Order--error.dc.html"
+      ],
+      "rule": "합계 금액 표시가 모두 같다",
+      "expect": "28,300원"
+    }
+  ]
+}
