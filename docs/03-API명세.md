@@ -5,7 +5,7 @@
 
 - 형식: JSON. 성공 `{ "data": ... }`, 실패 `{ "error": "CODE", "message": "..." }`.
 - 인증: 쿠키 `gs_session`. 🔓 누구나 · 👤 회원 · 🛠 관리자. 권한이 없으면 401(로그인 필요)/403(관리자 아님).
-- 상태: ✅ 구현됨(1차 전체, 8단계 2026-11-26) · ⬜ 2차 = PRD 적용 단계 2차(미구현).
+- 상태: ✅ 구현됨(1차·2차 전체, 8단계 2026-11-26). 2차 = PRD 적용 단계 2차.
 - 기능 ID는 PRD v1.9 5장. 금액·재고는 항상 서버가 다시 계산·검증한다.
 
 ## 공통·탐색 (P)
@@ -26,10 +26,10 @@
 | ✅ | POST `/api/auth/login` | 🔓 | U-02 | `email, password, intent?` | 쿠키 설정, `{ redirect }`(원래 행동 복귀). 401 `INVALID_CREDENTIALS` |
 | ✅ | POST `/api/auth/logout` | 👤 | U-02 | — | 세션 삭제 |
 | ✅ | GET `/api/me` | 👤 | U-02 | — | `{ id, name, email, role }` |
-| ⬜ 2차 | PATCH `/api/me` | 👤 | U-03 | `name, phone` | — |
-| ⬜ 2차 | GET·POST·PATCH·DELETE `/api/me/addresses` | 👤 | U-04 | 배송지 | 기본 1개 |
-| ⬜ 2차 | GET `/api/me/orders`, `/api/me/orders/{id}` | 👤 | U-05 | — | 본인 주문만 |
-| ⬜ 2차 | GET·POST·DELETE `/api/me/wishlist` | 👤 | U-06 | `productId` | — |
+| ✅ 2차 | PATCH `/api/me` | 👤 | U-03 | `name, phone` | — |
+| ✅ 2차 | GET·POST·PATCH·DELETE `/api/me/addresses` | 👤 | U-04 | 배송지 | 기본 1개 |
+| ✅ 2차 | GET `/api/me/orders`, `/api/me/orders/{id}` | 👤 | U-05 | — | 본인 주문만 |
+| ✅ 2차 | GET·POST·DELETE `/api/me/wishlist` | 👤 | U-06 | `productId` | — |
 
 ## 주문 (O)
 
@@ -42,7 +42,7 @@
 | ✅ | POST `/api/checkout` | 👤 | O-03·O-04 | `from: "cart"(itemIds) \| "buy"(optionId, quantity)` | 주문서 데이터 + `idempotencyKey` + 주문자 정보(회원 이름·연락처, O-04) + 기본 배송지 미리 채움(D-8) |
 | ✅ | POST `/api/orders` | 👤 | O-04·O-05 | 주문자·배송지·요청사항·`paymentMethod`·`items`·`idempotencyKey`·`saveAsDefault?` | 201 `{ orderNumber }`(같은 키 재요청은 같은 주문). 400 필수값, 409 `OUT_OF_STOCK`(항목별 남은 수량), 409 `UNAVAILABLE`, 500 → 재시도 |
 | ✅ | GET `/api/orders/{orderNumber}` | 👤 | O-06 | — | 주문 완료 정보(본인만). 남의 주문·없는 주문은 404 `NOT_FOUND` |
-| ⬜ 2차 | POST `/api/orders/{orderNumber}/cancel` | 👤 | O-07 | — | `PAID`에서만. 409 `NOT_CANCELABLE`. 재고 복구 |
+| ✅ 2차 | POST `/api/orders/{orderNumber}/cancel` | 👤 | O-07 | — | `PAID`에서만. 409 `NOT_CANCELABLE`. 재고 복구 |
 
 ## 관리자 (A) — 모두 🛠, 회원·비회원 403
 
@@ -55,9 +55,9 @@
 | ✅ | POST·DELETE `/api/admin/products/{id}/images` | A-03 | 파일(jpg/png/webp, 5MB, 최대 10장) | 업로드 실패 400/500, 입력값은 화면이 유지. 대표 삭제 시 첫 상세 이미지가 대표(가정) |
 | ✅ | GET·POST `/api/admin/categories` | A-05 | `name` | 이름 중복 409. 새 카테고리는 맨 뒤 순서(가정) |
 | ✅ | PATCH·DELETE `/api/admin/categories/{id}` | A-05 | — | 판매 중 연결 409 `HAS_ON_SALE`(N개), 판매 중지만 남으면 `?confirm=true`로 미분류 이동 후 삭제, 미분류 403 |
-| ⬜ 2차 | GET `/api/admin/orders`, `/{id}` | A-06 | 주문 번호·상태·기간 | — |
-| ⬜ 2차 | PATCH `/api/admin/orders/{id}/status` | A-07 | `next` | 다음 단계 1개만, 취소 주문 409 |
-| ⬜ 2차 | GET `/api/admin/summary` | A-08 | — | 주문 수·매출(취소 제외)·판매 중 상품 수 |
+| ✅ 2차 | GET `/api/admin/orders`, `/{id}` | A-06 | 주문 번호·상태·기간 | — |
+| ✅ 2차 | PATCH `/api/admin/orders/{id}/status` | A-07 | `next` | 다음 단계 1개만, 취소 주문 409 |
+| ✅ 2차 | GET `/api/admin/summary` | A-08 | — | 주문 수·매출(취소 제외)·판매 중 상품 수 |
 
 ## 화면 라우트(8단계)
 `/` 홈 · `/products?category=&sort=` 목록 · `/search?q=` · `/products/{id}` 상세 · `/cart` · `/checkout` 주문서 · `/orders/{orderNumber}/complete` · `/login?next=&intent=` · `/signup` · `/admin/products` · `/admin/categories`. 화면은 가능한 한 서버 컴포넌트에서 `lib/` 함수를 직접 호출하고, 폼 제출은 서버 액션 또는 위 API를 쓴다.

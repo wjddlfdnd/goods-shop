@@ -17,3 +17,11 @@ export function eulReul(word: string) {
   if (c < 0xac00 || c > 0xd7a3) return `${word}을(를)`;
   return (c - 0xac00) % 28 ? `${word}을` : `${word}를`;
 }
+
+/** 받침에 맞는 '로/으로'(ㄹ 받침은 '로') */
+export function euro(word: string) {
+  const c = word.charCodeAt(word.length - 1);
+  if (c < 0xac00 || c > 0xd7a3) return `${word}(으)로`;
+  const jong = (c - 0xac00) % 28;
+  return jong === 0 || jong === 8 ? `${word}로` : `${word}으로`;
+}
