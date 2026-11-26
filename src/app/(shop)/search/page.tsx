@@ -12,7 +12,7 @@ export default function SearchPage({ searchParams }: PageProps<"/search">) {
     <>
       <MobileSubHeader back="/" title="상품 검색" />
       <main className="page container">
-        <h1 className="page-title heading-lg-mobile only-desktop">상품 검색</h1>
+        <h1 className="page-title heading-lg-mobile sr-only-mobile">상품 검색</h1>
         <Suspense fallback={<SearchForm />}><Results searchParams={searchParams} /></Suspense>
       </main>
     </>

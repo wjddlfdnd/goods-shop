@@ -1,27 +1,15 @@
 "use server";
 // 모의 결제(O-05). 실패하면 아무것도 바뀌지 않고 화면은 입력값을 유지한다.
 import { redirect } from "next/navigation";
-import { z } from "zod";
 import { getSessionUser } from "@/lib/auth";
 import { OrderError, parseSource, placeOrder } from "@/lib/order";
-import { fieldErrors, phoneSchema, type FieldErrors } from "@/lib/validation";
+import { fieldErrors, orderFieldsSchema, type FieldErrors } from "@/lib/validation";
 
 export type OrderState = {
   errors?: FieldErrors; stock?: { optionId: string; remaining: number }[]; unavailable?: boolean; serverError?: boolean; message?: string;
 } | undefined;
 
-const req = (msg: string) => z.string().trim().min(1, msg);
-const schema = z.object({
-  ordererName: req("주문자 이름을 입력해 주세요."),
-  ordererPhone: z.string().min(1, "주문자 연락처를 입력해 주세요.").pipe(phoneSchema),
-  recipient: req("받는 사람을 입력해 주세요."),
-  recipientPhone: z.string().min(1, "연락처를 입력해 주세요.").pipe(phoneSchema),
-  address1: req("주소를 입력해 주세요."),
-  address2: z.string().trim().max(255).optional(),
-  requestNote: z.string().trim().max(255).optional(),
-  paymentMethod: z.enum(["CARD", "TRANSFER", "EASY_PAY"], { message: "결제 수단을 선택해 주세요." }),
-  idempotencyKey: z.string().uuid(),
-});
+const schema = orderFieldsSchema;
 
 export async function placeOrderAction(_prev: OrderState, form: FormData): Promise<OrderState> {
   const user = await getSessionUser();

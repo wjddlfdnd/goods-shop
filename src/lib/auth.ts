@@ -19,6 +19,7 @@ export const verifyPassword = (pw: string, hash: string) => bcrypt.compare(pw, h
 export async function startSession(userId: string) {
   const token = randomBytes(32).toString("base64url");
   const expiresAt = new Date(Date.now() + SESSION_DAYS * 24 * 60 * 60 * 1000);
+  await db.session.deleteMany({ where: { userId, expiresAt: { lt: new Date() } } }); // 만료 세션 정리(QA-08)
   await db.session.create({ data: { id: sha256(token), userId, expiresAt } });
   (await cookies()).set(SESSION_COOKIE, token, {
     httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", expires: expiresAt,

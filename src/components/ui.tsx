@@ -164,10 +164,10 @@ export function StickyBar({ children, className }: { children: ReactNode; classN
   return <div className={cx("gs-sticky", className)}>{children}</div>;
 }
 
-export function EmptyState({ title, text, actionText, href }: { title: string; text?: string; actionText?: string; href?: string }) {
+export function EmptyState({ title, text, actionText, href, as: Tag = "p" }: { title: string; text?: string; actionText?: string; href?: string; as?: "p" | "h1" | "h2" }) {
   return (
     <div className="gs-empty">
-      <p className="gs-empty__title">{title}</p>
+      <Tag className="gs-empty__title">{title}</Tag>
       {text ? <p className="gs-empty__text">{text}</p> : null}
       {actionText && href ? <Button variant="dark" href={href}>{actionText}</Button> : null}
     </div>

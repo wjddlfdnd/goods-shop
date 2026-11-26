@@ -7,7 +7,7 @@ export default function NotFound() {
     <>
       <MobileSubHeader back="/" />
       <main className="page container">
-        <EmptyState title="상품을 찾을 수 없습니다" text="주소가 바뀌었거나 삭제된 상품입니다." actionText="홈으로 가기" href="/" />
+        <EmptyState as="h1" title="상품을 찾을 수 없습니다" text="주소가 바뀌었거나 삭제된 상품입니다." actionText="홈으로 가기" href="/" />
       </main>
     </>
   );
