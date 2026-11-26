@@ -3,6 +3,8 @@ import { Suspense } from "react";
 import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import { getCategory, listProducts, parseSort, type Sort } from "@/lib/catalog";
+import { getSessionUser } from "@/lib/auth";
+import { wishedIds } from "@/lib/wishlist";
 import { MobileHomeHeader } from "@/components/layout/SiteHeader";
 import { ProductGrid } from "@/components/catalog/ProductGrid";
 import { SortMenu } from "@/components/catalog/SortMenu";
@@ -27,7 +29,7 @@ async function List({ searchParams }: { searchParams: PageProps<"/products">["se
   const sort = parseSort(sp.sort);
   const category = categoryId ? await getCategory(categoryId) : null;
   if (categoryId && !category) notFound(); // 없는 카테고리·미분류
-  const products = await listProducts({ categoryId, sort });
+  const [products, wished] = await Promise.all([listProducts({ categoryId, sort }), getSessionUser().then((u) => wishedIds(u?.id))]);
   const hrefFor = (s: Sort) => `/products?${new URLSearchParams({ ...(categoryId ? { category: categoryId } : {}), sort: s })}`;
   return (
     <>
@@ -37,7 +39,7 @@ async function List({ searchParams }: { searchParams: PageProps<"/products">["se
         <p className="body-sm-14 text-sub m-0">상품 <b className="text-ink">{products.length}</b>개</p>
         <SortMenu current={sort} hrefFor={hrefFor} />
       </div>
-      {products.length ? <ProductGrid products={products} /> : (
+      {products.length ? <ProductGrid products={products} wished={wished} back={hrefFor(sort)} /> : (
         <EmptyState title="이 카테고리에 판매 중인 상품이 없습니다" text="다른 카테고리를 둘러보거나 전체 상품을 확인해 보세요." actionText="전체 상품 보기" href="/products" />
       )}
     </>

@@ -88,7 +88,7 @@ details > summary { display: flex; align-items: center; min-height: var(--touch-
 .line-item__thumb img { width: 100%; height: 100%; object-fit: cover; }
 
 /* 관리자 */
-.admin { display: grid; min-height: 100vh; background: var(--gray-25); }
+.admin { display: grid; align-content: start; min-height: 100vh; background: var(--gray-25); }
 .admin__header { background: var(--bg); border-bottom: var(--line-width) solid var(--line); }
 .admin__header-in { display: flex; align-items: center; gap: var(--space-4); height: var(--header-desktop-height); }
 .admin__body { display: grid; gap: var(--space-8); padding-top: var(--space-8); padding-bottom: var(--space-16); }
@@ -128,3 +128,16 @@ details > summary { display: flex; align-items: center; min-height: var(--touch-
 .order-steps__num { display: inline-grid; place-content: center; width: var(--badge-size); height: var(--badge-size); border-radius: var(--radius-full); background: var(--surface); }
 .order-steps li[aria-current="step"] .order-steps__num { background: var(--text); color: var(--bg); }
 @media (min-width: 768px) { .order-steps { display: flex; } }
+
+/* 찜 버튼(U-06, 2차): 카드 이미지 오른쪽 위에 겹침 */
+.gs-card-wrap { position: relative; min-width: 0; }
+.gs-card__action { position: absolute; top: var(--space-2); right: var(--space-2); }
+.wish-btn { background: var(--bg); border-radius: var(--radius-full); box-shadow: var(--shadow-sm); }
+.wish-btn[aria-pressed="true"] { color: var(--accent); }
+.wish-btn[aria-pressed="true"] .gs-icon path { fill: currentColor; }
+
+/* 판매 현황 숫자 타일(A-08): 라벨 · 값(같은 산세리프, 비례 숫자) · 설명. 색으로 의미를 싣지 않는다 */
+.stat-tiles { display: grid; gap: var(--grid-desktop-gutter); }
+@media (min-width: 768px) { .stat-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.stat-tile { display: flex; flex-direction: column; gap: var(--space-2); }
+.stat-tile__value { color: var(--text); font-variant-numeric: proportional-nums; }

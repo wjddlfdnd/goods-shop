@@ -2,7 +2,8 @@
 // 관리자 서버 액션(A-02–A-05). 매번 서버에서 관리자 역할을 다시 확인한다(화면 숨김만으로 권한 처리 금지, PRD 6장).
 import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
-import { requireAdmin } from "@/lib/auth";
+import { authenticate, requireAdmin, startSession } from "@/lib/auth";
+import { advanceOrderStatus, parseStatus } from "@/lib/admin-orders";
 import { AdminError, addImages, createCategory, deleteCategory, deleteImage, deleteProduct, productSchema, renameCategory, saveProduct } from "@/lib/admin";
 import { fieldErrors, type FieldErrors } from "@/lib/validation";
 
@@ -99,4 +100,24 @@ export async function deleteCategoryAction(_prev: AdminState, form: FormData): P
     return fail(e);
   }
   redirect(`/admin/categories?done=deleted&moved=${moved}`);
+}
+
+/** 주문 상태 변경(A-07, 2차) */
+export async function advanceOrderStatusAction(id: string, from: string, next: string): Promise<AdminState> {
+  await guard();
+  const f = parseStatus(from), n = parseStatus(next);
+  if (!f || !n) return { message: "주문 상태가 올바르지 않습니다." };
+  try { await advanceOrderStatus(id, f, n); } catch (e) { refresh(); return fail(e); }
+  refresh();
+  return { ok: "주문 상태를 바꿨습니다." };
+}
+
+/** 관리자 전용 로그인(A-01 2차): 관리자 계정만 로그인시킨다. 회원 계정이면 세션을 만들지 않는다 */
+export async function adminLoginAction(_prev: AdminState, form: FormData): Promise<AdminState> {
+  const email = String(form.get("email") ?? ""), password = String(form.get("password") ?? "");
+  const user = email && password ? await authenticate(email, password) : null;
+  if (!user) return { message: "이메일 또는 비밀번호가 일치하지 않습니다." };
+  if (user.role !== "ADMIN") return { message: "관리자 계정이 아닙니다. 쇼핑몰 로그인은 일반 로그인 화면을 이용해 주세요." };
+  await startSession(user.id);
+  redirect("/admin/dashboard");
 }

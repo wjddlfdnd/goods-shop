@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { eulReul, formatPhone, won } from "@/lib/format";
+import { eulReul, euro, formatPhone, won } from "@/lib/format";
 import { phoneSchema, signupSchema } from "@/lib/validation";
 import { parseIntent } from "@/lib/intent";
 import { safeNext } from "@/lib/auth";
@@ -11,7 +11,10 @@ describe("표시 형식", () => {
     expect(formatPhone("0212345678")).toBe("02-1234-5678");
     expect(formatPhone("010-1234-5678")).toBe("010-1234-5678");
   });
-  it("조사 을/를", () => { expect(eulReul("키링")).toBe("키링을"); expect(eulReul("의류")).toBe("의류를"); });
+  it("조사 을/를·로/으로", () => {
+    expect(eulReul("키링")).toBe("키링을"); expect(eulReul("의류")).toBe("의류를");
+    expect(euro("배송 준비")).toBe("배송 준비로"); expect(euro("배송 중")).toBe("배송 중으로"); expect(euro("서울")).toBe("서울로");
+  });
 });
 
 describe("입력 검증(U-01, v1.4)", () => {
