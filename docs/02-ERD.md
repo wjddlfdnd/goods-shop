@@ -128,6 +128,8 @@ erDiagram
 | 6장 멱등 키 | `Order.idempotencyKey` 고유 |
 | v1.4 연락처 | `User/Address/Order` 연락처 CHECK `^[0-9]{10,11}$` |
 | 주문 이력 상품 삭제 금지(A-02) | `OrderItem.productId` FK(삭제 제한) → 서버는 판매 중지만 허용 |
+| 주문 이력 옵션 삭제 금지(A-04, PRD v1.7) | `OrderItem.optionId` FK(삭제 제한) → 서버가 409, 재고 0으로만 정리. `CartItem.optionId`는 연쇄 삭제 |
+| 삭제 동작 | 연쇄 삭제: 회원→세션·배송지·장바구니·찜, 상품→이미지·옵션·찜, 옵션→장바구니, 주문→주문 상품. 삭제 제한: 주문 상품→상품·옵션, 상품→카테고리, 주문→회원 |
 
 ## 시드(prisma/seed.ts)
 카테고리 6 + 미분류, 상품 15(판매 중 13·판매 중지 2), 옵션 21(품절 옵션·전체 품절 상품·기본 옵션 상품 포함), 관리자 `admin@goodsshop.test`·회원 `goods@example.com`(개발용 비밀번호는 개발 환경 문서 참고).

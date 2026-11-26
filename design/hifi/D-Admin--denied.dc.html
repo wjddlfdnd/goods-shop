@@ -23,7 +23,7 @@ body{margin:0}
 
   <main style="width: 100%; max-width: var(--grid-desktop-container); margin: 0 auto var(--space-16); padding-top: var(--space-8); display: flex; flex-direction: column; gap: var(--space-16);">
     <div style="margin-bottom: calc(-1 * var(--space-8));">
-      <x-import component-from-global-scope="GoodsShop.Notice" live="{{yes}}"><b style="color: var(--text);">관리자만 들어갈 수 있는 페이지입니다.</b> 회원 계정으로는 관리자 화면을 쓸 수 없어 홈으로 이동했습니다.</x-import>
+      <x-import component-from-global-scope="GoodsShop.Notice" live="{{yes}}"><b style="color: var(--text);">관리자만 들어갈 수 있는 페이지입니다.</b> 관리자 계정으로 로그인해야 쓸 수 있어 홈으로 이동했습니다.</x-import>
     </div>
     <section aria-label="메인 배너" style="position: relative; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--grid-desktop-gutter); align-items: center; aspect-ratio: 3 / 1; border-radius: var(--radius-lg); background: var(--placeholder);">
       <div style="grid-column: 2 / span 5; display: flex; flex-direction: column; gap: var(--space-4);">

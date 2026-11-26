@@ -6,7 +6,7 @@
 - 형식: JSON. 성공 `{ "data": ... }`, 실패 `{ "error": "CODE", "message": "..." }`.
 - 인증: 쿠키 `gs_session`. 🔓 누구나 · 👤 회원 · 🛠 관리자. 권한이 없으면 401(로그인 필요)/403(관리자 아님).
 - 상태: ✅ 7단계 구현 · ⬜ 8단계 구현 예정 · 2차 = PRD 적용 단계 2차.
-- 기능 ID는 PRD v1.5 5장. 금액·재고는 항상 서버가 다시 계산·검증한다.
+- 기능 ID는 PRD v1.7 5장. 금액·재고는 항상 서버가 다시 계산·검증한다.
 
 ## 공통·탐색 (P)
 
@@ -39,21 +39,21 @@
 | ⬜ | POST `/api/cart` | 👤 | O-01 | `optionId, quantity` | 같은 옵션 합산(D-5). 409 `OVER_STOCK`(남은 수량), 409 `UNAVAILABLE` |
 | ⬜ | PATCH `/api/cart/{itemId}` | 👤 | O-02 | `quantity` | 1 미만 → 1로, 재고 초과 → 409(7.3) |
 | ⬜ | DELETE `/api/cart` | 👤 | O-02 | `itemIds[]` | 선택 삭제 |
-| ⬜ | POST `/api/checkout` | 👤 | O-03·O-04 | `from: "cart"(itemIds) \| "buy"(optionId, quantity)` | 주문서 데이터 + `idempotencyKey` + 기본 배송지 미리 채움(D-8) |
+| ⬜ | POST `/api/checkout` | 👤 | O-03·O-04 | `from: "cart"(itemIds) \| "buy"(optionId, quantity)` | 주문서 데이터 + `idempotencyKey` + 주문자 정보(회원 이름·연락처, O-04) + 기본 배송지 미리 채움(D-8) |
 | ⬜ | POST `/api/orders` | 👤 | O-04·O-05 | 주문자·배송지·요청사항·`paymentMethod`·`items`·`idempotencyKey`·`saveAsDefault?` | 201 `{ orderNumber }`(같은 키 재요청은 같은 주문). 400 필수값, 409 `OUT_OF_STOCK`(항목별 남은 수량), 409 `UNAVAILABLE`, 500 → 재시도 |
-| ⬜ | GET `/api/orders/{orderNumber}` | 👤 | O-06 | — | 주문 완료 정보(본인만) |
+| ⬜ | GET `/api/orders/{orderNumber}` | 👤 | O-06 | — | 주문 완료 정보(본인만). 남의 주문·없는 주문은 404 `NOT_FOUND` |
 | ⬜ 2차 | POST `/api/orders/{orderNumber}/cancel` | 👤 | O-07 | — | `PAID`에서만. 409 `NOT_CANCELABLE`. 재고 복구 |
 
 ## 관리자 (A) — 모두 🛠, 회원·비회원 403
 
 | 상태 | 메서드 · 경로 | 기능 | 요청 | 응답·오류 |
 |---|---|---|---|---|
-| ⬜ | GET `/api/admin/products` | A-02 | `category?`(미분류 포함), `status?`, `q?`, `page?` | 목록 + 옵션 수·총 재고·주문 이력 여부 |
+| ⬜ | GET `/api/admin/products` | A-02 | `category?`(미분류 포함), `status?`, `q?`, `page?`(1부터, 20개씩) | 목록 + 옵션 수·총 재고·주문 이력 여부 |
 | ⬜ | POST `/api/admin/products` | A-02·A-04 | 상품 + `options[]`(없으면 기본 옵션) | 미분류 선택 불가 400 |
-| ⬜ | PATCH `/api/admin/products/{id}` | A-02·A-04 | 부분 수정 | 미분류 상품 판매 중 전환 409, 재고 음수 400 |
+| ⬜ | PATCH `/api/admin/products/{id}` | A-02·A-04 | 부분 수정 | 미분류 상품 판매 중 전환 409, 재고 음수 400, 주문 이력 있는 옵션 삭제 409 `OPTION_HAS_ORDERS`(재고 0으로만 정리), 지운 옵션의 장바구니 항목은 함께 삭제(PRD v1.7) |
 | ⬜ | DELETE `/api/admin/products/{id}` | A-02 | — | 주문 이력 있으면 409 `HAS_ORDERS`(판매 중지만) |
-| ⬜ | POST·DELETE `/api/admin/products/{id}/images` | A-03 | 파일(jpg/png/webp, 5MB, 최대 10장) | 업로드 실패 400/500, 입력값은 화면이 유지 |
-| ⬜ | GET·POST `/api/admin/categories` | A-05 | `name` | 이름 중복 409 |
+| ⬜ | POST·DELETE `/api/admin/products/{id}/images` | A-03 | 파일(jpg/png/webp, 5MB, 최대 10장) | 업로드 실패 400/500, 입력값은 화면이 유지. 대표 삭제 시 첫 상세 이미지가 대표(가정) |
+| ⬜ | GET·POST `/api/admin/categories` | A-05 | `name` | 이름 중복 409. 새 카테고리는 맨 뒤 순서(가정) |
 | ⬜ | PATCH·DELETE `/api/admin/categories/{id}` | A-05 | — | 판매 중 연결 409 `HAS_ON_SALE`(N개), 판매 중지만 남으면 `?confirm=true`로 미분류 이동 후 삭제, 미분류 403 |
 | ⬜ 2차 | GET `/api/admin/orders`, `/{id}` | A-06 | 주문 번호·상태·기간 | — |
 | ⬜ 2차 | PATCH `/api/admin/orders/{id}/status` | A-07 | `next` | 다음 단계 1개만, 취소 주문 409 |

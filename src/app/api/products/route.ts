@@ -14,7 +14,7 @@ export async function GET(request: Request) {
   await connection();
   const params = Object.fromEntries(new URL(request.url).searchParams);
   const parsed = Query.safeParse(params);
-  if (!parsed.success) return Response.json({ error: "INVALID_QUERY" }, { status: 400 });
+  if (!parsed.success) return Response.json({ error: "INVALID_QUERY", message: "검색 조건이 올바르지 않습니다" }, { status: 400 });
   const { category, q, sort } = parsed.data;
   // P-05: 빈 검색어·공백뿐이면 검색하지 않는다
   if (q !== undefined && q.trim() === "") return Response.json({ error: "EMPTY_QUERY", message: "검색어를 입력해 주세요" }, { status: 400 });

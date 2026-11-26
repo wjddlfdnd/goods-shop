@@ -171,6 +171,7 @@ function staticChecks(file, src) {
       if (st.id === 'ST06' && !r.homeLink) f.push({ id: 'ST06', detail: '홈 링크 없음' });
       if (st.id === 'ST07' && !r.filled) f.push({ id: 'ST07', detail: '값이 남은 입력 없음' });
       if (st.id === 'ST04' && !r.bodyText.includes(st.text)) f.push({ id: 'ST04', detail: `'${st.text}' 없음` });
+      if (st.id === 'ST08') { const hit = st.forbidden.filter(w => r.bodyText.includes(w)); if (hit.length) f.push({ id: 'ST08', detail: hit.join(', ') }); }
     }
     if (r.won) amounts[file] = r.won;
     results.push({ file, width: W, findings: f.map(x => ({ ...x, severity: sev[x.id], name: names[x.id] })) });

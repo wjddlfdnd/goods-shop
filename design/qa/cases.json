@@ -305,6 +305,22 @@
         "D-AdminProducts--error.dc.html"
       ],
       "rule": "값이 채워진 텍스트 입력이 1개 이상(PRD 7.10 폼 값 유지, 4.2 로그인 실패 입력값 유지)"
+    },
+    {
+      "id": "ST08",
+      "severity": "P1",
+      "name": "결정으로 뺀 요소 없음",
+      "files": [
+        "D-Admin*.dc.html",
+        "D-Detail*.dc.html",
+        "M-Detail*.dc.html"
+      ],
+      "rule": "사용자 결정(PRD v1.7)으로 뺀 요소가 화면에 없음: 관리자 메뉴 '회원 관리'(#91), 상품 상세 '재질·관리 방법' 정보 표(#90), 접근 거부 문구 '회원 계정으로는'(#77, 비회원에게 안 맞음)",
+      "forbidden": [
+        "회원 관리",
+        "관리 방법",
+        "회원 계정으로는"
+      ]
     }
   ],
   "dataChecks": [
