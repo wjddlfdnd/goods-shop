@@ -10,6 +10,10 @@ export async function POST(request: Request) {
   if (!parsed.success) return fail(400, "INVALID_INPUT", "입력값을 확인해 주세요.", { fields: fieldErrors(parsed.error) });
   const { email, password, name, phone } = parsed.data;
   if (await db.user.findUnique({ where: { email } })) return fail(409, "EMAIL_TAKEN", "이미 가입된 이메일입니다.");
-  const user = await db.user.create({ data: { email, passwordHash: await hashPassword(password), name, phone }, select: { id: true, email: true, name: true } });
-  return ok(user, 201);
+  try {
+    const user = await db.user.create({ data: { email, passwordHash: await hashPassword(password), name, phone }, select: { id: true, email: true, name: true } });
+    return ok(user, 201);
+  } catch {
+    return fail(409, "EMAIL_TAKEN", "이미 가입된 이메일입니다."); // 같은 이메일 동시 가입(QA2-07)
+  }
 }

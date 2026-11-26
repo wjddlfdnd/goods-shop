@@ -12,6 +12,9 @@ export class AdminError extends Error {
   }
 }
 
+/** 동시에 같은 이름으로 만들 때 고유 제약 충돌 → 409(QA2-07) */
+const uniqueToConflict = (e: unknown) => (e && typeof e === "object" && "code" in e && e.code === "P2002" ? new AdminError(409, "NAME_TAKEN", "이미 있는 카테고리 이름입니다.") : e);
+
 export const PAGE_SIZE = 20; // 관리자 상품 목록 20개씩(가정, PRD v1.7)
 
 /* ---------------- 상품 목록(A-02) ---------------- */
@@ -21,9 +24,10 @@ export async function listAdminProducts(f: { categoryId?: string; status?: "ON_S
     ...(f.status ? { status: f.status } : {}),
     ...(f.q ? { name: { contains: likeText(f.q), mode: "insensitive" as const } } : {}),
   };
-  const page = Math.max(1, f.page ?? 1);
-  const [total, onSale, stopped, rows] = await Promise.all([
-    db.product.count({ where }),
+  const total = await db.product.count({ where });
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const page = Math.min(pages, Math.max(1, Math.floor(f.page ?? 1) || 1)); // 범위 밖 페이지는 끝 페이지로(QA2-03)
+  const [onSale, stopped, rows] = await Promise.all([
     db.product.count({ where: { ...where, status: "ON_SALE" } }),
     db.product.count({ where: { ...where, status: "STOPPED" } }),
     db.product.findMany({
@@ -37,7 +41,7 @@ export async function listAdminProducts(f: { categoryId?: string; status?: "ON_S
     }),
   ]);
   return {
-    total, onSale, stopped, page, pages: Math.max(1, Math.ceil(total / PAGE_SIZE)),
+    total, onSale, stopped, page, pages,
     items: rows.map((p) => ({
       id: p.id, name: p.name, price: p.price, status: p.status, category: p.category, imageUrl: p.images[0]?.url ?? null,
       optionCount: p.options.length, defaultOnly: p.options.length === 1 && p.options[0].isDefault,
@@ -193,7 +197,7 @@ export async function createCategory(name: string) {
   if (!n.success) throw new AdminError(400, "INVALID_INPUT", n.error.issues[0].message);
   if (await db.category.findUnique({ where: { name: n.data } })) throw new AdminError(409, "NAME_TAKEN", "이미 있는 카테고리 이름입니다.");
   const max = await db.category.aggregate({ where: { isSystem: false }, _max: { sortOrder: true } });
-  return db.category.create({ data: { name: n.data, sortOrder: (max._max.sortOrder ?? 0) + 1 } });
+  return db.category.create({ data: { name: n.data, sortOrder: (max._max.sortOrder ?? 0) + 1 } }).catch((e) => { throw uniqueToConflict(e); });
 }
 
 export async function renameCategory(id: string, name: string) {
@@ -204,7 +208,7 @@ export async function renameCategory(id: string, name: string) {
   if (!n.success) throw new AdminError(400, "INVALID_INPUT", n.error.issues[0].message);
   const dup = await db.category.findUnique({ where: { name: n.data } });
   if (dup && dup.id !== id) throw new AdminError(409, "NAME_TAKEN", "이미 있는 카테고리 이름입니다.");
-  return db.category.update({ where: { id }, data: { name: n.data } });
+  return db.category.update({ where: { id }, data: { name: n.data } }).catch((e) => { throw uniqueToConflict(e); });
 }
 
 /**
