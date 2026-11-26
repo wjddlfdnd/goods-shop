@@ -1,6 +1,15 @@
-// 로그인 직후 원래 행동 실행. 장바구니 담기·바로 구매는 feature-cart·feature-order에서 연결한다.
+// 로그인 직후 원래 행동 실행(U-02, PRD 4.2 시나리오 1).
+// 실행 시점에 품절·판매 중지·재고 부족이면 행동하지 않고 상품 상세로 돌려 안내한다.
 import type { Intent } from "@/lib/intent";
+import { addToCart, CartError } from "@/lib/cart";
 
-export async function runIntent(_userId: string, _intent: Intent, next: string): Promise<string> {
-  return next;
+export async function runIntent(userId: string, intent: Intent, next: string): Promise<string> {
+  if (intent.type === "buy") return `/checkout?buy=${encodeURIComponent(`${intent.optionId}:${intent.quantity}`)}&back=${encodeURIComponent(next)}`;
+  try {
+    await addToCart(userId, intent.optionId, intent.quantity);
+    return "/cart?added=1";
+  } catch (e) {
+    if (e instanceof CartError) return `${next}${next.includes("?") ? "&" : "?"}notice=${e.code}`;
+    throw e;
+  }
 }

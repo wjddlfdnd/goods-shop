@@ -20,6 +20,11 @@ export function PurchasePanel({ product, back }: { product: ProductDetail; back:
   const unit = product.price + (option?.extraPrice ?? 0);
   const blocked = stopped || soldOut;
   const error = cartState?.error ?? buyState?.error;
+  const [clampedFor, setClampedFor] = useState<PurchaseState>(undefined);
+  if (cartState !== clampedFor) {
+    setClampedFor(cartState);
+    if (cartState?.remaining && qty > cartState.remaining) setQty(cartState.remaining);
+  }
 
   return (
     <form className="stack-6" noValidate>
@@ -51,9 +56,8 @@ export function PurchasePanel({ product, back }: { product: ProductDetail; back:
           <b className="heading-xs">{won(option ? unit * qty : 0)}</b>
         </div>
       ) : null}
-      {error && error !== "옵션을 선택해 주세요." ? <Notice live tone="danger">{error}</Notice> : null}
-      {cartState?.ok ? <Notice live>{cartState.ok}</Notice> : null}
-      {blocked ? <p className="body-sm-13 text-danger m-0" role="note">{stopped ? "판매가 중지된 상품이라" : "모든 옵션이 품절이라"} 담기·구매 버튼을 누를 수 없습니다</p> : null}
+      {error && error !== "옵션을 선택해 주세요." ? <Notice live tone="danger">{error}{cartState?.remaining && !error.startsWith("장바구니에 이미") ? ` 수량을 남은 재고 ${cartState.remaining}개로 맞췄습니다.` : ""}</Notice> : null}
+            {blocked ? <p className="body-sm-13 text-danger m-0" role="note">{stopped ? "판매가 중지된 상품이라" : "모든 옵션이 품절이라"} 담기·구매 버튼을 누를 수 없습니다</p> : null}
       <div className="purchase-bar">
         <Button type="submit" formAction={cartAction} variant="secondary" size="L" full disabled={blocked || cartPending || buyPending}>장바구니 담기</Button>
         <Button type="submit" formAction={buyAction} variant="primary" size="L" full disabled={blocked || cartPending || buyPending}>바로 구매</Button>

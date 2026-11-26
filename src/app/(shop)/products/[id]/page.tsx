@@ -10,20 +10,27 @@ import { InfoPill, Label, Notice, SectionHeader } from "@/components/ui";
 import { eulReul, won } from "@/lib/format";
 
 // 상품 상세(P-06·P-07). 판매 중지 상품도 보여 주되 담기·구매는 막는다(7.2). 없는 상품은 찾을 수 없음(7.10)
-export default function ProductPage({ params }: PageProps<"/products/[id]">) {
+export default function ProductPage({ params, searchParams }: PageProps<"/products/[id]">) {
   return (
     <>
       <MobileSubHeader back="/products" title="상품 보기" />
       <main className="page page--sticky container">
-        <Suspense fallback={<p className="caption mt-8">불러오는 중…</p>}><Detail params={params} /></Suspense>
+        <Suspense fallback={<p className="caption mt-8">불러오는 중…</p>}><Detail params={params} searchParams={searchParams} /></Suspense>
       </main>
     </>
   );
 }
 
-async function Detail({ params }: { params: PageProps<"/products/[id]">["params"] }) {
+const INTENT_NOTICE: Record<string, string> = {
+  SOLD_OUT: "로그인하는 동안 고른 옵션이 품절되어 장바구니에 담지 못했습니다.",
+  OVER_STOCK: "로그인하는 동안 재고가 줄어 고른 수량을 담지 못했습니다. 수량을 다시 골라 주세요.",
+  UNAVAILABLE: "로그인하는 동안 판매가 중지되어 장바구니에 담지 못했습니다.",
+};
+
+async function Detail({ params, searchParams }: { params: PageProps<"/products/[id]">["params"]; searchParams: PageProps<"/products/[id]">["searchParams"] }) {
   await connection(); // 재고·판매 상태는 요청 시점 데이터
   const { id } = await params;
+  const { notice } = await searchParams;
   const p = await getProduct(id);
   if (!p) notFound();
   const stopped = p.status === "STOPPED";
@@ -55,6 +62,7 @@ async function Detail({ params }: { params: PageProps<"/products/[id]">["params"
             <p className="price-detail m-0 text-ink">{won(p.price)}</p>
             <p className="body-15 m-0" style={{ whiteSpace: "pre-line" }}>{p.description}</p>
           </div>
+          {typeof notice === "string" && INTENT_NOTICE[notice] ? <Notice live tone="danger">{INTENT_NOTICE[notice]}</Notice> : null}
           {stopped ? (
             <Notice live>
               <strong className="text-ink">판매가 중지된 상품입니다.</strong><br />장바구니에 담거나 바로 구매할 수 없습니다.
