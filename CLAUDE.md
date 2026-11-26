@@ -8,3 +8,4 @@
 - DB: 금액은 원 단위 정수, 연락처는 숫자만 저장, 재고는 `ProductOption.stock`만. 재고 차감은 조건부 갱신(`stock >= 수량`). 스키마 변경은 `npm run db:migrate`.
 - 스타일: 색·간격·모서리·그림자는 `src/styles/tokens.css` 변수만. hex·px 직접 입력 금지.
 - 디자인을 바꾸면 `npm run design:qa`(P0 = 0, P1 = 0).
+- Git Flow: `main`(배포) ← `release-*` ← `develop` ← `feature-*`. 기능은 `develop`에서 `feature-<기능>` 브랜치를 만들고 PR로 `develop`에 병합(merge commit, `--no-ff`). 자세한 규칙은 docs/04-개발환경.md.

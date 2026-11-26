@@ -1,0 +1,130 @@
+/* 팬덤픽 앱 레이아웃. 값은 tokens.css 변수만 쓴다(미디어 쿼리 경계값은 CSS 변수를 쓸 수 없어 DESIGN 8장 숫자 사용). */
+html, body { margin: 0; }
+body { background: var(--bg); min-height: 100vh; display: flex; flex-direction: column; }
+a { color: inherit; }
+
+.container { width: 100%; max-width: calc(var(--grid-desktop-container) + 2 * var(--grid-mobile-margin)); margin: 0 auto; padding: 0 var(--grid-mobile-margin); }
+.page { flex: 1; padding-bottom: var(--space-16); }
+.page--sticky { padding-bottom: calc(var(--sticky-bar-height) + var(--space-12)); }
+.stack-2 { display: flex; flex-direction: column; gap: var(--space-2); }
+.stack-4 { display: flex; flex-direction: column; gap: var(--space-4); }
+.stack-6 { display: flex; flex-direction: column; gap: var(--space-6); }
+.stack-8 { display: flex; flex-direction: column; gap: var(--space-8); }
+.row { display: flex; align-items: center; gap: var(--space-2); }
+.row--between { justify-content: space-between; }
+.mt-4 { margin-top: var(--space-4); } .mt-6 { margin-top: var(--space-6); } .mt-8 { margin-top: var(--space-8); } .mt-12 { margin-top: var(--space-12); }
+.m-0 { margin: 0; }
+.text-sub { color: var(--text-sub); } .text-ink { color: var(--text); } .text-danger { color: var(--danger); }
+.bold { font-weight: 700; }
+@media (max-width: 767px) { .sr-only-mobile { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; } }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* 화면 폭별 표시(DESIGN 8장: 768 이상 데스크톱형 헤더) */
+/* 숨김이 항상 이기도록 !important(QA-11: .crumbs 같은 display 규칙이 덮어써 모바일에 브레드크럼이 보이던 문제) */
+@media (max-width: 767px) { .only-desktop { display: none !important; } }
+@media (min-width: 768px) {
+  .only-mobile { display: none !important; }
+  .container { padding: 0 var(--grid-desktop-margin); max-width: calc(var(--grid-desktop-container) + 2 * var(--grid-desktop-margin)); }
+}
+
+.page-title { margin: var(--space-6) 0 var(--space-6); color: var(--text); }
+@media (min-width: 768px) { .page-title { margin: var(--space-12) 0 var(--space-8); } }
+
+/* 상품 카드 그리드: 모바일 2열, 태블릿 3열, 데스크톱 4열 */
+.card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8) var(--grid-mobile-gutter); }
+@media (min-width: 768px) { .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-12) var(--grid-desktop-gutter); } }
+@media (min-width: 1024px) { .card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.gs-card__img img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg); }
+
+/* 두 단 레이아웃(본문 8 + 요약 4, 상세 6 + 6) */
+.split { display: grid; gap: var(--space-8); }
+@media (min-width: 1024px) {
+  .split { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--grid-desktop-gutter); align-items: start; }
+  .split--half { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .split__aside { position: sticky; top: var(--space-6); }
+}
+.panel-card { background: var(--bg); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-6); }
+
+/* 정렬 메뉴(SortButton + 목록) */
+.sort-menu { position: relative; }
+.sort-menu > summary { list-style: none; cursor: pointer; }
+.sort-menu > summary::-webkit-details-marker { display: none; }
+.sort-menu__list { position: absolute; right: 0; top: 100%; z-index: 20; min-width: calc(var(--thumb-width) * 2); margin: var(--space-1) 0 0; padding: var(--space-2) 0; list-style: none; background: var(--bg); border-radius: var(--radius-md); box-shadow: var(--shadow-md); }
+.sort-menu__list a { display: flex; align-items: center; min-height: var(--touch-min); padding: 0 var(--space-4); color: var(--text-body); text-decoration: none; }
+.sort-menu__list a[aria-current="true"] { color: var(--text); font-weight: 700; }
+
+/* 사이트 푸터 */
+.site-footer { margin-top: auto; border-top: var(--line-width) solid var(--line); color: var(--text-sub); }
+.site-footer__grid { display: none; }
+.site-footer__caption { margin: 0; padding: var(--space-6) 0 var(--space-8); }
+.site-footer ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; }
+.site-footer li, .site-footer li a { display: flex; align-items: center; min-height: var(--touch-min); color: var(--text-sub); text-decoration: none; }
+.site-footer h2 { margin: 0 0 var(--space-2); color: var(--text); font-weight: 700; }
+@media (min-width: 768px) {
+  .site-footer { padding-top: var(--space-12); }
+  .site-footer__grid { display: grid; grid-template-columns: 4fr 2fr 2fr 2fr 2fr; gap: var(--grid-desktop-gutter); }
+  .site-footer__caption { margin-top: var(--space-12); border-top: var(--line-width) solid var(--line); }
+}
+
+/* 브레드크럼 */
+.crumbs { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-6) 0 0; padding: 0; list-style: none; color: var(--text-sub); }
+.crumbs a { display: inline-flex; align-items: center; justify-content: center; min-height: var(--space-6); min-width: var(--space-6); color: var(--text-sub); text-decoration: none; }
+.crumbs li { display: flex; align-items: center; }
+.crumbs li + li::before { content: "/"; margin-right: var(--space-2); }
+
+/* 폼 */
+.form-card { max-width: calc(var(--grid-mobile-width) + var(--space-8)); margin: 0 auto; }
+.gs-textarea { min-height: calc(var(--input-height) * 3); padding-top: var(--space-3); resize: vertical; }
+.gs-notice--danger { color: var(--danger); }
+.field-row { display: grid; gap: var(--space-4); }
+@media (min-width: 768px) { .field-row--2 { grid-template-columns: 1fr 1fr; } }
+
+details > summary { display: flex; align-items: center; min-height: var(--touch-min); cursor: pointer; }
+.line-item a.bold { display: inline-flex; align-items: center; min-height: var(--space-6); }
+/* 목록 행(장바구니·주문 상품) */
+.line-item { display: grid; grid-template-columns: auto var(--thumb-width) minmax(0, 1fr); gap: var(--space-3); padding: var(--space-4) 0; border-bottom: var(--line-width) solid var(--line); align-items: start; }
+.line-item--plain { grid-template-columns: var(--thumb-width) minmax(0, 1fr); }
+.line-item__thumb { width: var(--thumb-width); height: var(--thumb-height); border-radius: var(--radius-sm); background: var(--placeholder); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.line-item__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+/* 관리자 */
+.admin { display: grid; min-height: 100vh; background: var(--gray-25); }
+.admin__header { background: var(--bg); border-bottom: var(--line-width) solid var(--line); }
+.admin__header-in { display: flex; align-items: center; gap: var(--space-4); height: var(--header-desktop-height); }
+.admin__body { display: grid; gap: var(--space-8); padding-top: var(--space-8); padding-bottom: var(--space-16); }
+.admin__body > main { min-width: 0; }
+/* 표 행 머리(th scope=row)는 본문 셀처럼(하이파이 시안과 같음) */
+.gs-table th[scope="row"] { font-size: inherit; font-weight: 500; color: var(--text); background: transparent; border-bottom-color: var(--line); white-space: normal; }
+.nowrap { white-space: nowrap; }
+@media (min-width: 768px) { .admin__body { grid-template-columns: minmax(var(--grid-admin-menu-min), 2fr) 10fr; gap: var(--grid-desktop-gutter); } }
+.admin__menu ul { margin: 0; padding: 0; list-style: none; }
+.admin__menu a, .admin__menu span { display: flex; align-items: center; justify-content: space-between; min-height: var(--touch-min); padding: 0 var(--space-4); border-radius: var(--radius-md); color: var(--text-body); text-decoration: none; }
+.admin__menu a[aria-current="page"] { background: var(--bg); color: var(--text); font-weight: 700; box-shadow: var(--shadow-sm); }
+.admin__menu span { color: var(--text-placeholder); }
+
+/* 상품 상세 구매 버튼: 모바일은 하단 고정 바, 데스크톱은 정보 영역 안 3+3 */
+.purchase-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); padding: var(--space-3) var(--grid-mobile-margin); background: var(--bg); box-shadow: var(--shadow-bar); }
+@media (min-width: 768px) { .purchase-bar { position: static; padding: 0; box-shadow: none; background: transparent; } }
+.thumbs { display: flex; gap: var(--space-2); margin-top: var(--space-3); }
+.thumbs button { width: var(--thumb-width); height: var(--thumb-height); padding: 0; border: var(--line-width) solid var(--line); border-radius: var(--radius-sm); background: var(--placeholder); overflow: hidden; cursor: pointer; }
+.thumbs button[aria-current="true"] { border: var(--focus-width) solid var(--text); }
+.thumbs img, .gs-carousel__slide img { width: 100%; height: 100%; object-fit: cover; }
+.banner { display: grid; gap: var(--space-4); }
+.banner__img { aspect-ratio: 16 / 9; border-radius: var(--radius-lg); background: var(--placeholder); overflow: hidden; }
+.banner__img img { width: 100%; height: 100%; object-fit: cover; }
+@media (min-width: 768px) {
+  .banner { grid-template-columns: 4fr 8fr; align-items: center; gap: var(--grid-desktop-gutter); padding: var(--space-8); border-radius: var(--radius-lg); background: var(--surface); margin-top: var(--space-8); }
+  .banner__img { aspect-ratio: 2 / 1; order: 2; }
+}
+.cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--grid-mobile-gutter); }
+@media (min-width: 768px) { .cat-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--grid-desktop-gutter); } }
+.cat-grid a { display: flex; align-items: center; justify-content: space-between; height: var(--space-16); padding: 0 var(--space-4) 0 var(--card-padding); border-radius: var(--radius-lg); background: var(--surface); color: var(--text); font-weight: 700; text-decoration: none; }
+.list-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6); }
+
+/* 주문 단계 */
+.order-steps { gap: var(--space-4); margin: 0; padding: 0; list-style: none; color: var(--text-sub); }
+.order-steps li { display: flex; align-items: center; gap: var(--space-2); }
+.order-steps li[aria-current="step"] { color: var(--text); font-weight: 700; }
+.order-steps__num { display: inline-grid; place-content: center; width: var(--badge-size); height: var(--badge-size); border-radius: var(--radius-full); background: var(--surface); }
+.order-steps li[aria-current="step"] .order-steps__num { background: var(--text); color: var(--bg); }
+@media (min-width: 768px) { .order-steps { display: flex; } }

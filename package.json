@@ -1,6 +1,6 @@
 {
   "name": "goods-shop",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -14,7 +14,9 @@
     "db:studio": "prisma studio",
     "postinstall": "prisma generate",
     "smoke": "node scripts/smoke.mjs",
-    "design:qa": "node design/qa/run.js design/hifi"
+    "design:qa": "node design/qa/run.js design/hifi",
+    "test": "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/goodsshop_test vitest run",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.10.1",
@@ -27,8 +29,9 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/bcryptjs": "^2.4.6",
-    "@types/node": "^20",
+    "@types/node": "^22.20.7",
     "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -37,7 +40,8 @@
     "eslint-config-next": "16.4.6",
     "prisma": "^7.10.1",
     "tsx": "^4.23.15",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.1.2"
   },
   "engines": {
     "node": ">=22"

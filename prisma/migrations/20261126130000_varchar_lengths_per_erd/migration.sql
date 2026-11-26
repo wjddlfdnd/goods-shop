@@ -1,0 +1,173 @@
+-- QA-05: 칸 길이를 ERD(VARCHAR)와 맞춘다. CHECK·부분 고유 인덱스는 그대로 둔다.
+-- 한 트랜잭션: 기존 데이터가 길이를 넘으면 전체가 적용되지 않는다(부분 적용 방지).
+BEGIN;
+-- DropForeignKey
+ALTER TABLE "Address" DROP CONSTRAINT "Address_userId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "CartItem" DROP CONSTRAINT "CartItem_optionId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "CartItem" DROP CONSTRAINT "CartItem_userId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "Order" DROP CONSTRAINT "Order_userId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "OrderItem" DROP CONSTRAINT "OrderItem_optionId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "OrderItem" DROP CONSTRAINT "OrderItem_orderId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "OrderItem" DROP CONSTRAINT "OrderItem_productId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "Product" DROP CONSTRAINT "Product_categoryId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "ProductImage" DROP CONSTRAINT "ProductImage_productId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "ProductOption" DROP CONSTRAINT "ProductOption_productId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "Session" DROP CONSTRAINT "Session_userId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "Wishlist" DROP CONSTRAINT "Wishlist_productId_fkey";
+
+-- DropForeignKey
+ALTER TABLE "Wishlist" DROP CONSTRAINT "Wishlist_userId_fkey";
+
+-- AlterTable
+ALTER TABLE "Address" DROP CONSTRAINT "Address_pkey",
+ALTER COLUMN "id" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "userId" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "recipient" SET DATA TYPE VARCHAR(50),
+ALTER COLUMN "phone" SET DATA TYPE VARCHAR(11),
+ALTER COLUMN "address1" SET DATA TYPE VARCHAR(255),
+ALTER COLUMN "address2" SET DATA TYPE VARCHAR(255),
+ADD CONSTRAINT "Address_pkey" PRIMARY KEY ("id");
+
+-- AlterTable
+ALTER TABLE "CartItem" DROP CONSTRAINT "CartItem_pkey",
+ALTER COLUMN "id" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "userId" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "optionId" SET DATA TYPE VARCHAR(30),
+ADD CONSTRAINT "CartItem_pkey" PRIMARY KEY ("id");
+
+-- AlterTable
+ALTER TABLE "Category" DROP CONSTRAINT "Category_pkey",
+ALTER COLUMN "id" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "name" SET DATA TYPE VARCHAR(50),
+ADD CONSTRAINT "Category_pkey" PRIMARY KEY ("id");
+
+-- AlterTable
+ALTER TABLE "Order" DROP CONSTRAINT "Order_pkey",
+ALTER COLUMN "id" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "orderNumber" SET DATA TYPE VARCHAR(20),
+ALTER COLUMN "userId" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "ordererName" SET DATA TYPE VARCHAR(50),
+ALTER COLUMN "ordererPhone" SET DATA TYPE VARCHAR(11),
+ALTER COLUMN "recipient" SET DATA TYPE VARCHAR(50),
+ALTER COLUMN "recipientPhone" SET DATA TYPE VARCHAR(11),
+ALTER COLUMN "address1" SET DATA TYPE VARCHAR(255),
+ALTER COLUMN "address2" SET DATA TYPE VARCHAR(255),
+ALTER COLUMN "requestNote" SET DATA TYPE VARCHAR(255),
+ALTER COLUMN "idempotencyKey" SET DATA TYPE VARCHAR(36),
+ADD CONSTRAINT "Order_pkey" PRIMARY KEY ("id");
+
+-- AlterTable
+ALTER TABLE "OrderItem" DROP CONSTRAINT "OrderItem_pkey",
+ALTER COLUMN "id" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "orderId" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "productId" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "optionId" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "productName" SET DATA TYPE VARCHAR(100),
+ALTER COLUMN "optionName" SET DATA TYPE VARCHAR(100),
+ADD CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id");
+
+-- AlterTable
+ALTER TABLE "Product" DROP CONSTRAINT "Product_pkey",
+ALTER COLUMN "id" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "name" SET DATA TYPE VARCHAR(100),
+ALTER COLUMN "categoryId" SET DATA TYPE VARCHAR(30),
+ADD CONSTRAINT "Product_pkey" PRIMARY KEY ("id");
+
+-- AlterTable
+ALTER TABLE "ProductImage" DROP CONSTRAINT "ProductImage_pkey",
+ALTER COLUMN "id" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "productId" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "url" SET DATA TYPE VARCHAR(500),
+ADD CONSTRAINT "ProductImage_pkey" PRIMARY KEY ("id");
+
+-- AlterTable
+ALTER TABLE "ProductOption" DROP CONSTRAINT "ProductOption_pkey",
+ALTER COLUMN "id" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "productId" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "name" SET DATA TYPE VARCHAR(100),
+ADD CONSTRAINT "ProductOption_pkey" PRIMARY KEY ("id");
+
+-- AlterTable
+ALTER TABLE "Session" DROP CONSTRAINT "Session_pkey",
+ALTER COLUMN "id" SET DATA TYPE VARCHAR(64),
+ALTER COLUMN "userId" SET DATA TYPE VARCHAR(30),
+ADD CONSTRAINT "Session_pkey" PRIMARY KEY ("id");
+
+-- AlterTable
+ALTER TABLE "User" DROP CONSTRAINT "User_pkey",
+ALTER COLUMN "id" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "email" SET DATA TYPE VARCHAR(255),
+ALTER COLUMN "passwordHash" SET DATA TYPE VARCHAR(100),
+ALTER COLUMN "name" SET DATA TYPE VARCHAR(50),
+ALTER COLUMN "phone" SET DATA TYPE VARCHAR(11),
+ADD CONSTRAINT "User_pkey" PRIMARY KEY ("id");
+
+-- AlterTable
+ALTER TABLE "Wishlist" DROP CONSTRAINT "Wishlist_pkey",
+ALTER COLUMN "userId" SET DATA TYPE VARCHAR(30),
+ALTER COLUMN "productId" SET DATA TYPE VARCHAR(30),
+ADD CONSTRAINT "Wishlist_pkey" PRIMARY KEY ("userId", "productId");
+
+-- AddForeignKey
+ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Address" ADD CONSTRAINT "Address_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProductImage" ADD CONSTRAINT "ProductImage_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProductOption" ADD CONSTRAINT "ProductOption_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CartItem" ADD CONSTRAINT "CartItem_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CartItem" ADD CONSTRAINT "CartItem_optionId_fkey" FOREIGN KEY ("optionId") REFERENCES "ProductOption"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_optionId_fkey" FOREIGN KEY ("optionId") REFERENCES "ProductOption"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Wishlist" ADD CONSTRAINT "Wishlist_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Wishlist" ADD CONSTRAINT "Wishlist_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+COMMIT;
