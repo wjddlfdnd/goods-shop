@@ -2,14 +2,15 @@ import { Suspense } from "react";
 import { connection } from "next/server";
 import { listProducts } from "@/lib/catalog";
 import { MobileHomeHeader } from "@/components/layout/SiteHeader";
-import { ProductCard, SectionHeader, won } from "@/components/ui";
+import { Notice, ProductCard, SectionHeader, won } from "@/components/ui";
 
 // 홈(P-01). feature-catalog에서 배너·인기 상품·카테고리 영역을 채운다.
-export default function Home() {
+export default function Home({ searchParams }: PageProps<"/">) {
   return (
     <>
       <MobileHomeHeader tabs />
       <main className="page container">
+        <Suspense fallback={null}><AdminOnlyNotice searchParams={searchParams} /></Suspense>
         <section className="mt-8">
           <SectionHeader title="신상품" linkText="전체 보기" href="/products" />
           <Suspense fallback={<p className="caption">불러오는 중…</p>}>
@@ -29,6 +30,17 @@ async function NewProducts() {
       {products.map((p) => (
         <ProductCard key={p.id} href={`/products/${p.id}`} name={p.name} price={won(p.price)} imageUrl={p.imageUrl} label={p.soldOut ? "soldout" : undefined} />
       ))}
+    </div>
+  );
+}
+
+// 관리자 화면 접근 거부 후 안내(A-01, PRD v1.3·v1.7): 회원·비회원 같은 문구
+async function AdminOnlyNotice({ searchParams }: { searchParams: PageProps<"/">["searchParams"] }) {
+  const { notice } = await searchParams;
+  if (notice !== "admin-only") return null;
+  return (
+    <div className="mt-6">
+      <Notice live><strong className="text-ink">관리자만 들어갈 수 있는 페이지입니다.</strong><br />관리자 계정으로 로그인해야 쓸 수 있어 홈으로 이동했습니다.</Notice>
     </div>
   );
 }
