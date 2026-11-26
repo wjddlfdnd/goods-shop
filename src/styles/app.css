@@ -112,3 +112,11 @@ a { color: inherit; }
 @media (min-width: 768px) { .cat-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--grid-desktop-gutter); } }
 .cat-grid a { display: flex; align-items: center; justify-content: space-between; height: var(--space-16); padding: 0 var(--space-4) 0 var(--card-padding); border-radius: var(--radius-lg); background: var(--surface); color: var(--text); font-weight: 700; text-decoration: none; }
 .list-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6); }
+
+/* 주문 단계 */
+.order-steps { gap: var(--space-4); margin: 0; padding: 0; list-style: none; color: var(--text-sub); }
+.order-steps li { display: flex; align-items: center; gap: var(--space-2); }
+.order-steps li[aria-current="step"] { color: var(--text); font-weight: 700; }
+.order-steps__num { display: inline-grid; place-content: center; width: var(--badge-size); height: var(--badge-size); border-radius: var(--radius-full); background: var(--surface); }
+.order-steps li[aria-current="step"] .order-steps__num { background: var(--text); color: var(--bg); }
+@media (min-width: 768px) { .order-steps { display: flex; } }
