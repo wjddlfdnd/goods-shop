@@ -36,8 +36,9 @@ export function Button({ variant = "secondary", size = "M", full, icon, classNam
   const cls = cx("gs-btn", `gs-btn--${variant}`, `gs-btn--${size.toLowerCase()}`, full && "gs-btn--full", className);
   const kids = (<>{icon ? <Icon name={icon} size={20} /> : null}<span>{children}</span></>);
   if (href) {
-    if (disabled) return <a className={cls} aria-disabled="true" role="link">{kids}</a>;
-    return <Link className={cls} href={href}>{kids}</Link>;
+    const label = rest["aria-label"];
+    if (disabled) return <a className={cls} aria-disabled="true" role="link" aria-label={label}>{kids}</a>;
+    return <Link className={cls} href={href} aria-label={label}>{kids}</Link>;
   }
   return <button className={cls} type={rest.type ?? "button"} disabled={!!disabled} {...rest}>{kids}</button>;
 }

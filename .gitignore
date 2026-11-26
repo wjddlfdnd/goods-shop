@@ -50,3 +50,6 @@ next-env.d.ts
 # 디자인 QA 결과·런타임(디자인 캔버스에서 받음)
 /design/qa/out/
 /design/qa/runtime/
+
+# 관리자 이미지 업로드(개발용 로컬 저장)
+/uploads/
