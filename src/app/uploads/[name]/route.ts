@@ -1,10 +1,10 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { UPLOAD_DIR } from "@/lib/admin";
+import { UPLOAD_DIR } from "@/lib/storage";
 
 const TYPES: Record<string, string> = { ".jpg": "image/jpeg", ".png": "image/png", ".webp": "image/webp" };
 
-/** GET /uploads/{파일} — 관리자가 올린 상품 이미지(개발용 로컬 저장, A-03) */
+/** GET /uploads/{파일} — 관리자가 올린 상품 이미지(개발용 로컬 저장, 배포는 Blob URL을 직접 씀, A-03) */
 export async function GET(_req: Request, ctx: RouteContext<"/uploads/[name]">) {
   const name = path.basename((await ctx.params).name);
   const type = TYPES[path.extname(name).toLowerCase()];

@@ -1,6 +1,5 @@
 // 관리자 상품·이미지·옵션·카테고리 관리(A-02–A-05, PRD 7.2·D-6·D-12·v1.7). 호출하는 쪽이 관리자 권한을 먼저 확인한다.
-import { mkdir, unlink, writeFile } from "node:fs/promises";
-import path from "node:path";
+import { removeImage, saveImage } from "@/lib/storage";
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
 import { db } from "@/lib/db";
@@ -127,7 +126,6 @@ export async function deleteProduct(id: string) {
 /* ---------------- 이미지(A-03) ---------------- */
 export const IMAGE_LIMIT = { count: 10, bytes: 5 * 1024 * 1024, types: ["image/jpeg", "image/png", "image/webp"] }; // 가정(PRD v1.6)
 const EXT: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
-export const UPLOAD_DIR = path.join(process.cwd(), "uploads"); // 개발용 로컬 저장(배포는 Blob, 10단계)
 
 export async function addImages(productId: string, files: File[]) {
   const count = await db.productImage.count({ where: { productId } });
@@ -142,13 +140,12 @@ export async function addImages(productId: string, files: File[]) {
   for (const [i, buf] of buffers.entries()) {
     if (sniff(buf) !== files[i].type) throw new AdminError(400, "BAD_TYPE", `이미지 업로드에 실패했습니다(${files[i].name}). jpg·png·webp 파일만 올릴 수 있습니다.`);
   }
-  await mkdir(UPLOAD_DIR, { recursive: true });
   const hasMain = (await db.productImage.count({ where: { productId, kind: "MAIN" } })) > 0;
   let order = count;
   for (const [i, f] of files.entries()) {
     const name = `${randomUUID()}.${EXT[f.type]}`;
-    await writeFile(path.join(UPLOAD_DIR, name), buffers[i]);
-    await db.productImage.create({ data: { productId, url: `/uploads/${name}`, kind: !hasMain && i === 0 ? "MAIN" : "DETAIL", sortOrder: order++ } });
+    const url = await saveImage(name, buffers[i], f.type);
+    await db.productImage.create({ data: { productId, url, kind: !hasMain && i === 0 ? "MAIN" : "DETAIL", sortOrder: order++ } });
   }
 }
 
@@ -174,10 +171,7 @@ export async function deleteImage(productId: string, imageId: string) {
   await removeUpload(img.url);
 }
 
-async function removeUpload(url: string) {
-  if (!url.startsWith("/uploads/")) return; // 시드 이미지(public)는 지우지 않는다
-  await unlink(path.join(UPLOAD_DIR, path.basename(url))).catch(() => {});
-}
+const removeUpload = removeImage; // 로컬 uploads/ 또는 Vercel Blob
 
 /* ---------------- 카테고리(A-05) ---------------- */
 export async function listAdminCategories() {
