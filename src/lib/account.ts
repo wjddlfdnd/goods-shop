@@ -2,6 +2,10 @@
 import { z } from "zod";
 import { db } from "@/lib/db";
 import { phoneSchema } from "@/lib/validation";
+import type { Prisma } from "@/generated/prisma/client";
+
+/** 회원 행 잠금: 같은 회원의 배송지 트랜잭션을 한 줄로 세운다 */
+const lockUser = (tx: Prisma.TransactionClient, userId: string) => tx.$executeRaw`SELECT 1 FROM "User" WHERE id = ${userId} FOR UPDATE`;
 
 export class AccountError extends Error {
   constructor(public status: number, public code: string, message: string) { super(message); }
@@ -38,6 +42,7 @@ export function listAddresses(userId: string) {
  */
 export async function saveAddress(userId: string, id: string | null, input: AddressInput) {
   return db.$transaction(async (tx) => {
+    await lockUser(tx, userId); // 같은 회원의 배송지 변경을 차례로(QA2-06: 기본 동시 지정 시 고유 인덱스 충돌 500)
     if (id && !(await tx.address.findFirst({ where: { id, userId } }))) throw new AccountError(404, "NOT_FOUND", "배송지를 찾을 수 없습니다.");
     const count = await tx.address.count({ where: { userId } });
     if (!id && count >= ADDRESS_LIMIT) throw new AccountError(400, "TOO_MANY", `배송지는 ${ADDRESS_LIMIT}개까지 저장할 수 있습니다.`);
@@ -51,6 +56,7 @@ export async function saveAddress(userId: string, id: string | null, input: Addr
 /** 기본으로 지정(U-04) */
 export async function setDefaultAddress(userId: string, id: string) {
   return db.$transaction(async (tx) => {
+    await lockUser(tx, userId); // 같은 회원의 배송지 변경을 차례로(QA2-06: 기본 동시 지정 시 고유 인덱스 충돌 500)
     if (!(await tx.address.findFirst({ where: { id, userId } }))) throw new AccountError(404, "NOT_FOUND", "배송지를 찾을 수 없습니다.");
     await tx.address.updateMany({ where: { userId, isDefault: true }, data: { isDefault: false } });
     return tx.address.update({ where: { id }, data: { isDefault: true } });

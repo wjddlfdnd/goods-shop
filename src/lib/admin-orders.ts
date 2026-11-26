@@ -12,20 +12,25 @@ const kstStart = (d: string) => new Date(`${d}T00:00:00+09:00`);
 
 /** 주문 목록(A-06): 주문 번호·주문 상태·기간(주문일, 한국 날짜 기준)으로 검색, 최신순, 20개씩 */
 export async function listAdminOrders(f: { orderNumber?: string; status?: OrderStatus; from?: string; to?: string; page?: number }) {
-  const valid = (d?: string) => (d && /^\d{4}-\d{2}-\d{2}$/.test(d) ? d : undefined);
+  // 형식만 맞고 없는 날짜(2026-13-40)는 무시한다(QA2-01: Invalid Date로 500이 나던 문제)
+  const valid = (d?: string) => {
+    const m = d ? /^(\d{4})-(\d{2})-(\d{2})$/.exec(d) : null;
+    if (!m) return undefined;
+    const dt = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+    return dt.getUTCFullYear() === +m[1] && dt.getUTCMonth() === +m[2] - 1 && dt.getUTCDate() === +m[3] ? d : undefined;
+  };
   const from = valid(f.from), to = valid(f.to);
   const where = {
     ...(f.orderNumber ? { orderNumber: { contains: f.orderNumber.trim() } } : {}),
     ...(f.status ? { status: f.status } : {}),
     ...(from || to ? { createdAt: { ...(from ? { gte: kstStart(from) } : {}), ...(to ? { lt: new Date(kstStart(to).getTime() + 86_400_000) } : {}) } } : {}),
   };
-  const page = Math.max(1, f.page ?? 1);
-  const [total, rows] = await Promise.all([
-    db.order.count({ where }),
-    db.order.findMany({ where, orderBy: { createdAt: "desc" }, skip: (page - 1) * PAGE_SIZE, take: PAGE_SIZE, include: { items: { select: { productName: true, quantity: true } } } }),
-  ]);
+  const total = await db.order.count({ where });
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const page = Math.min(pages, Math.max(1, Math.floor(f.page ?? 1) || 1)); // 범위 밖 페이지는 끝 페이지로(QA2-03)
+  const rows = await db.order.findMany({ where, orderBy: { createdAt: "desc" }, skip: (page - 1) * PAGE_SIZE, take: PAGE_SIZE, include: { items: { select: { productName: true, quantity: true } } } });
   return {
-    total, page, pages: Math.max(1, Math.ceil(total / PAGE_SIZE)),
+    total, page, pages,
     items: rows.map((o) => ({
       id: o.id, orderNumber: o.orderNumber, createdAt: o.createdAt, ordererName: o.ordererName, status: o.status, totalAmount: o.totalAmount,
       firstName: o.items[0]?.productName ?? "", itemCount: o.items.length, quantity: o.items.reduce((s, i) => s + i.quantity, 0),

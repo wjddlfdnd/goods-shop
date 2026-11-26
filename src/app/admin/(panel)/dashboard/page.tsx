@@ -21,9 +21,9 @@ async function Tiles() {
   await connection();
   const s = await salesSummary();
   const tiles = [
-    { label: "총 주문 수", value: `${s.orderCount.toLocaleString("ko-KR")}건`, href: "/admin/orders", note: "결제 완료·배송 준비·배송 중·배송 완료" },
-    { label: "총매출", value: won(s.revenue), href: "/admin/orders", note: "주문 취소 제외 결제 금액 합계" },
-    { label: "판매 중 상품 수", value: `${s.onSaleProducts.toLocaleString("ko-KR")}개`, href: "/admin/products?status=ON_SALE", note: "판매 상태가 판매 중인 상품" },
+    { label: "총 주문 수", value: `${s.orderCount.toLocaleString("ko-KR")}건`, href: "/admin/orders", link: "주문 보기", note: "결제 완료·배송 준비·배송 중·배송 완료" },
+    { label: "총매출", value: won(s.revenue), href: "/admin/orders", link: "주문 보기", note: "주문 취소 제외 결제 금액 합계" },
+    { label: "판매 중 상품 수", value: `${s.onSaleProducts.toLocaleString("ko-KR")}개`, href: "/admin/products?status=ON_SALE", link: "상품 보기", note: "판매 상태가 판매 중인 상품" },
   ];
   return (
     <dl className="stat-tiles m-0">
@@ -31,7 +31,8 @@ async function Tiles() {
         <div key={t.label} className="gs-panel stat-tile">
           <dt className="body-sm-14 text-sub">{t.label}</dt>
           <dd className="stat-tile__value heading-sm-desktop m-0">{t.value}</dd>
-          <dd className="caption text-sub m-0">{t.note} · <Link className="gs-link" href={t.href}>보기</Link></dd>
+          <dd className="caption text-sub m-0">{t.note}</dd>
+          <dd className="m-0"><Link className="gs-link body-sm-14" href={t.href} style={{ display: "inline-flex", alignItems: "center", minHeight: "var(--space-6)" }}><span>{t.link} →</span></Link></dd>
         </div>
       ))}
     </dl>
