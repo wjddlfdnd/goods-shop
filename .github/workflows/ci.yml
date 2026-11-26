@@ -1,0 +1,55 @@
+# PR마다 자동 확인(docs/04 Git Flow): 린트 → 빌드 → 정책 테스트(Vitest) → 핵심 흐름 E2E(Playwright)
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: goodsshop_test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      # 테스트 전용 DB(개발 DB와 분리). 값은 CI 컨테이너 안에서만 쓰는 테스트용
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/goodsshop_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: 린트
+        run: npx eslint .
+      - name: 타입 검사·빌드
+        run: npm run build
+      - name: 정책 테스트(Vitest)
+        run: npm test
+      - name: Playwright 브라우저 설치
+        run: npx playwright install --with-deps chromium
+      - name: 핵심 흐름 E2E(Playwright)
+        run: npx playwright test --trace off
+      - name: 실패 시 결과 보관
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: test-results/
+          retention-days: 7
