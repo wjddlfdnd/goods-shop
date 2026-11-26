@@ -40,4 +40,4 @@ export function listCategories() {
   return db.category.findMany({ where: { isSystem: false }, orderBy: { sortOrder: "asc" }, select: { id: true, name: true } });
 }
 
-export const won = (n: number) => `${n.toLocaleString("ko-KR")}원`;
+export { won } from "@/lib/format";
