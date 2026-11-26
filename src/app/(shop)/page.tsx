@@ -65,7 +65,7 @@ async function AdminOnlyNotice({ searchParams }: { searchParams: PageProps<"/">[
   if (notice !== "admin-only") return null;
   return (
     <div className="mt-6">
-      <Notice live><strong className="text-ink">관리자만 들어갈 수 있는 페이지입니다.</strong><br />관리자 계정으로 로그인해야 쓸 수 있어 홈으로 이동했습니다.</Notice>
+      <Notice live><strong className="text-ink">관리자만 들어갈 수 있는 페이지입니다.</strong><br />관리자 계정으로 로그인해야 쓸 수 있어 홈으로 이동했습니다. <Link className="gs-link gs-link--strong" href="/admin/login">관리자 로그인 →</Link></Notice>
     </div>
   );
 }

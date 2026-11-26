@@ -5,7 +5,7 @@ const SESSION_COOKIE = "gs_session";
 
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
-  if (request.cookies.has(SESSION_COOKIE)) return NextResponse.next();
+  if (request.cookies.has(SESSION_COOKIE) || pathname === "/admin/login") return NextResponse.next(); // 관리자 로그인 화면(A-01 2차)은 누구나
   if (pathname.startsWith("/admin")) {
     // 회원·비회원 같은 처리: 사용자 홈 + "관리자만 들어갈 수 있는 페이지입니다"(PRD v1.3)
     return NextResponse.redirect(new URL("/?notice=admin-only", request.url));
