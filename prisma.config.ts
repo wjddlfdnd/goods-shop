@@ -10,6 +10,7 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // 마이그레이션은 연결 풀을 거치지 않는 직접 연결로(Neon: DATABASE_URL_UNPOOLED). 없으면 DATABASE_URL
+    url: process.env["DATABASE_URL_UNPOOLED"] ?? process.env["DATABASE_URL"],
   },
 });
