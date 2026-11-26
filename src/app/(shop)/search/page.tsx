@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { listProducts, parseSort, type Sort } from "@/lib/catalog";
+import { getSessionUser } from "@/lib/auth";
+import { wishedIds } from "@/lib/wishlist";
 import { MobileSubHeader } from "@/components/layout/SiteHeader";
 import { ProductGrid } from "@/components/catalog/ProductGrid";
 import { SortMenu } from "@/components/catalog/SortMenu";
@@ -42,7 +44,7 @@ async function Results({ searchParams }: { searchParams: PageProps<"/search">["s
   const q = sp.q.trim();
   if (!q) return <SearchForm q={sp.q} error="검색어를 입력해 주세요" />;
   const sort = parseSort(sp.sort);
-  const products = await listProducts({ q, sort });
+  const [products, wished] = await Promise.all([listProducts({ q, sort }), getSessionUser().then((u) => wishedIds(u?.id))]);
   const hrefFor = (s: Sort) => `/search?${new URLSearchParams({ q, sort: s })}`;
   return (
     <>
@@ -51,7 +53,7 @@ async function Results({ searchParams }: { searchParams: PageProps<"/search">["s
         <p className="body-sm-14 text-sub m-0">&apos;{q}&apos; 검색 결과 <b className="text-ink">{products.length}</b>개</p>
         {products.length ? <SortMenu current={sort} hrefFor={hrefFor} /> : null}
       </div>
-      {products.length ? <ProductGrid products={products} /> : (
+      {products.length ? <ProductGrid products={products} wished={wished} back={hrefFor(sort)} /> : (
         <EmptyState title={`'${q}'에 맞는 상품이 없습니다`} text="검색어를 줄이거나 다른 상품명으로 다시 검색해 보세요." actionText="전체 상품 보기" href="/products" />
       )}
     </>

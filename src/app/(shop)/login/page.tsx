@@ -28,7 +28,7 @@ async function LoginBody({ searchParams }: { searchParams: PageProps<"/login">["
     <div className="stack-6">
       <p className="body-15 text-sub m-0">이메일로 로그인하세요</p>
       {sp.joined ? <Notice live>가입이 완료되었습니다. 가입한 이메일로 로그인해 주세요.</Notice> : null}
-      {parsed ? <Notice>로그인하면 하려던 {parsed.type === "cart" ? "장바구니 담기" : "바로 구매"}를 이어서 진행합니다.</Notice> : null}
+      {parsed ? <Notice>로그인하면 하려던 {parsed.type === "cart" ? "장바구니 담기" : parsed.type === "buy" ? "바로 구매" : "찜하기"}를 이어서 진행합니다.</Notice> : null}
       <LoginForm next={next} intent={intent} />
     </div>
   );
