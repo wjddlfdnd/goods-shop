@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { notFound } from "next/navigation";
@@ -30,7 +31,7 @@ async function List({ searchParams }: { searchParams: PageProps<"/products">["se
   const hrefFor = (s: Sort) => `/products?${new URLSearchParams({ ...(categoryId ? { category: categoryId } : {}), sort: s })}`;
   return (
     <>
-      <ol className="crumbs body-sm-13 only-desktop"><li><a href="/">홈</a></li><li aria-current="page">{category?.name ?? "전체 상품"}</li></ol>
+      <ol className="crumbs body-sm-13 only-desktop"><li><Link href="/">홈</Link></li><li aria-current="page">{category?.name ?? "전체 상품"}</li></ol>
       <h1 className="page-title heading-xl-mobile">{category?.name ?? "전체 상품"}</h1>
       <div className="list-head">
         <p className="body-sm-14 text-sub m-0">상품 <b className="text-ink">{products.length}</b>개</p>
