@@ -61,6 +61,7 @@ async function Complete({ params }: { params: PageProps<"/orders/[orderNumber]/c
         {order.requestNote ? <span className="body-sm-13 text-sub">요청사항: {order.requestNote}</span> : null}
       </section>
       <Button variant="dark" href="/" full>쇼핑 계속하기</Button>
+      <Button variant="ghost" href={`/account/orders/${order.orderNumber}`} full>주문 상세 보기</Button>
     </div>
   );
 }

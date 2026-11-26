@@ -12,7 +12,7 @@ export type CheckoutLine = {
 };
 
 export class OrderError extends Error {
-  constructor(public code: "EMPTY" | "UNAVAILABLE" | "OUT_OF_STOCK" | "INVALID_INPUT", message: string, public items?: { optionId: string; remaining: number }[]) {
+  constructor(public code: "EMPTY" | "UNAVAILABLE" | "OUT_OF_STOCK" | "INVALID_INPUT" | "NOT_CANCELABLE", message: string, public items?: { optionId: string; remaining: number }[], public status?: string) {
     super(message);
   }
 }
@@ -139,4 +139,37 @@ export async function placeOrder(userId: string, input: PlaceOrderInput): Promis
 /** 주문 완료(O-06): 본인 주문만 */
 export function getOrder(userId: string, orderNumber: string) {
   return db.order.findFirst({ where: { orderNumber, userId }, include: { items: { include: { option: { select: { isDefault: true } } } } } });
+}
+
+/** 주문 내역(U-05): 본인 주문만, 주문일 내림차순(가정). 취소된 주문도 남는다 */
+export async function listMyOrders(userId: string) {
+  const orders = await db.order.findMany({
+    where: { userId }, orderBy: { createdAt: "desc" },
+    include: { items: { select: { productName: true, optionName: true, quantity: true, product: { select: { images: { where: { kind: "MAIN" }, take: 1, select: { url: true } } } } } } },
+  });
+  return orders.map((o) => ({
+    orderNumber: o.orderNumber, status: o.status, createdAt: o.createdAt, totalAmount: o.totalAmount,
+    firstName: o.items[0]?.productName ?? "", itemCount: o.items.length, quantity: o.items.reduce((s, i) => s + i.quantity, 0),
+    imageUrl: o.items[0]?.product.images[0]?.url ?? null,
+  }));
+}
+
+/**
+ * 주문 취소(O-07, 기술 설계서 4.3): 한 트랜잭션에서 결제 완료일 때만 조건부로 취소로 바꾸고(관리자 상태 변경이 끼어들면 0행 → 거부)
+ * 주문 상품 수량만큼 옵션 재고를 복구한다. 주문은 내역에 남는다.
+ */
+export async function cancelOrder(userId: string, orderNumber: string) {
+  return db.$transaction(async (tx) => {
+    const n = await tx.order.updateMany({ where: { orderNumber, userId, status: "PAID" }, data: { status: "CANCELED" } });
+    if (n.count === 0) {
+      const cur = await tx.order.findFirst({ where: { orderNumber, userId }, select: { status: true } });
+      if (!cur) throw new OrderError("INVALID_INPUT", "주문을 찾을 수 없습니다.");
+      throw new OrderError("NOT_CANCELABLE", cur.status === "CANCELED" ? "이미 취소된 주문입니다." : "배송 준비가 시작되어 취소할 수 없습니다.", undefined, cur.status);
+    }
+    const order = await tx.order.findFirstOrThrow({ where: { orderNumber, userId }, include: { items: true } });
+    for (const it of order.items) {
+      await tx.$executeRaw`UPDATE "ProductOption" SET stock = stock + ${it.quantity} WHERE id = ${it.optionId}`;
+    }
+    return { orderNumber, restored: order.items.reduce((s, i) => s + i.quantity, 0) };
+  });
 }
