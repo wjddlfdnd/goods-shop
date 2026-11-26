@@ -750,7 +750,7 @@
       "artifact": "https://claude.ai/artifact/PBbfegRqkELUgyKCi3SPTf",
       "copiedAt": "2026-11-25T08:00:00Z",
       "namespace": "goodsshop",
-      "title": "굿즈샵 디자인 시스템",
+      "title": "팬덤픽 디자인 시스템",
       "version": "1795622213-7895"
     }
   ],
@@ -768,7 +768,7 @@
   "notes": {
     "legend": {
       "size": 24,
-      "text": "UI 시안 (6단계) — 굿즈샵 디자인 시스템 v2.2.1\n· 실제에 가까운 예시 상품·가격, 이미지는 사진 대신 선 그림 자리\n· 위 3줄은 기본 상태(로그인한 회원, 장바구니 3개), 아래 줄은 빈 상태·오류 상태 21개\n· 1차 범위 밖(찜·리뷰·별점·할인율·공유)은 없음\n· Play: 홈 → 상세 → 장바구니 → 주문서 → 주문 완료\n· 컬럼 가이드는 숨겨 둠(아트보드 메뉴에서 켜기)\n· 와이어프레임: claude.ai/artifact/TNGHhcVkosaBTxnLCKQ7NA",
+      "text": "UI 시안 (6단계) — 팬덤픽 디자인 시스템 v2.2.1\n· 실제에 가까운 예시 상품·가격, 이미지는 사진 대신 선 그림 자리\n· 위 3줄은 기본 상태(로그인한 회원, 장바구니 3개), 아래 줄은 빈 상태·오류 상태 21개\n· 1차 범위 밖(찜·리뷰·별점·할인율·공유)은 없음\n· Play: 홈 → 상세 → 장바구니 → 주문서 → 주문 완료\n· 컬럼 가이드는 숨겨 둠(아트보드 메뉴에서 켜기)\n· 와이어프레임: claude.ai/artifact/TNGHhcVkosaBTxnLCKQ7NA",
       "w": 440,
       "x": 4230,
       "y": 0
@@ -858,5 +858,5 @@
     "D-AdminCategories--blocked.dc.html"
   ],
   "pages": [],
-  "title": "굿즈샵 UI 시안 (6단계)"
+  "title": "팬덤픽 UI 시안 (6단계)"
 }

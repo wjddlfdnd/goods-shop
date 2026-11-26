@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 굿즈샵 디자인 QA 러너
+// 팬덤픽 디자인 QA 러너
 // 사용: node run.js <캔버스 project 폴더> [--out <결과 폴더>] [--only <파일 일부>]
 // 캔버스의 .dc.html을 디자인 캔버스 런타임(runtime/support.js)으로 실제 렌더링해 cases.json의 테스트 케이스를 돌린다.
 const fs = require('fs');

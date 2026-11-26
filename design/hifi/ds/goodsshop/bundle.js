@@ -188,7 +188,7 @@
       ? [h(IconButton, { key: 'b', icon: 'back', label: '뒤로', href: typeof props.back === 'string' ? props.back : (l.back || '#') }),
          h(props.titleAs || 'h1', { key: 't', className: 'gs-header__title' }, props.title)]
       : [h(props.titleAs || 'h1', { key: 't', className: props.title ? 'gs-header__title' : 'gs-header__title', style: props.title ? undefined : { flex: 1 } },
-          props.title ? props.title : h('a', { className: 'gs-logo', href: l.home || '#' }, 'GOODS SHOP'))];
+          props.title ? props.title : h('a', { className: 'gs-logo', href: l.home || '#' }, 'FANDOM PICK'))];
     var right = props.icons === false ? [] : (props.back ? [h(IconButton, { key: 'c', icon: 'cart', label: '장바구니', href: l.cart || '#', badge: props.cartCount })] : headerIcons(props));
     return h('header', { className: cx('gs-header', props.back && 'gs-header--back', props.className) }, left, right);
   }
@@ -196,7 +196,7 @@
     var l = props.links || {};
     return h('header', { className: cx('gs-dheader', props.className) },
       h('div', { className: 'gs-dheader__in' },
-        h('a', { className: 'gs-logo', href: l.home || '#' }, 'GOODS SHOP'),
+        h('a', { className: 'gs-logo', href: l.home || '#' }, 'FANDOM PICK'),
         h(CategoryTabs, { items: props.categories || [], current: props.current, href: props.categoryHref, flush: true }),
         h('div', { className: 'gs-dheader__actions' }, headerIcons(props, props.loginLabel || '로그인'))));
   }

@@ -6,7 +6,7 @@ import { listCategories, listProducts, won } from "@/lib/catalog";
 export default function Home() {
   return (
     <main className="container" style={{ paddingTop: "var(--space-8)", paddingBottom: "var(--space-16)" }}>
-      <h1 className="heading-lg-mobile" style={{ margin: 0, color: "var(--text)" }}>GOODS SHOP</h1>
+      <h1 className="heading-lg-mobile" style={{ margin: 0, color: "var(--text)" }}>FANDOM PICK</h1>
       <p className="body-sm-14" style={{ color: "var(--text-sub)" }}>7단계 개발 환경 확인 화면 — 데이터는 로컬 PostgreSQL 시드에서 읽습니다.</p>
       <Suspense fallback={<p className="caption">불러오는 중…</p>}>
         <CatalogPreview />

@@ -1,4 +1,6 @@
-# 굿즈샵 (GOODS SHOP) Design Language — v2
+# 팬덤픽 (FANDOM PICK) Design Language — v2
+
+> 서비스 이름: **팬덤픽 (FANDOM PICK)** — "팬덤이 직접 고른 추천템"(사용자 결정, 2026-11-26, PRD v1.8). 로고 워드마크는 `FANDOM PICK`, 한글 표기는 팬덤픽. 푸터 소개 문구는 "팬덤이 직접 고른 추천 굿즈를 모은 연습용 쇼핑몰입니다."
 
 > 출처: 디자인 방향 시안 B 안정형(레이아웃) + 사용자 결정 "흑백 + 코랄 레드"(2026-11-25) + 사용자 결정 "부드러운 스타일 7원칙"(2026-11-25, v2).
 > 원본: 와이어프레임 캔버스 https://claude.ai/artifact/TNGHhcVkosaBTxnLCKQ7NA, 디자인 시스템 https://claude.ai/artifact/PBbfegRqkELUgyKCi3SPTf (v2).
@@ -80,7 +82,7 @@
 | `heading-sm` | 22 (모바일) / 30 (데스크톱) | 섹션 제목 | 800 | 1.3 | −2% |
 | `heading-xl-mobile` | 26 | 상품 상세 상품명 등 화면 핵심 제목 | 800 | 1.3 | −2% |
 | `heading-lg` | 28 (모바일) / 44 (데스크톱) | 배너 제목, 페이지 제목(로그인·회원가입·주문 완료) | 800 | 1.25 | −2% |
-| `logo` | 18–24 | GOODS SHOP 워드마크 | 800 | 1 | −2% |
+| `logo` | 18–24 | FANDOM PICK 워드마크 | 800 | 1 | −2% |
 
 ## 4. Components
 

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GOODS SHOP",
-  description: "굿즈샵 — 연습용 굿즈 쇼핑몰(모의 결제)",
+  title: "FANDOM PICK 팬덤픽",
+  description: "팬덤픽 — 팬덤이 직접 고른 추천템. 연습용 굿즈 쇼핑몰(모의 결제)",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
