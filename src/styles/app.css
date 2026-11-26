@@ -87,7 +87,11 @@ a { color: inherit; }
 .admin { display: grid; min-height: 100vh; background: var(--gray-25); }
 .admin__header { background: var(--bg); border-bottom: var(--line-width) solid var(--line); }
 .admin__header-in { display: flex; align-items: center; gap: var(--space-4); height: var(--header-desktop-height); }
-.admin__body { display: grid; gap: var(--space-8); padding: var(--space-8) 0 var(--space-16); }
+.admin__body { display: grid; gap: var(--space-8); padding-top: var(--space-8); padding-bottom: var(--space-16); }
+.admin__body > main { min-width: 0; }
+/* 표 행 머리(th scope=row)는 본문 셀처럼(하이파이 시안과 같음) */
+.gs-table th[scope="row"] { font-size: inherit; font-weight: 500; color: var(--text); background: transparent; border-bottom-color: var(--line); white-space: normal; }
+.nowrap { white-space: nowrap; }
 @media (min-width: 768px) { .admin__body { grid-template-columns: minmax(var(--grid-admin-menu-min), 2fr) 10fr; gap: var(--grid-desktop-gutter); } }
 .admin__menu ul { margin: 0; padding: 0; list-style: none; }
 .admin__menu a, .admin__menu span { display: flex; align-items: center; justify-content: space-between; min-height: var(--touch-min); padding: 0 var(--space-4); border-radius: var(--radius-md); color: var(--text-body); text-decoration: none; }

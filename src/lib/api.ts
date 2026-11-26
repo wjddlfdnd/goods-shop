@@ -1,4 +1,6 @@
 import type { CartError } from "@/lib/cart";
+import { requireAdmin } from "@/lib/auth";
+import { AdminError } from "@/lib/admin";
 // API 공통 응답 형식(기술 설계서 7장): 성공 { data }, 실패 { error, message }
 export const ok = (data: unknown, status = 200) => Response.json({ data }, { status });
 export const fail = (status: number, error: string, message: string, extra?: Record<string, unknown>) =>
@@ -12,3 +14,14 @@ const CART_STATUS = { NOT_FOUND: 404, UNAVAILABLE: 409, SOLD_OUT: 409, OVER_STOC
 /** 장바구니 오류 → API 응답(API 명세: 409 OVER_STOCK(남은 수량), 409 UNAVAILABLE) */
 export const cartFail = (e: CartError) =>
   fail(CART_STATUS[e.code], e.code === "SOLD_OUT" ? "UNAVAILABLE" : e.code, e.message, e.remaining != null ? { remaining: e.remaining } : undefined);
+
+/** 관리자 API 공통: 권한 확인(회원·비회원 403)과 AdminError → 응답 */
+export async function adminRoute(fn: () => Promise<Response>): Promise<Response> {
+  if (!(await requireAdmin())) return fail(403, "FORBIDDEN", "관리자만 사용할 수 있습니다.");
+  try {
+    return await fn();
+  } catch (e) {
+    if (e instanceof AdminError) return fail(e.status, e.code, e.message, e.extra);
+    throw e;
+  }
+}

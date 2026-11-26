@@ -56,3 +56,9 @@ export async function authenticate(email: string, password: string) {
 export function safeNext(next: unknown, fallback = "/") {
   return typeof next === "string" && next.startsWith("/") && !next.startsWith("//") ? next : fallback;
 }
+
+/** 관리자 권한 확인(A-01): 관리자 API·서버 액션 맨 앞에서 부른다. 회원·비회원 모두 403 */
+export async function requireAdmin(): Promise<SessionUser | null> {
+  const user = await getSessionUser();
+  return user && user.role === "ADMIN" ? user : null;
+}
