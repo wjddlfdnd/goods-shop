@@ -1,36 +1,56 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { listProducts } from "@/lib/catalog";
+import { listCategories, listProducts } from "@/lib/catalog";
 import { MobileHomeHeader } from "@/components/layout/SiteHeader";
-import { Notice, ProductCard, SectionHeader, won } from "@/components/ui";
+import { HomeBanner } from "@/components/catalog/HomeBanner";
+import { ProductGrid } from "@/components/catalog/ProductGrid";
+import { Icon, Notice, SectionHeader } from "@/components/ui";
 
-// 홈(P-01). feature-catalog에서 배너·인기 상품·카테고리 영역을 채운다.
+// 홈(P-01): 메인 배너 · 신상품 8 · 인기 상품 8 · 카테고리
 export default function Home({ searchParams }: PageProps<"/">) {
   return (
     <>
       <MobileHomeHeader tabs />
       <main className="page container">
         <Suspense fallback={null}><AdminOnlyNotice searchParams={searchParams} /></Suspense>
-        <section className="mt-8">
-          <SectionHeader title="신상품" linkText="전체 보기" href="/products" />
-          <Suspense fallback={<p className="caption">불러오는 중…</p>}>
-            <NewProducts />
-          </Suspense>
-        </section>
+        <div className="mt-6"><HomeBanner /></div>
+        <Suspense fallback={<p className="caption mt-8">불러오는 중…</p>}>
+          <Sections />
+        </Suspense>
       </main>
     </>
   );
 }
 
-async function NewProducts() {
-  await connection(); // 재고·판매 상태는 요청 시점 데이터
-  const products = await listProducts({ take: 8 });
+async function Sections() {
+  await connection(); // 재고·판매 상태·주문 집계는 요청 시점 데이터
+  const [fresh, popular, categories] = await Promise.all([
+    listProducts({ sort: "latest", take: 8 }),
+    listProducts({ sort: "popular", take: 8 }), // 집계 대상 주문 0건이면 최신순과 같다(7.10)
+    listCategories(),
+  ]);
   return (
-    <div className="card-grid">
-      {products.map((p) => (
-        <ProductCard key={p.id} href={`/products/${p.id}`} name={p.name} price={won(p.price)} imageUrl={p.imageUrl} label={p.soldOut ? "soldout" : undefined} />
-      ))}
-    </div>
+    <>
+      {fresh.length > 0 ? ( // 판매 중 상품 0건이면 영역을 숨긴다(7.10)
+        <section className="mt-12">
+          <SectionHeader title="신상품" linkText="전체 보기" href="/products" />
+          <ProductGrid products={fresh} />
+        </section>
+      ) : null}
+      {popular.length > 0 ? (
+        <section className="mt-12">
+          <SectionHeader title="인기 상품" linkText="인기순 보기" href="/products?sort=popular" />
+          <ProductGrid products={popular} ranked />
+        </section>
+      ) : null}
+      <section className="mt-12">
+        <SectionHeader title="카테고리" />
+        <nav className="cat-grid" aria-label="카테고리 바로가기">
+          {categories.map((c) => <Link key={c.id} href={`/products?category=${c.id}`} className="body-sm-14"><span>{c.name}</span><Icon name="chevron-right" size={20} /></Link>)}
+        </nav>
+      </section>
+    </>
   );
 }
 
