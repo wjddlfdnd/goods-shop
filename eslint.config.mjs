@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // 디자인 캔버스 원본·디자인 QA 도구(앱 코드 아님)와 Prisma 생성물
+    "design/**",
+    "src/generated/**",
   ]),
 ]);
 
