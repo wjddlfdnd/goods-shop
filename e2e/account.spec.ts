@@ -6,7 +6,7 @@ test("U-03·U-04: 정보 수정, 배송지 추가·기본 지정, 주문서에 �
   const uid = resetMember();
   await page.goto("/login?next=/account");
   await login(page, "goods@example.com", "goods1234");
-  await page.waitForURL(/\/account$/);
+  await page.waitForURL((u) => u.pathname === "/account");
   await page.click("text=내 정보 수정");
   await page.fill("#pf-name", "김하늘");
   await page.fill("#pf-phone", "01077776666");
@@ -30,4 +30,28 @@ test("U-03·U-04: 정보 수정, 배송지 추가·기본 지정, 주문서에 �
   await expect(page.locator("#ship-addr")).toHaveValue("부산시 해운대구 바다로 3");
   await expect(page.locator("#buyer-phone")).toHaveValue("010-7777-6666");
   sql(`update "User" set phone='01012345678', name='김하늘' where id='${uid}'`);
+});
+
+// 시나리오 4(2차): 주문 내역 → 주문 상세 → 결제 완료 주문 취소 → 재고 복구, 내역에 남음
+test("시나리오 4: 주문 내역·상세·취소", async ({ page }) => {
+  resetMember();
+  const opt = sql(`select o.id from "ProductOption" o join "Product" p on p.id=o."productId" where p.status='ON_SALE' and o.stock>3 order by o.id limit 1`);
+  await page.goto("/login?next=/account/orders");
+  await login(page, "goods@example.com", "goods1234");
+  await page.waitForURL((u) => u.pathname === "/account/orders");
+  await page.goto(`/checkout?buy=${opt}:2&back=/`);
+  await page.fill("#ship-name", "김하늘");
+  await page.fill("#ship-phone", "01012345678");
+  await page.fill("#ship-addr", "서울시 마포구 굿즈로 12");
+  await page.click("button:has-text('결제하기')");
+  await page.waitForURL(/\/complete/);
+  const stockAfterOrder = Number(sql(`select stock from "ProductOption" where id='${opt}'`));
+  await page.click("text=주문 상세 보기");
+  await expect(visible(page, "결제 완료")).toBeVisible();
+  await page.click("button:has-text('주문 취소')");
+  await page.locator("[role=alertdialog] button:has-text('주문 취소')").click();
+  await expect(visible(page, /주문을 취소했습니다/)).toBeVisible();
+  expect(Number(sql(`select stock from "ProductOption" where id='${opt}'`))).toBe(stockAfterOrder + 2);
+  await page.goto("/account/orders");
+  await expect(visible(page, "주문 취소")).toBeVisible();
 });
