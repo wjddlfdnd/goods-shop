@@ -3,6 +3,9 @@ import { Suspense } from "react";
 import { connection } from "next/server";
 import { notFound } from "next/navigation";
 import { getProduct } from "@/lib/catalog";
+import { getSessionUser } from "@/lib/auth";
+import { wishedIds } from "@/lib/wishlist";
+import { WishButton } from "@/components/catalog/WishButton";
 import { MobileSubHeader } from "@/components/layout/SiteHeader";
 import { Gallery } from "@/components/catalog/Gallery";
 import { PurchasePanel } from "@/components/catalog/PurchasePanel";
@@ -33,6 +36,7 @@ async function Detail({ params, searchParams }: { params: PageProps<"/products/[
   const { notice } = await searchParams;
   const p = await getProduct(id);
   if (!p) notFound();
+  const wished = await getSessionUser().then((u) => wishedIds(u?.id));
   const stopped = p.status === "STOPPED";
   const soldOut = p.options.every((o) => o.stock === 0);
   const main = p.images.filter((i) => i.kind === "MAIN").map((i) => i.url);
@@ -58,10 +62,14 @@ async function Detail({ params, searchParams }: { params: PageProps<"/products/[
               {optionCount ? <InfoPill>옵션 {optionCount}개</InfoPill> : null}
               {visibleCategory ? <InfoPill>{visibleCategory.name}</InfoPill> : null}
             </div>
-            <h1 className="heading-xl-mobile m-0 text-ink">{p.name}</h1>
+            <div className="row row--between" style={{ alignItems: "flex-start" }}>
+              <h1 className="heading-xl-mobile m-0 text-ink">{p.name}</h1>
+              <WishButton productId={p.id} name={p.name} wished={wished.has(p.id)} back={`/products/${p.id}`} />
+            </div>
             <p className="price-detail m-0 text-ink">{won(p.price)}</p>
             <p className="body-15 m-0" style={{ whiteSpace: "pre-line" }}>{p.description}</p>
           </div>
+          {notice === "WISHED" ? <Notice live>찜 목록에 담았습니다. <a className="gs-link gs-link--strong" href="/account/wishlist">찜 목록 보기 →</a></Notice> : null}
           {typeof notice === "string" && INTENT_NOTICE[notice] ? <Notice live tone="danger">{INTENT_NOTICE[notice]}</Notice> : null}
           {stopped ? (
             <Notice live>

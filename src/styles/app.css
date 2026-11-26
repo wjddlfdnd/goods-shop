@@ -128,3 +128,10 @@ details > summary { display: flex; align-items: center; min-height: var(--touch-
 .order-steps__num { display: inline-grid; place-content: center; width: var(--badge-size); height: var(--badge-size); border-radius: var(--radius-full); background: var(--surface); }
 .order-steps li[aria-current="step"] .order-steps__num { background: var(--text); color: var(--bg); }
 @media (min-width: 768px) { .order-steps { display: flex; } }
+
+/* 찜 버튼(U-06, 2차): 카드 이미지 오른쪽 위에 겹침 */
+.gs-card-wrap { position: relative; min-width: 0; }
+.gs-card__action { position: absolute; top: var(--space-2); right: var(--space-2); }
+.wish-btn { background: var(--bg); border-radius: var(--radius-full); box-shadow: var(--shadow-sm); }
+.wish-btn[aria-pressed="true"] { color: var(--accent); }
+.wish-btn[aria-pressed="true"] .gs-icon path { fill: currentColor; }

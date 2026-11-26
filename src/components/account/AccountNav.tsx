@@ -6,6 +6,7 @@ export const ACCOUNT_MENU = [
   { href: "/account/profile", label: "내 정보 수정", desc: "이름·연락처" },
   { href: "/account/addresses", label: "배송지 관리", desc: "기본 배송지 지정" },
   { href: "/account/orders", label: "주문 내역", desc: "주문 상세·결제 완료 주문 취소" },
+  { href: "/account/wishlist", label: "찜 목록", desc: "관심 상품 모아 보기" },
 ] as const;
 
 export function AccountNav() {

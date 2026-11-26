@@ -18,6 +18,7 @@ const PATHS: Record<string, ReactNode> = {
   "chevron-right": <path d="M9 5l7 7-7 7" />,
   "chevron-down": <path d="M6 9l6 6 6-6" />,
   sort: (<><path d="M4 7h9M4 12h6M4 17h3" /><path d="M17 5v14M14 16l3 3 3-3" /></>),
+  heart: <path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z" />,
 };
 export type IconName = keyof typeof PATHS;
 
@@ -133,8 +134,9 @@ export function SectionHeader({ title, linkText, href, desktop, as: Tag = "h2" }
 }
 
 /* ---------- ProductCard ---------- */
-export function ProductCard({ href, name, price, imageUrl, label, rank }: { href: string; name: string; price: string; imageUrl?: string | null; label?: keyof typeof LABEL_TEXT; rank?: number }) {
-  return (
+export function ProductCard({ href, name, price, imageUrl, label, rank, action }: { href: string; name: string; price: string; imageUrl?: string | null; label?: keyof typeof LABEL_TEXT; rank?: number; action?: ReactNode }) {
+  // action(찜 버튼)은 링크 안에 둘 수 없어(버튼 중첩 금지) 카드 위에 겹쳐 둔다
+  const card = (
     <Link className="gs-card" href={href}>
       <div className="gs-card__img" role="img" aria-label={name}>
         {/* eslint-disable-next-line @next/next/no-img-element -- 선 그림 SVG·업로드 이미지(URL), 최적화 불필요 */}
@@ -148,6 +150,7 @@ export function ProductCard({ href, name, price, imageUrl, label, rank }: { href
       </div>
     </Link>
   );
+  return action ? <div className="gs-card-wrap">{card}<div className="gs-card__action">{action}</div></div> : card;
 }
 
 /* ---------- OrderSummary / StickyBar / EmptyState / Notice / Pill / Dialog ---------- */
