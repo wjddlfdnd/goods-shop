@@ -3,6 +3,8 @@
 > 원본은 Notion "굿즈 쇼핑몰 > 06. 기술 설계"(API는 "03. API 명세서", ERD 그림은 ERDCloud)다. 이 파일은 사본이며, 내용이 다르면 Notion을 따른다.
 
 
+ERD 그림: https://www.erdcloud.com/d/sAq6RaTzyR2EfSxY9
+
 원본은 `prisma/schema.prisma`, 제약은 `prisma/migrations/*_constraints/migration.sql`. PRD 6장의 원문 7개 엔티티(회원·상품·상품 옵션·장바구니·주문·주문 상품·찜)에 D-14의 추가(배송지·카테고리·상품 이미지, 주문·상품·회원 필드)와 로그인 세션을 더했다.
 
 ```mermaid
